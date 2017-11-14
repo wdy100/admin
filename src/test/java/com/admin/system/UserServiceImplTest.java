@@ -31,5 +31,9 @@ public class UserServiceImplTest{
 		System.out.println(result.getResult().getName());
 		logger.info("用户姓名：" + result.getResult().getName()); 
 	}
-	
+
+	@Test
+	public void test1() {
+
+	}
 }
