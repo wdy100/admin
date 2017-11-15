@@ -58,18 +58,18 @@
             <version>${spring.version}</version>  
         </dependency>  
   
-        <dependency>  
-            <groupId>org.springframework</groupId>  
-            <artifactId>spring-context-support</artifactId>  
-            <version>${spring.version}</version>  
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
         </dependency>
-         
+
         <dependency>  
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>  
-        </dependency>  
-        
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-asm</artifactId>
@@ -94,12 +94,25 @@
             <version>1.2.0</version>  
         </dependency>  
         <!-- 导入java ee jar 包 -->  
-        <dependency>  
+       <!-- <dependency>  
             <groupId>javax</groupId>  
             <artifactId>javaee-api</artifactId>  
             <version>6.0</version>  
-        </dependency>  
-        <!-- 导入Mysql数据库链接jar包 -->  
+        </dependency>   -->
+
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>javax.servlet-api</artifactId>
+          <version>3.0.1</version>
+      </dependency>
+      <dependency>
+          <groupId>javax.servlet.jsp</groupId>
+          <artifactId>jsp-api</artifactId>
+          <version>2.0</version>
+          <scope>provided</scope>
+      </dependency>
+
+        <!-- 导入Mysql数据库链接jar包 -->
         <dependency>  
             <groupId>mysql</groupId>  
             <artifactId>mysql-connector-java</artifactId>  
@@ -213,11 +226,6 @@
             <version>${spring.version}</version>  
         </dependency>  
 		<!-- test-end -->  
-		<dependency>  
-		    <groupId>javax.validation</groupId>  
-		    <artifactId>validation-api</artifactId>  
-		    <version>2.0.0.Alpha1</version>  
-		</dependency>
   	</dependencies>
 
 	<build>

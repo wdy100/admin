@@ -10,8 +10,13 @@
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd 
        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd 
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+    
+    <mvc:resources location="/assets/" mapping="/assets/**" />
+    
     <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->  
     <context:component-scan base-package="com.admin.controller" />  
+    <mvc:annotation-driven />
+    
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->  
     <bean id="mappingJacksonHttpMessageConverter"  
         class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">  
