@@ -248,9 +248,9 @@
                 <pom.server.dynamic>/crm</pom.server.dynamic>
                 <pom.app.url>http://localhost:8080/crm</pom.app.url>
 
-                <pom.jdbc.url>jdbc:mysql://10.1.132.28:3306/dispenser</pom.jdbc.url>
-				<pom.jdbc.username>dev</pom.jdbc.username>
-				<pom.jdbc.password>v3@rrs.com</pom.jdbc.password>
+                <pom.jdbc.url>jdbc:mysql://47.100.31.217:3306/crm</pom.jdbc.url>
+				<pom.jdbc.username>root</pom.jdbc.username>
+				<pom.jdbc.password>wdlinux.cn</pom.jdbc.password>
 			</properties>
 		</profile>
 
@@ -263,9 +263,9 @@
 				<pom.server.dynamic>/crm</pom.server.dynamic>
 				<pom.app.url>http://localhost:8080/crm</pom.app.url>
 
-				<pom.jdbc.url>jdbc:mysql://10.1.132.28:3306/dispenser</pom.jdbc.url>
-				<pom.jdbc.username>dev</pom.jdbc.username>
-				<pom.jdbc.password>v3@rrs.com</pom.jdbc.password>
+                <pom.jdbc.url>jdbc:mysql://47.100.31.217:3306/crm</pom.jdbc.url>
+                <pom.jdbc.username>root</pom.jdbc.username>
+                <pom.jdbc.password>wdlinux.cn</pom.jdbc.password>
 			</properties>
 		</profile>
 	</profiles>
