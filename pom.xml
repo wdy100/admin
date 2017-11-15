@@ -62,8 +62,25 @@
             <groupId>org.springframework</groupId>  
             <artifactId>spring-context-support</artifactId>  
             <version>${spring.version}</version>  
+        </dependency>
+         
+        <dependency>  
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>  
         </dependency>  
-  
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-asm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+		
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         <!-- mybatis核心包 -->  
         <dependency>  
             <groupId>org.mybatis</groupId>  
@@ -196,6 +213,11 @@
             <version>${spring.version}</version>  
         </dependency>  
 		<!-- test-end -->  
+		<dependency>  
+		    <groupId>javax.validation</groupId>  
+		    <artifactId>validation-api</artifactId>  
+		    <version>2.0.0.Alpha1</version>  
+		</dependency>
   	</dependencies>
 
 	<build>
@@ -244,7 +266,7 @@
 			<properties>
 				<profiles.activation>dev</profiles.activation>
 
-                <pom.server.static>/crm/assets</pom.server.static>
+                <pom.server.static>http://localhost:8080/assets</pom.server.static>
                 <pom.server.dynamic>/crm</pom.server.dynamic>
                 <pom.app.url>http://localhost:8080/crm</pom.app.url>
 
@@ -259,7 +281,7 @@
 			<properties>
 				<profiles.activation>prod</profiles.activation>
 
-				<pom.server.static>/crm/assets</pom.server.static>
+				<pom.server.static>http://localhost:8080/assets</pom.server.static>
 				<pom.server.dynamic>/crm</pom.server.dynamic>
 				<pom.app.url>http://localhost:8080/crm</pom.app.url>
 
