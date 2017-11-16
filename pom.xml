@@ -16,6 +16,10 @@
         <slf4j.version>1.7.5</slf4j.version>  
         <log4j.version>1.2.17</log4j.version>
         <freemarker.version>2.3.19</freemarker.version>
+        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
+	    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	    <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
     </properties> 
   <dependencies>
         <!-- spring核心包 -->  
