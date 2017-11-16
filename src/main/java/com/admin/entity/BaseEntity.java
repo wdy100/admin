@@ -2,12 +2,6 @@ package com.admin.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
-
-import com.google.common.base.Strings;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -51,19 +45,19 @@ public class BaseEntity implements Serializable {
 	 */
 	private String remark;
 	/**
-	 * json字符串，根据实际的实体来判断是否添加 ， 映射
+	 * 是否删除 1:是   0:否
 	 */
-	private String properties;
+	private Integer isDelete;
 	
-	/**
-	 * 将properties字符串转换成jsonobect对象，方便操作
-	 * @return
-	 * @see JsonObject
-	 */
-	public Map<String, Object> getPropertiesMap(){
-		Gson gson = new GsonBuilder().create();
-		@SuppressWarnings("unchecked")
-		Map<String,Object> rs = gson.fromJson(Strings.nullToEmpty(properties), Map.class);
-		return rs;
+	public static enum IsDeleteEnum{
+		/**
+		 * 是否删除 1:是   0:否
+		 */
+		NO(0),YES(1);
+		@Getter
+		private Integer isDelete;
+		private IsDeleteEnum(Integer isDelete) {
+			this.isDelete = isDelete;
+		}
 	}
 }

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.dao.system.CustomerDao">
+  <resultMap id="customerMap" type="com.admin.entity.system.Customer">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="customer_code" jdbcType="VARCHAR" property="customerCode" />
+    <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
+    <result column="type_code" jdbcType="VARCHAR" property="typeCode" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="corporate" jdbcType="VARCHAR" property="corporate" />
+    <result column="manager" jdbcType="VARCHAR" property="manager" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="dock_department" jdbcType="VARCHAR" property="dockDepartment" />
+    <result column="dock_person" jdbcType="VARCHAR" property="dockPerson" />
+    <result column="dock_contact" jdbcType="VARCHAR" property="dockContact" />
+    <result column="relate_department" jdbcType="VARCHAR" property="relateDepartment" />
+    <result column="relate_person" jdbcType="VARCHAR" property="relatePerson" />
+    <result column="relate_contact" jdbcType="VARCHAR" property="relateContact" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, customer_code, customer_name, type_code, type_name, phone, fax, address, url, 
+    corporate, manager, contact, dock_department, dock_person, dock_contact, relate_department, 
+    relate_person, relate_contact, created_at, updated_at, created_by, updated_by, remark, 
+    is_delete
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="customerMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from customer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.admin.entity.system.Customer">
+    insert into customer (id, customer_code, customer_name, 
+      type_code, type_name, phone, 
+      fax, address, url, 
+      corporate, manager, contact, 
+      dock_department, dock_person, dock_contact, 
+      relate_department, relate_person, relate_contact, 
+      created_at, updated_at, created_by, 
+      updated_by, remark, is_delete
+      )
+    values (#{id,jdbcType=INTEGER}, #{customerCode,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, 
+      #{typeCode,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{fax,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{corporate,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
+      #{dockDepartment,jdbcType=VARCHAR}, #{dockPerson,jdbcType=VARCHAR}, #{dockContact,jdbcType=VARCHAR}, 
+      #{relateDepartment,jdbcType=VARCHAR}, #{relatePerson,jdbcType=VARCHAR}, #{relateContact,jdbcType=VARCHAR}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.admin.entity.system.Customer">
+    insert into customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="customerCode != null">
+        customer_code,
+      </if>
+      <if test="customerName != null">
+        customer_name,
+      </if>
+      <if test="typeCode != null">
+        type_code,
+      </if>
+      <if test="typeName != null">
+        type_name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="fax != null">
+        fax,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="corporate != null">
+        corporate,
+      </if>
+      <if test="manager != null">
+        manager,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="dockDepartment != null">
+        dock_department,
+      </if>
+      <if test="dockPerson != null">
+        dock_person,
+      </if>
+      <if test="dockContact != null">
+        dock_contact,
+      </if>
+      <if test="relateDepartment != null">
+        relate_department,
+      </if>
+      <if test="relatePerson != null">
+        relate_person,
+      </if>
+      <if test="relateContact != null">
+        relate_contact,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="updatedBy != null">
+        updated_by,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="customerCode != null">
+        #{customerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null">
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="typeCode != null">
+        #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null">
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="corporate != null">
+        #{corporate,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null">
+        #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="dockDepartment != null">
+        #{dockDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="dockPerson != null">
+        #{dockPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="dockContact != null">
+        #{dockContact,jdbcType=VARCHAR},
+      </if>
+      <if test="relateDepartment != null">
+        #{relateDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="relatePerson != null">
+        #{relatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="relateContact != null">
+        #{relateContact,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.admin.entity.system.Customer">
+    update customer
+    <set>
+      <if test="customerCode != null">
+        customer_code = #{customerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null">
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="typeCode != null">
+        type_code = #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null">
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="corporate != null">
+        corporate = #{corporate,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null">
+        manager = #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="dockDepartment != null">
+        dock_department = #{dockDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="dockPerson != null">
+        dock_person = #{dockPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="dockContact != null">
+        dock_contact = #{dockContact,jdbcType=VARCHAR},
+      </if>
+      <if test="relateDepartment != null">
+        relate_department = #{relateDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="relatePerson != null">
+        relate_person = #{relatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="relateContact != null">
+        relate_contact = #{relateContact,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedBy != null">
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.admin.entity.system.Customer">
+    update customer
+    set customer_code = #{customerCode,jdbcType=VARCHAR},
+      customer_name = #{customerName,jdbcType=VARCHAR},
+      type_code = #{typeCode,jdbcType=VARCHAR},
+      type_name = #{typeName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      corporate = #{corporate,jdbcType=VARCHAR},
+      manager = #{manager,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      dock_department = #{dockDepartment,jdbcType=VARCHAR},
+      dock_person = #{dockPerson,jdbcType=VARCHAR},
+      dock_contact = #{dockContact,jdbcType=VARCHAR},
+      relate_department = #{relateDepartment,jdbcType=VARCHAR},
+      relate_person = #{relatePerson,jdbcType=VARCHAR},
+      relate_contact = #{relateContact,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      updated_by = #{updatedBy,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>
