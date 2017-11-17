@@ -27,16 +27,44 @@ public class AgreementServiceImpl implements AgreementService {
     private AgreementInfoDao agreementInfoDao;
     
     @Override
-    public ServiceResult<Boolean> insertAgreementInfo(AgreementInfo agreementInfo){
+    public ServiceResult<Integer> insertAgreementInfo(AgreementInfo agreementInfo){
         checkNotNull(agreementInfo, "agreementInfo不能为空");
-        ServiceResult<Boolean> result = new ServiceResult<Boolean>();
+        ServiceResult<Integer> result = new ServiceResult<Integer>();
         try{
-            int count = agreementInfoDao.insert(agreementInfo);
-            result.setResult(true);
+            int id = agreementInfoDao.insert(agreementInfo);
+            result.setResult( agreementInfo.getId().intValue());
         }catch(Exception e){
-        	result.setResult(false);
+        	result.setError("error","合同信息插入失败");
         	log.error("合同信息插入失败:" + Throwables.getStackTraceAsString(e) );
         }
         return result;
+    }
+    
+    @Override
+    public ServiceResult<Boolean> updateAgreementInfo(AgreementInfo agreementInfo){
+    	checkNotNull(agreementInfo, "agreementInfo不能为空");
+    	ServiceResult<Boolean> result = new ServiceResult<Boolean>();
+    	try{
+    		int id = agreementInfoDao.updateById(agreementInfo);
+    		result.setResult(true);
+    	}catch(Exception e){
+    		result.setError("error","合同信息更新失败");
+    		log.error("合同信息更新失败:" + Throwables.getStackTraceAsString(e) );
+    	}
+    	return result;
+    }
+    
+    @Override
+    public ServiceResult<AgreementInfo> selectByIdAgreementInfo(AgreementInfo agreementInfo){
+    	checkNotNull(agreementInfo, "agreementInfo不能为空");
+    	ServiceResult<AgreementInfo> result = new ServiceResult<AgreementInfo>();
+    	try{
+    		AgreementInfo agreement = agreementInfoDao.selectById(agreementInfo.getId());
+    		result.setResult(agreement);
+    	}catch(Exception e){
+    		result.setError("error","合同信息更新失败");
+    		log.error("合同信息更新失败:" + Throwables.getStackTraceAsString(e) );
+    	}
+    	return result;
     }
 }
