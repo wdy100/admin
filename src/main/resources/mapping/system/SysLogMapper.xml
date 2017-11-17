@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.dao.system.SysLogDao">
-  <resultMap id="sysLogMap" type="com.admin.entity.system.SysLog">
+  <resultMap id="sysLogMap" type="SysLog">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="ip" jdbcType="VARCHAR" property="ip" />
@@ -28,7 +28,7 @@
     delete from sys_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.admin.entity.system.SysLog">
+  <insert id="insert" parameterType="SysLog">
     insert into sys_log (id, user_name, ip, 
       page_name, event_name, created_at, 
       updated_at, created_by, updated_by, 
@@ -38,7 +38,7 @@
       #{updatedAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.admin.entity.system.SysLog">
+  <insert id="insertSelective" parameterType="SysLog">
     insert into sys_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -111,7 +111,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.admin.entity.system.SysLog">
+  <update id="updateByPrimaryKeySelective" parameterType="SysLog">
     update sys_log
     <set>
       <if test="userName != null">
@@ -147,7 +147,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.admin.entity.system.SysLog">
+  <update id="updateByPrimaryKey" parameterType="SysLog">
     update sys_log
     set user_name = #{userName,jdbcType=VARCHAR},
       ip = #{ip,jdbcType=VARCHAR},

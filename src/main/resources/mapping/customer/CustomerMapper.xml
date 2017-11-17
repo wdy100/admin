@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.dao.customer.CustomerDao">
-  <resultMap id="customerMap" type="com.admin.entity.customer.Customer">
+  <resultMap id="customerMap" type="Customer">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="customer_code" jdbcType="VARCHAR" property="customerCode" />
     <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
@@ -43,7 +43,7 @@
     delete from customer
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.admin.entity.customer.Customer">
+  <insert id="insert" parameterType="Customer">
     insert into customer (id, customer_code, customer_name, 
       type_code, type_name, phone, 
       fax, address, url, 
@@ -63,7 +63,7 @@
       #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.admin.entity.customer.Customer">
+  <insert id="insertSelective" parameterType="Customer">
     insert into customer
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -214,7 +214,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.admin.entity.customer.Customer">
+  <update id="updateByPrimaryKeySelective" parameterType="Customer">
     update customer
     <set>
       <if test="customerCode != null">
@@ -289,7 +289,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.admin.entity.customer.Customer">
+  <update id="updateByPrimaryKey" parameterType="Customer">
     update customer
     set customer_code = #{customerCode,jdbcType=VARCHAR},
       customer_name = #{customerName,jdbcType=VARCHAR},

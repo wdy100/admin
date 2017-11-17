@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.dao.system.NoticeDao">
-  <resultMap id="noticeMap" type="com.admin.entity.system.Notice">
+  <resultMap id="noticeMap" type="Notice">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="start_at" jdbcType="TIMESTAMP" property="startAt" />
     <result column="end_at" jdbcType="TIMESTAMP" property="endAt" />
@@ -28,7 +28,7 @@
     delete from notice
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.admin.entity.system.Notice">
+  <insert id="insert" parameterType="Notice">
     insert into notice (id, start_at, end_at, 
       title, content, created_at, 
       updated_at, created_by, updated_by, 
@@ -38,7 +38,7 @@
       #{updatedAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.admin.entity.system.Notice">
+  <insert id="insertSelective" parameterType="Notice">
     insert into notice
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -111,7 +111,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.admin.entity.system.Notice">
+  <update id="updateByPrimaryKeySelective" parameterType="Notice">
     update notice
     <set>
       <if test="startAt != null">
@@ -147,7 +147,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.admin.entity.system.Notice">
+  <update id="updateByPrimaryKey" parameterType="Notice">
     update notice
     set start_at = #{startAt,jdbcType=TIMESTAMP},
       end_at = #{endAt,jdbcType=TIMESTAMP},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.dao.system.AttachmentDao">
-  <resultMap id="attachmentMap" type="com.admin.entity.system.Attachment">
+  <resultMap id="attachmentMap" type="Attachment">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="file_code" jdbcType="VARCHAR" property="fileCode" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
@@ -28,7 +28,7 @@
     delete from attachment
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.admin.entity.system.Attachment">
+  <insert id="insert" parameterType="Attachment">
     insert into attachment (id, file_code, file_name, 
       file_type, url, created_at, 
       updated_at, created_by, updated_by, 
@@ -38,7 +38,7 @@
       #{updatedAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.admin.entity.system.Attachment">
+  <insert id="insertSelective" parameterType="Attachment">
     insert into attachment
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -111,7 +111,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.admin.entity.system.Attachment">
+  <update id="updateByPrimaryKeySelective" parameterType="Attachment">
     update attachment
     <set>
       <if test="fileCode != null">
@@ -147,7 +147,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.admin.entity.system.Attachment">
+  <update id="updateByPrimaryKey" parameterType="Attachment">
     update attachment
     set file_code = #{fileCode,jdbcType=VARCHAR},
       file_name = #{fileName,jdbcType=VARCHAR},
