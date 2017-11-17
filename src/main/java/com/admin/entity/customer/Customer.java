@@ -1,10 +1,9 @@
-package com.admin.entity.system;
+package com.admin.entity.customer;
 
+import com.admin.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import com.admin.entity.BaseEntity;
 
 /**
  * 客户实体类
@@ -13,7 +12,7 @@ import com.admin.entity.BaseEntity;
 @ToString(callSuper=true)
 @Getter
 @Setter
-public class Customer  extends BaseEntity{
+public class Customer extends BaseEntity{
     /**
 	 * 
 	 */
