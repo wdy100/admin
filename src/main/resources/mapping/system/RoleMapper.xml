@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.dao.system.RoleDao">
-  <resultMap id="roleMap" type="com.admin.entity.system.Role">
+  <resultMap id="roleMap" type="Role">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -27,7 +27,7 @@
     delete from role
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.admin.entity.system.Role">
+  <insert id="insert" parameterType="Role">
     insert into role (id, code, name, 
       description, created_at, updated_at, 
       created_by, updated_by, remark, 
@@ -37,7 +37,7 @@
       #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{isDelete,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.admin.entity.system.Role">
+  <insert id="insertSelective" parameterType="Role">
     insert into role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -104,7 +104,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.admin.entity.system.Role">
+  <update id="updateByPrimaryKeySelective" parameterType="Role">
     update role
     <set>
       <if test="code != null">
@@ -137,7 +137,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.admin.entity.system.Role">
+  <update id="updateByPrimaryKey" parameterType="Role">
     update role
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
