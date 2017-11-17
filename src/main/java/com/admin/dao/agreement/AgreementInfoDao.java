@@ -24,7 +24,7 @@ public class AgreementInfoDao extends BaseDao{
 		return this.getSqlSession().insert(namespace+"insert", agreementInfo);
 	}
 	
-	public int updateById(Long id){
-		return this.getSqlSession().update(namespace+"updateById", id);
+	public int updateById(AgreementInfo agreementInfo){
+		return this.getSqlSession().update(namespace+"updateById", agreementInfo);
 	}
 }

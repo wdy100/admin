@@ -68,7 +68,7 @@
     where id = #{id}
   </delete>
   
-  <insert id="insert" parameterType="com.admin.entity.agreement.AgreementInfo">
+  <insert id="insert" parameterType="com.admin.entity.agreement.AgreementInfo" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
     insert into <include refid="table_name" /> 
     ( <include refid="Base_Column_List" /> )
     values (#{agreeSn,jdbcType=VARCHAR}, #{firstParty,jdbcType=VARCHAR}, 

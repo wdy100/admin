@@ -8,6 +8,10 @@ import com.haier.common.ServiceResult;
 
 public interface AgreementService {
    
-    public ServiceResult<Boolean> insertAgreementInfo(AgreementInfo agreementInfo);
+    public ServiceResult<Integer> insertAgreementInfo(AgreementInfo agreementInfo);
+    
+    public ServiceResult<Boolean> updateAgreementInfo(AgreementInfo agreementInfo);
+    
+    public ServiceResult<AgreementInfo> selectByIdAgreementInfo(AgreementInfo agreementInfo);
     
 }
