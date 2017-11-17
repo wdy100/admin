@@ -40,7 +40,7 @@
     <select id="getProspectList"  parameterType="Map"  resultMap="prospectMap">
         SELECT id,<include refid="columns"/>
         FROM <include refid="table"/>
-        WHERE is_delete = 0
+        WHERE enable = 0
         <include refid="prospectQuery"/>
         Order By updated_at DESC
         <if test="m!=null and n!=null">
