@@ -43,12 +43,4 @@ public class Prospect extends BaseEntity {
     private String submitName;
 
     private String submitTime;
-
-    private String createdBy;
-
-    private String createdAt;
-
-    private String updatedBy;
-
-    private String updatedAt;
 }
