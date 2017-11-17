@@ -49,32 +49,14 @@
     </select>
 
     <sql id="prospectQuery">
-        <if test="updateTimeStart != null and updateTimeStart != ''">
-            AND created_at >= #{updateTimeStart}
-        </if>
-        <if test="updateTimeEnd != null and updateTimeEnd != ''">
-            AND created_at &lt;= #{updateTimeEnd}
-        </if>
         <if test="customerName != null and customerName != ''">
             AND customer_name = #{customerName}
         </if>
-        <if test="invoiceTitle != null and invoiceTitle != ''">
-            AND invoice_title = #{invoiceTitle}
+        <if test="customerStatus != null">
+            AND customer_status = #{customerStatus}
         </if>
-        <if test="taxPayerNumber != null and taxPayerNumber != ''">
-            AND UPPER(tax_payer_number) = UPPER(#{taxPayerNumber})
-        </if>
-        <if test="auditTimeStart != null and auditTimeStart != ''">
-            AND audit_time >= #{auditTimeStart}
-        </if>
-        <if test="auditTimeEnd != null and auditTimeEnd != ''">
-            AND audit_time &lt;= #{auditTimeEnd}
-        </if>
-        <if test="memberName != null and memberName != ''">
-            AND member_name = #{memberName}
-        </if>
-        <if test="state != null and state != 0">
-            AND state = #{state}
+        <if test="prospectStatus != null">
+            AND prospect_status = #{prospectStatus}
         </if>
     </sql>
 
