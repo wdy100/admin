@@ -46,11 +46,11 @@ public class LoginController {
         return result;  
     }
     
-    @RequestMapping("/index.html")  
+    @RequestMapping("/index.html")
     public String index(HttpServletRequest request,Map<String, Object> stack){  
 //        String mobile = request.getParameter("mobile");  
 //        ServiceResult<User> result = this.userService.getByMobile(mobile); 
 //        stack.put("user", result.getResult());
-        return "index";  
+        return "index";
     }  
 }  
