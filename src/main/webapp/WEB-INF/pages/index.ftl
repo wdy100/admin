@@ -4,114 +4,99 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>淼盾CRM客户管理系统</title>
 <link href="assets/css/login_index.css"  rel="stylesheet" />
-<script type="text/javascript" src="assets/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
-   
+<#include "common/easyui_core.ftl"/>
+    <!-- 简单的样式 -->
+    <style type="text/css">
+        .footer .foot {
+            text-align: center;
+            color: #FFFFFF;
+        }
+    </style>
 </head>
-<body>
+<body class="easyui-layout">
     <!---TOP S--->
-     <div class="top">
-      <div class="logotitle">
-       <div class="to3dcbd"> &nbsp;</div>
-       <div class="nav">
-           <ul>
-              <li class="current"><a href="#">首页</a></li>            
-              <li><a href="#">新增客户</a></li>
-              <li><a href="#">合同签订</a></li>
-              <li><a href="#">客户接入</a></li>
-              <li><a href="#"></a></li>
-              <li><a href="#"></a></li>                               
-           </ul>
-           <div class="clear"></div>           
-       </div>
-       <div class="welcomequit">您好，<strong id="User" >admin</strong><a href="#"> [退出]</a> <a href="#"> [网站首页]</a></div>
-       </div>
-      <div class="clear"></div>     
+    <div class="head" region="north" split="true"
+         style="height: 100px;">
+		 <div class="top">
+		  <div class="logotitle">
+		   <div class="to3dcbd"> &nbsp;</div>
+		   <div class="nav">
+			   <div class="clear"></div>
+		   </div>
+		   <div class="welcomequit">您好，<strong id="User" >admin</strong><a href="#"> [退出]</a> <a href="#"> [网站首页]</a></div>
+		   </div>
+		  <div class="clear"></div>
+		</div>
     </div>
     <!---TOP END--->
-     <div class="main">
-     <!--LEFT S--->
-        <div class="left">        
-	        <dl>
-		        <dt>系统管理</dt>
-		            <dd><a href="#">角色管理</a></dd>
-		            <dd><a href="#">权限管理</a></dd>   
-		            <dd><a href="#">用户管理</a></dd>        
-		        <dt>客户管理</dt>
-		             <dd><a href="#">客户接入</a></dd>
-		             <dd><a href="#">客户反馈</a></dd>	                       
-		        <dt>订单管理</dt>
-		            <dd><a href="#">订单执行</a></dd>
-		             <dd><a href="#">订单执行-工程部</a></dd> 
-		            <dd><a href="#">订单查询</a></dd>
-		            <dd><a href="#">订单查询-总监</a></dd>           
-		        <dt>合同管理</dt>
-		             <dd><a href="#">合同签订</a></dd>                
-		             <dd><a href="#">合同变更</a></dd>
-		             <dd><a href="#">合同查询</a></dd>	                           
-		        <dt>财务管理</dt>                             
-	        </dl>
-        </div> 
-     <!--LEFT END--->
-       <div class="right" id="right" >
-            <div class="location">
-                             当前位置：首页  &gt;
-				<a href="customer.html">合同签订</a> &gt;
-				
+
+    <!---foot S--->
+    <!-- 底部一般放版权什么的 -->
+    <div class="footer" region="south" split="true" style="height: 10px;">
+        <div class="foot">
+            Copyright © 2012 - 2018 All Rights Reserved 版权所有
+        </div>
+    </div>
+    <!---foot END--->
+
+    <!---left S--->
+    <!-- 左边可以放菜单栏,来显示菜单,可以用tree形式显示 -->
+    <div region="west" split="true" title="功能选项" style="width: 120px;">
+        <div class="easyui-accordion"
+             data-options="border:false,fit:true" animate="false">
+            <!-- 可用c标签的foreach来读取后台的菜单树 -->
+            <div title="&nbsp;&nbsp;&nbsp;&nbsp;系统管理">
+                <!--ul的id可以设置成,这样就能出发点击事件或者别的事件 -->
+                <ul onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">角色管理</ul>
+                <ul onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">权限管理</ul>
+                <ul onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">用户管理</ul>
             </div>
-            <div class="mcontent">
-					
-                <div class="newedit">
-					<strong style="color: #1361a6;line-height:30px">合同新增:</strong>
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					  	
-					   	<tr>
-					    <td class="tdright" width="130">选择客户：</td>
-					    <td> <select name="" style="width:170px;height: 24px;">
-					           <option value="0">客户1</option>
-					           <option value="1">客户2</option>
-					           <option value="2">客户3</option>
-					        </select>       
-					    </td>
-					  	</tr>
-					  	<tr>
-					    	<td class="tdright">合同签署单位：</td>
-					    	<td><input name="" type="text" placeholder=""/></td>
-					  	</tr>
-					  	<tr>
-					    	<td class="tdright">合同金额：</td>
-					    	<td><input name="" type="text" placeholder=""/></td>
-					  	</tr>
-					  	<tr>
-					    	<td class="tdright">合同年限：</td>
-					    	<td><input name="" type="text" placeholder="" style="width:50px; text-align: center;"/>  年</td>
-					  	</tr>
-					  	<tr>
-					    	<td class="tdright">合同起止时间：</td>
-					    	<td>
-					    		<input name="" type="text" placeholder=""/>
-					    		——
-					    		<input name="" type="text" placeholder=""/>
-					    	</td>
-					  	</tr>
-					   	<tr>
-					    	<td class="tdright">合同标的：</td>
-					    	<td>
-					    		<textarea name="" rows="" cols="" style="width: 500px;height: 100px;margin: 10px 0;" ></textarea>
-					    		
-					    	</td>
-					  	</tr>
-					  	
-					</table>
-					<div  class="naebtn">
-					    <input id="Button1" type="submit"  Text="暂存" value="暂存" onclick="AddEdit_Click" OnClientClick=" return  test()" /> 
-					    &nbsp;&nbsp;     
-					    <input name="" type="reset" value="下一步"/>
-					 	<div class="clear"></div>             
-					</div>
-				</div>            
+            <div title="&nbsp;&nbsp;&nbsp;&nbsp;客户管理"  >
+                <ul onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">客户接入</ul>
+                <ul onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">客户反馈</ul>
             </div>
-      </div>    
-   </div>    
+            <div title="&nbsp;&nbsp;&nbsp;&nbsp;订单管理" >
+                <ul  onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单查询</ul>
+                <ul  onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单执行</ul>
+            </div>
+            <div title="&nbsp;&nbsp;&nbsp;&nbsp;合同管理" >
+                <ul  onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">合同管理</ul>
+            </div>
+            <div title="&nbsp;&nbsp;&nbsp;&nbsp;财务管理" >
+                <ul  onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">财务管理</ul>
+            </div>
+        </div>
+    </div>
+    <!---left END--->
+
+    <!---center S--->
+    <!-- 中间可以用来存放tabs,通过左边点击事件来填充tabs -->
+    <div region="center" title="center title"
+         style="padding: 5px; background: #eee;">
+        <div id="tts" class="easyui-tabs"
+             data-options="border:false,fit:true">
+
+
+
+		</div>
+    </div>
+    <!---center END--->
+
 </body>
+<script type="text/javascript">
+    //官方demo
+    function addTab(title, url){
+        if ($('#tts').tabs('exists', title)){
+            $('#tts').tabs('select', title);
+        } else {
+            var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+            $('#tts').tabs('add',{
+                title:title,
+                content:content,
+                closable:true
+            });
+        }
+    }
+
+</script>
 </html>
