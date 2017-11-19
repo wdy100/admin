@@ -37,6 +37,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public ServiceResult<Role> getByName(String name) {
+        ServiceResult<Role> result = new ServiceResult<Role>();
+        result.setResult(roleDao.getByName(name));
+
+        return result;
+    }
+
+    @Override
     public ServiceResult<List<Role>> getRoleList(Map<String, Object> paramMap) {
         ServiceResult<List<Role>> result = new ServiceResult<List<Role>>();
         result.setResult(roleDao.getRoleList(paramMap));

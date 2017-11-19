@@ -11,10 +11,10 @@ import java.util.Map;
  */
 
 public interface RoleService {
-    /**
-     * 根据手机号获取用户信息
-     * */
+
     public ServiceResult<User> getByMobile(String mobile);
+
+    public ServiceResult<Role> getByName(String name);
 
     public ServiceResult<List<Role>> getRoleList(Map<String, Object> paramMap);
 

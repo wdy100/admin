@@ -38,6 +38,12 @@
         </if>
     </sql>
 
+    <select id="getByName" resultMap="prospectMap" parameterType="java.lang.String">
+        select id,<include refid="columns"/>
+        from <include refid="table"/>
+        where name = #{name}
+    </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="roleMap">
     select id,
       <include refid="Base_Column_List" />

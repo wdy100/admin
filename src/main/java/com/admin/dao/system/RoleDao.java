@@ -14,6 +14,10 @@ import java.util.Map;
 @Repository
 public class RoleDao   extends BaseDao{
 
+    public Role getByName(String name){
+        return this.getSqlSession().selectOne(namespace+"getByName", name);
+    }
+
     public List<Role> getRoleList(Map<String, Object> paramMap){
         return this.getSqlSession().selectList(namespace + "getRoleList", paramMap);
     }
