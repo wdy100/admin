@@ -22,7 +22,7 @@
     <select id="getRoleList"  parameterType="Map"  resultMap="roleMap">
         SELECT id,<include refid="Base_Column_List"/>
         FROM <include refid="table"/>
-        WHERE enable = 0
+        WHERE is_delete = 0
         <include refid="roleQuery"/>
         Order By updated_at DESC
         <if test="m!=null and n!=null">
@@ -38,8 +38,8 @@
         </if>
     </sql>
 
-    <select id="getByName" resultMap="prospectMap" parameterType="java.lang.String">
-        select id,<include refid="columns"/>
+    <select id="getByName" resultMap="roleMap" parameterType="java.lang.String">
+        select id,<include refid="Base_Column_List"/>
         from <include refid="table"/>
         where name = #{name}
     </select>

@@ -36,21 +36,17 @@
      data-options="resizable:true,modal:true" >
     <table style="font-weight: 400;" border="0">
         <tr>
-            <td style="text-align: right;">部门名称<span class="star">*</span>:</td>
+            <td style="text-align: right;">角色名称<span class="star">*</span>:</td>
             <td>
                 <input id="dname" name="name" size="54" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width: 200px;"/></td>
         </tr>
 
         <tr>
-            <td style="text-align: right;">上级部门<span class="star">*</span>:</td>
+            <td style="text-align: right;">选择菜单<span class="star">*</span>:</td>
             <td>
-            <input id="cc" value="01">
             <select id="cc" class="easyui-combotree" style="width:200px;"
-			    data-options="url:'get_data.php',required:true">
+			    data-options="url:'',required:true">
 			</select>
-                <input size="54" name="parentId" id="parent_department_id"  style="width: 200px;" class="easyui-combotree"data-options="
-						url: '/system/departmentTree',
-						animate: true,required:true"/>
             </td>
         </tr>
 
@@ -80,7 +76,7 @@ var datagrid;
 var queryParameters;
 
 
-$('#cc').combotree({
+$('#cc22').combotree({
     url: 'get_data.php',
     required: true
 });

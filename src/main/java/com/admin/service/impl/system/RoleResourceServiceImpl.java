@@ -1,13 +1,17 @@
 package com.admin.service.impl.system;
 
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.admin.dao.system.RoleResourceDao;
+import com.admin.entity.system.RoleResource;
 import com.admin.entity.system.User;
 import com.admin.service.system.RoleResourceService;
+import com.google.common.base.Throwables;
 import com.haier.common.ServiceResult;
 
 /**
@@ -16,11 +20,55 @@ import com.haier.common.ServiceResult;
 @Slf4j
 @Service
 public class RoleResourceServiceImpl implements RoleResourceService {
-    @Autowired
+    
+	@Autowired
     private RoleResourceDao roleResourceDao;
-    @Override
-    public ServiceResult<User> getByMobile(String mobile){
-        ServiceResult<User> result = new ServiceResult<User>();
+   
+	@Override
+	public ServiceResult<List<RoleResource>> selectAllByRoleId(
+			RoleResource roleResource) {
+		ServiceResult<List<RoleResource>> result = new ServiceResult<List<RoleResource>>();
+        try{
+        	List<RoleResource> list = roleResourceDao.selectAllByRoleId(roleResource);
+        	result.setResult(list);
+        }catch(Exception e){
+        	result.setError("error","信息查询失败");
+        	log.error("信息查询失败:" + Throwables.getStackTraceAsString(e) );
+        }
         return result;
-    }
+	}
+	@Override
+	public ServiceResult<List<RoleResource>> selectAll() {
+		ServiceResult<List<RoleResource>> result = new ServiceResult<List<RoleResource>>();
+        try{
+        	List<RoleResource> list = roleResourceDao.selectAll();
+        	result.setResult(list);
+        }catch(Exception e){
+        	result.setError("error","信息查询失败");
+        	log.error("信息查询失败:" + Throwables.getStackTraceAsString(e) );
+        }
+        return result;
+	}
+	@Override
+	public ServiceResult<Integer> insert(RoleResource roleResource) {
+		ServiceResult<Integer> result = new ServiceResult<Integer>();
+        try{
+            int id = roleResourceDao.insert(roleResource);
+        }catch(Exception e){
+        	result.setError("error","信息插入失败");
+        	log.error("信息插入失败:" + Throwables.getStackTraceAsString(e) );
+        }
+        return result;
+	}
+	@Override
+	public ServiceResult<Integer> deleteByRoleId(RoleResource roleResource) {
+		ServiceResult<Integer> result = new ServiceResult<Integer>();
+        try{
+            int id = roleResourceDao.deleteByRoleId(roleResource);
+        }catch(Exception e){
+        	result.setError("error","信息删除失败");
+        	log.error("信息删除失败:" + Throwables.getStackTraceAsString(e) );
+        }
+        return result;
+	}
 }
