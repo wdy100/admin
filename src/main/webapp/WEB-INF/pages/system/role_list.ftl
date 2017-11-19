@@ -40,9 +40,44 @@
         <table id="dataGrid"></table>
     </div>
 </div>
+
+<div id="roleInputInfo" style="padding:10px;display:none;" title="新增角色">
+    ##    <div id="w" class="easyui-dialog" title="" data-options="modal:true,closed:true,iconCls:'icon-save'" style="padding:10px;">
+    <table>
+        <tr>
+            <td>角色编码</td>
+            <td><input id="code_edit" type="text"/></td>
+        </tr>
+        <tr>
+            <td>角色名称</td>
+            <td><input id="name_edit" type="text"/></td>
+        </tr>
+        <tr>
+            <td>角色描述</td>
+            <td><input id="description_edit" type="text"/></td>
+        </tr>
+        <tr>
+            <td>创建者</td>
+            <td><input id="createdBy_edit" type="text"/></td>
+        </tr>
+    </table>
+    </br>
+    <div style="text-align:center"><input id="saveBtn" type="button" value="保存" class="l-btn" style=" font-size: 12px;line-height: 24px; width: 52px; font-family: 微软雅黑"/>
+    </div>
+    ##    </div>
+</div>
+
 <script type="text/javascript">
 var datagrid;
 var queryParameters;
+
+// 判断是否为空
+$.isNotBlank = function(value) {
+    if (value != undefined && value != "undefined" && value != null && value != "null" && value != "") {
+        return true;
+    }
+    return false;
+};
 
 //角色查询
 $('#searchPt').click(function () {
@@ -126,7 +161,61 @@ $('#searchPt').click(function () {
 
 //角色新增
 $("#add").click(function(){
+    $("#name_edit").val("");
+    $("#description_edit").val("");
+    $("#createdBy_edit").val("");
 
+    $("#roleInputInfo").show();
+    $("#roleInputInfo").dialog({
+        collapsible: true,
+        minimizable: false,
+        maximizable: false,
+        height:270,
+        width:350
+    });
+});
+
+//角色新增提交
+$("#saveBtn").click(function(){
+    if(!$.isNotBlank($("#code_edit").val())){
+        $.messager.alert("提示","请填写角色编码","info")
+        return false;
+    }
+    if(!$.isNotBlank($("#name_edit").val())){
+        $.messager.alert("提示","请填写角色名称","info")
+        return false;
+    }
+    if(!$.isNotBlank($("#description_edit").val())){
+        $.messager.alert("提示","请填写角色描述","info")
+        return false;
+    }
+    if(!$.isNotBlank($("#createdBy_edit").val())){
+        $.messager.alert("提示","请填写创建人","info")
+        return false;
+    }
+    $.messager.progress({text:"提交中..."});
+    jQuery.ajax({
+        url: "/system/saveRole.html",
+        data:{
+            "code": $("#code_edit").val(),
+            "name": $("#name_edit").val(),
+            "description": $("#description_edit").val(),
+            "createdBy": $("#createdBy_edit").val()
+        },
+        type: "GET",
+        success: function(result) {
+            $.messager.progress('close');
+            if(result.success == true){
+                $('#dataGrid').datagrid('reload');
+                $("#roleInputInfo").dialog("close");
+            }else
+                $.messager.alert('错误', result.message, 'error');
+        },
+        fail: function(data) {
+            $.messager.progress('close');
+            $.messager.alert('错误',"保存信息出错,请联系管理员！");
+        }
+    });
 });
 
 //角色修改

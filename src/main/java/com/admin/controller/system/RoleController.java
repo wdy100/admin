@@ -4,7 +4,9 @@ import com.admin.entity.system.Role;
 import com.admin.entity.system.User;
 import com.admin.service.system.RoleService;
 import com.admin.service.system.UserService;
+import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.WebUtil;
+import com.google.common.base.Throwables;
 import com.haier.common.BusinessException;
 import com.haier.common.ServiceResult;
 import com.haier.common.util.JsonUtil;
@@ -15,11 +17,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,5 +84,38 @@ public class RoleController {
         }
 
         return "/system/role_list";
+    }
+
+    @RequestMapping(value = { "saveRole.html" }, method = { RequestMethod.GET })
+    @ResponseBody
+    HttpJsonResult<Boolean> saveInvoicePostExpress(@RequestParam(required = false) String code,
+                                                   @RequestParam(required = false) String name,
+                                                   @RequestParam(required = false) String description,
+                                                   @RequestParam(required = false) String createdBy,
+                                                   HttpServletRequest request, HttpServletResponse response) {
+        HttpJsonResult<Boolean> result = new HttpJsonResult<Boolean>();
+
+        ServiceResult<Role> seResult = roleService.getByName(name.trim());
+        if(seResult.getSuccess() && seResult != null && seResult.getResult() != null) {
+            logger.error("该角色名称已存在");
+            throw new BusinessException("该角色名称已存在");
+        }
+        Role role = new Role();
+        role.setCode(code);
+        role.setName(name);
+        role.setDescription(description);
+        role.setCreatedBy(createdBy);
+        role.setUpdatedBy(createdBy);
+
+        try {
+            ServiceResult<Integer> roleResult = roleService.insert(role);
+            if (!roleResult.getSuccess()) {
+                result.setMessage("保存失败，请稍后重试！");
+            }
+        } catch (Exception e) {
+            result.setMessage("保存失败，请稍后重试！");
+            logger.error("保存失败，请稍后重试！" + Throwables.getStackTraceAsString(e));
+        }
+        return result;
     }
 }  
