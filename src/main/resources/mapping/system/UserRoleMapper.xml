@@ -5,10 +5,12 @@
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="role_id" property="roleId" jdbcType="INTEGER" />
   </resultMap>
+  
   <insert id="insert" parameterType="UserRole" >
     insert into user_role (user_id, role_id)
     values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
   </insert>
+  
   <insert id="insertSelective" parameterType="UserRole" >
     insert into user_role
     <trim prefix="(" suffix=")" suffixOverrides="," >
