@@ -28,8 +28,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentDao departmentDao;
-    @Autowired
-    private UserDao userDao;
 
     @Override
     public ServiceResult<Map<String, Object>> searchDepartments(Map<String, Object> params, PagerInfo pagerInfo) {

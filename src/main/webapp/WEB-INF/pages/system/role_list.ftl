@@ -4,36 +4,28 @@
 <head id="Head1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>角色列表</title>
-    <link rel="stylesheet" type="text/css" href="/resources/easyui-themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/resources/easyui-themes/icon.css">
-    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/js/easyui-lang-zh_CN.js"></script>
+<#include "../common/easyui_core.ftl"/>
 </head>
 <body>
 <div class="easyui-layout" data-options="fit : true,border : false">
-    <div data-options="region:'north',title:'查询条件',border:false" style="height:200px;overflow: auto;" align="left">
+    <div data-options="region:'north',title:'查询条件',border:false" style="height: 60px;" class="zoc">
         <form id="roleForm" action="/uploadReportFile.html" method="post">
-            <table>
+            <table class="fixedTb">
                 <tr>
-                    <td>角色名称</td>
-                    <td>
-                        <input id="name" name="name" class="easyui-textbox" style="width:100%;">
+                    <td class="cxlabel">角色名称:</td>
+                    <td class="cxinput">
+                        <input id="name" name="name" class="easyui-textbox" style="width:100px;">
                     </td>
-                    <td>角色描述</td>
-                    <td>
-                        <input id="description" name="description" class="easyui-textbox" style="width:100%;">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="10">
-                        <a id="searchPt" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
+                    <td class="cxlabel">
+                        <a href="#"  id = "searchPt"  class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
                         <a id="add" href="#" class="easyui-linkbutton" iconCls="icon-add"  plain="false"  onclick="addRole()">新增</a>
                         <a id="update" href="#" class="easyui-linkbutton" iconCls="icon-edit"  plain="false"  onclick="updateRole()">修改</a>
                         <a id="delete" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="delRole()">删除</a>
                     </td>
+
                 </tr>
             </table>
+
         </form>
     </div>
     <div data-options="region:'center',title:'查询结果',border:false" style="left: 0px; top: 240px; width: 1920px;">
@@ -240,7 +232,7 @@ $(function(){
         pagination: true, //显示最下端的分页工具栏
         pageList: [5,10,15,20], //可以调整每页显示的数据，即调整pageSize每次向后台请求数据时的数据
         pageSize: 20, //读取分页条数，即向后台读取数据时传过去的值
-        url:'/system/findRoleList.html',
+        url:'/system/roleList',
         queryParams:queryParameters,
         columns: [
             [

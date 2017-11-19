@@ -1,5 +1,6 @@
 package com.admin.controller.system;
 
+import com.admin.entity.system.Department;
 import com.admin.entity.system.Role;
 import com.admin.entity.system.User;
 import com.admin.service.system.RoleService;
@@ -7,7 +8,9 @@ import com.admin.service.system.UserService;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.WebUtil;
 import com.google.common.base.Throwables;
+import com.google.common.collect.Maps;
 import com.haier.common.BusinessException;
+import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 import com.haier.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -39,51 +42,42 @@ import java.util.Map;
 public class RoleController {
     private final static org.apache.log4j.Logger logger = LogManager.getLogger(RoleController.class);
 
-    @Resource  
-    private UserService userService;
     @Resource
     private RoleService roleService;
 
-    @RequestMapping(value = { "roleList.html" }, method = { RequestMethod.GET })
-    public String invoicePost(@RequestParam(required = false) String name,
-                              @RequestParam(required = false) Integer description,
-                              @RequestParam(required = false) Integer rows,
-                              @RequestParam(required = false) Integer page,
-                              HttpServletRequest request, HttpServletResponse response,
+    @RequestMapping(value = "role.html", method = { RequestMethod.GET, RequestMethod.POST })
+    public String index(HttpServletRequest request, Model model) throws Exception {
+        return "system/role_list";
+    }
+
+    @RequestMapping(value = { "roleList" })
+    public void roleList(HttpServletRequest request, HttpServletResponse response,
                               Map<String, Object> modelMap) {
+        Map <String, Object> criteria = Maps.newHashMap();
         try {
-            if (rows == null)
-                rows = 20;
-            if (page == null)
-                page = 1;
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("m", (page - 1) * rows);
-            params.put("n", rows);
-            //参数加入params里
-            params.put("name", name);
-            params.put("description", description);
-
-            ServiceResult<List<Role>> result = roleService.getRoleList(params);
-            if(result == null || !result.getSuccess()) {
-                logger.error("角色列表查询失败");
-                throw new BusinessException("角色列表查询失败");
+            String name = request.getParameter("name");
+            if(name != null && !"".equals(name)){
+                criteria.put("name", name);
             }
-            List<Role> roleList = result.getResult();
-
-            //获得条数
-            int resultcount = roleList.size();
-            Map<String, Object> retMap = new HashMap<String, Object>();
-            retMap.put("total", resultcount);
-            retMap.put("rows", roleList);
-            response.getWriter().write(JsonUtil.toJson(retMap));
-            response.getWriter().flush();
-            response.getWriter().close();
+            PagerInfo pager = WebUtil.handlerPagerInfo(request, modelMap);
+            ServiceResult<Map<String, Object>> serviceResult = roleService.getRoleList(criteria, pager);
+            if(serviceResult.getSuccess()){
+                Map<String, Object> map = serviceResult.getResult();
+                if(map!=null&&map.size()>0){
+                    List<Role> list = (List<Role>)map.get("data");
+                    int total = (Integer)map.get("total");
+                    modelMap.put("total", total);
+                    modelMap.put("rows", list);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write(JsonUtil.toJson(modelMap));
+                    response.getWriter().flush();
+                    response.getWriter().close();
+                }
+            }
         } catch (IOException e) {
             logger.error("角色列表查询失败", e);
             throw new BusinessException("角色列表查询失败" + e.getMessage());
         }
-
-        return "/system/role_list";
     }
 
     @RequestMapping(value = { "saveRole.html" }, method = { RequestMethod.GET })

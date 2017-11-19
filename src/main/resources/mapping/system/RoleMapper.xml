@@ -24,11 +24,17 @@
         FROM <include refid="table"/>
         WHERE is_delete = 0
         <include refid="roleQuery"/>
-        Order By updated_at DESC
-        <if test="m!=null and n!=null">
-            Limit ${m},${n}
-        </if>
+        Order By id DESC
+      LIMIT #{start},#{size}
     </select>
+
+  <select id="getRoleListCount"  parameterType="Map"  resultType="Integer">
+    SELECT COUNT(id)
+    FROM <include refid="table"/>
+    WHERE is_delete = 0
+    <include refid="roleQuery"/>
+  </select>
+
     <sql id="roleQuery">
         <if test="name != null and name != ''">
             AND name = #{name}

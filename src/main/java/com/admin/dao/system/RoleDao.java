@@ -22,6 +22,10 @@ public class RoleDao   extends BaseDao{
         return this.getSqlSession().selectList(namespace + "getRoleList", paramMap);
     }
 
+    public Integer getRoleListCount(Map<String, Object> params){
+        return this.getSqlSession().selectOne(namespace+"getRoleListCount", params);
+    }
+
     public Integer insert(Role role){
         return this.getSqlSession().insert(namespace + "insert", role);
     }
