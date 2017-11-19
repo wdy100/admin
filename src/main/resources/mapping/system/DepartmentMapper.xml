@@ -37,6 +37,15 @@
     from department
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <!-- 查询所有部门 -->
+  <select id="getAll" resultMap="departmentMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM <include refid="table"/>
+    <include refid="condition"/>
+    ORDER BY id DESC
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from <include refid="table"/>
     where id = #{id,jdbcType=INTEGER}

@@ -29,12 +29,7 @@
             <td class="cxlabel">
               <a href="#"  id = "searchPt"  class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
             </td>
-            <td class="cxlabel"></td>
-            <td class="cxinput"></td>
-            <td class="cxlabel"></td>
-            <td class="cxinput"></td>
-            <td class="cxlabel"></td>
-            <td class="cxinput"></td>
+
           </tr>
         </table>
       </form>
@@ -63,7 +58,34 @@
 <!-- 查看、新增、修改部门 -->
 <div id="manageDepartmentDiv"  class="easyui-dialog" title=""   closed="true"
      data-options="resizable:true,modal:true" >
+    <table style="font-weight: 400;" border="0">
+        <tr>
+            <td style="text-align: right;">部门名称<span class="star">*</span>:</td>
+            <td>
+                <input id="dname" name="name" size="54" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width: 200px;"/></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">部门编码<span class="star">*</span>:</td>
+            <td><input id="dcode" name="code" size="54" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width: 200px;"/></td>
+        </tr>
 
+        <tr>
+            <td style="text-align: right;">上级部门<span class="star">*</span>:</td>
+            <td>
+                <input size="54" name="parentId" id="parent_department_id"  style="width: 200px;" class="easyui-combotree"data-options="
+						url: '/system/departmentTree',
+						animate: true,required:true"/>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="text-align: right;">描述<span class="star">&nbsp;</span>:</td>
+            <td>
+                <input id="ddescription" name="description" class="easyui-textbox" data-options="multiline:true"  style="width:200px;height:80px"/>
+            </td>
+        </tr>
+
+    </table>
 
 </div>
 
@@ -92,10 +114,7 @@
         queryParams : {
           'parentId' : '0'
         },
-        url:'/system/departmentList',
-        onDblClickRow : function(rowIndex,rowData){
-          showFormWin(rowIndex,rowData);
-        }
+        url:'/system/departmentList'
 
       });
 
@@ -103,23 +122,6 @@
 
   });
 
-  function showFormWin(rowIndex,rowData){
-    $("#manageDepartmentDiv").dialog({
-      title: '部门明细',
-      width: 340,
-      height: 350,
-      top:80,
-      closed: true,
-      cache: false,
-      modal: true,
-      buttons:[]
-    });
-    //绑定数据列表
-    $('#did').val(rowData.id);
-    $('#dname').textbox("setValue",rowData.name);
-    $('#dcode').textbox("setValue",rowData.code);
-    $("#manageDepartmentDiv").dialog("open");
-  }
 
   function treeOnClick(treeNode) {
     var node = $('#tree').tree("getSelected");
@@ -224,6 +226,8 @@
     $('#did').val("");
     $('#dname').textbox("setValue","");
     $('#dcode').textbox("setValue","");
+      $('#parent_department_id').combotree("setValue","");
+      $('#ddescription').textbox("setValue","");
     $("#manageDepartmentDiv").dialog("open");
   }
 
