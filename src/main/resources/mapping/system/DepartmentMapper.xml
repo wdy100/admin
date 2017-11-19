@@ -5,105 +5,64 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result  column="description" property="description"/>
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
     <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="parent_id" property="parent.id" javaType="long" jdbcType="NUMERIC"/>
   </resultMap>
+
+  <!-- 部门相关的下拉列表对应的map -->
+  <resultMap id="comboxMap" type="department">
+    <result property="code" column="CODE"/>
+    <result property="name" column="NAME"/>
+  </resultMap>
+
   <sql id="Base_Column_List">
-    id, code, name, created_at, updated_at, created_by, updated_by, remark, is_delete
+    id, code, name, description, created_at, updated_at, created_by, updated_by, remark, is_delete, parent_id
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="departmentMap">
+
+  <sql id="table">department</sql>
+
+  <sql id="selectAllDepartmentColumns">
+    select <include refid="Base_Column_List" />
+  </sql>
+
+  <select id="getById" parameterType="java.lang.Integer" resultMap="departmentMap">
     select 
     <include refid="Base_Column_List" />
     from department
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from department
+    delete from <include refid="table"/>
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="Department">
-    insert into department (id, code, name, 
+  <insert id="insert" parameterType="Department"  useGeneratedKeys="true" keyProperty="id">
+    insert into <include refid="table"/> (code, name, description,
       created_at, updated_at, created_by, 
-      updated_by, remark, is_delete
+      updated_by, remark, is_delete, parent_id
       )
-    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
-      #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}
+      #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}, #{parentId}
       )
   </insert>
-  <insert id="insertSelective" parameterType="Department">
-    insert into department
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="code != null">
-        code,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="createdAt != null">
-        created_at,
-      </if>
-      <if test="updatedAt != null">
-        updated_at,
-      </if>
-      <if test="createdBy != null">
-        created_by,
-      </if>
-      <if test="updatedBy != null">
-        updated_by,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="isDelete != null">
-        is_delete,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="createdAt != null">
-        #{createdAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedAt != null">
-        #{updatedAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createdBy != null">
-        #{createdBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updatedBy != null">
-        #{updatedBy,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="isDelete != null">
-        #{isDelete,jdbcType=BIT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="Department">
-    update department
+
+  <update id="update" parameterType="Department">
+    update <include refid="table"/>
     <set>
       <if test="code != null">
         code = #{code,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
       </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
@@ -123,20 +82,171 @@
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=BIT},
       </if>
+      <if test="parentId != null">
+        parent_id = #{parentId},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="Department">
-    update department
-    set code = #{code,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-      created_by = #{createdBy,jdbcType=VARCHAR},
-      updated_by = #{updatedBy,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      is_delete = #{isDelete,jdbcType=BIT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
+
+  <sql id="condition">
+    <where>
+      <if test="code!=null">
+        AND code = #{code}
+      </if>
+      <if test="name!=null">
+        AND name = #{name}
+      </if>
+      <if test="parentId!=null">
+        AND parent_id = #{parentId}
+      </if>
+    </where>
+  </sql>
+
+  <select id="queryListBy" resultMap="departmentMap" parameterType="map">
+    SELECT <include refid="Base_Column_List"/>
+    FROM <include refid="table"/>
+    <include refid="condition"/>
+    ORDER BY id DESC
+    LIMIT #{start},#{size}
+  </select>
+
+  <select id="queryCountBy" resultType="Integer" parameterType="map">
+    SELECT COUNT(id)
+    FROM <include refid="table"/>
+    <include refid="condition"/>
+  </select>
+
+  <select id="getUserDepartments" parameterType="long" resultMap="departmentMap">
+    <![CDATA[
+		SELECT d.ID, d.NAME
+		  FROM DEPARTMENT d, user_department ud
+		 WHERE d.ID = ud.department_id
+		   and ud.user_id = #{userId}
+		]]>
+  </select>
+
+  <!-- 获取所有父部门列表 -->
+  <select id="getRoots" resultMap="departmentMap">
+    <include refid="selectAllDepartmentColumns"/>
+    <![CDATA[
+		where parent_id = id
+		]]>
+  </select>
+
+  <!-- 查询子部门  -->
+  <select id="getChildren" resultMap="departmentMap" parameterType="long">
+    <include refid="selectAllDepartmentColumns"/>
+    <![CDATA[
+		where parent_id=#{departmentId} and parent_id != id
+		]]>
+  </select>
+
+  <!-- 根据编码获取部门名称  -->
+  <select id="getNameByCode" resultType="string" parameterType="string">
+    <![CDATA[
+			select
+			       name
+			  from department
+			  where status = '1' and code = #{code}
+		]]>
+  </select>
+
+  <!-- 根据编码获取部门id  -->
+  <select id="getIdByCode" resultType="string" parameterType="string">
+    <![CDATA[
+			select
+			       CONVERT(varchar(10),id)
+			  from department
+			  where status = '1' and code = #{code}
+		]]>
+  </select>
+
+  <!-- 删除部门 -->
+  <delete id="delete" parameterType="long">
+    <![CDATA[
+		delete from department where id = #{id}
+		]]>
+  </delete>
+
+  <!-- 通过唯一约束字段查找记录 -->
+  <select id="findUniqueBy" resultMap="departmentMap">
+    <include refid="selectAllDepartmentColumns"/>
+    <![CDATA[
+		where ${columnName} = #{columnValue}
+		]]>
+  </select>
+
+  <!-- 通过用户名获取部门 -->
+  <select id="getDepartmentByUser" resultMap="departmentMap" parameterType="string">
+    <![CDATA[
+			select
+				de_.id,
+				de_.name,
+				de_.description,
+				de_.status,
+				de_.code,
+				de_.csap_code,
+				de_.ctype,
+				de_.ctype_code,
+				de_.bis_last,
+				de_.dcreate,
+				de_.dupdate,
+				de_.ccreate_by,
+				de_.cupdate_by,
+				de_.parent_id
+			from USER_INFO user_
+			left join USER_DEPARTMENT ud_
+			on user_.id = ud_.user_id
+			left join DEPARTMENT de_
+			on ud_.department_id = de_.id
+			where user_.name = #{name}
+		]]>
+  </select>
+
+  <!-- 删除用户所关联的部门信息 -->
+  <delete id="deleteUserDepartments">
+    <![CDATA[
+		delete from user_department where user_id = #{userId}
+		]]>
+  </delete>
+  <!-- 将用户添加到部门中 -->
+  <insert id="addUserToDepartment">
+    <![CDATA[
+		insert into user_department(user_id,department_id) values(#{userId},#{departmentId})
+		]]>
+  </insert>
+
+  <!-- 根据区域名称查询区域编码 -->
+  <select id="getDepartmentByName" resultMap="departmentMap" parameterType="string">
+    <include refid="selectAllDepartmentColumns"/>
+    WHERE department.name = #{name}
+  </select>
+
+  <!-- 根据部门编码获取部门 -->
+  <select id="getDepartmentByCode" resultMap="departmentMap" parameterType="string">
+    <include refid="selectAllDepartmentColumns"/>
+    WHERE department.code = #{code}
+  </select>
+
+  <select id="searchDepartmentByUserId" resultMap="departmentMap" parameterType="long">
+    <![CDATA[
+		select d.name from DEPARTMENT d
+			left join USER_DEPARTMENT ud
+				on d.code = ud.department_id
+			where ud.user_id = #{userId}
+		]]>
+  </select>
+
+  <!-- 获取部门中相关的下拉列表方法 -->
+  <select id="getDepartmentCombox" parameterType="string" resultMap="comboxMap">
+    <![CDATA[
+		SELECT d.code, d.name
+		  FROM department d
+		 WHERE d.code like  #{type} + '___'
+		 order by d.code
+		]]>
+  </select>
   
 </mapper>

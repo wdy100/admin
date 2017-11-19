@@ -7,6 +7,9 @@
 <#include "common/easyui_core.ftl"/>
     <!-- 简单的样式 -->
     <style type="text/css">
+        ul:hover {
+            cursor: pointer;
+        }
         .footer .foot {
             text-align: center;
             color: #FFFFFF;
@@ -47,23 +50,24 @@
             <!-- 可用c标签的foreach来读取后台的菜单树 -->
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;系统管理">
                 <!--ul的id可以设置成,这样就能出发点击事件或者别的事件 -->
-                <ul onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">角色管理</ul>
-                <ul onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">权限管理</ul>
-                <ul onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">用户管理</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/department.html')">部门管理</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/role.html')">角色管理</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/roleResource.html')">权限管理</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/department.html')">用户管理</ul>
             </div>
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;客户管理"  >
-                <ul onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">客户接入</ul>
-                <ul onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">客户反馈</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customer.html')">客户接入</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">客户反馈</ul>
             </div>
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;订单管理" >
-                <ul  onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单查询</ul>
-                <ul  onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单执行</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单查询</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单执行</ul>
             </div>
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;合同管理" >
-                <ul  onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">合同管理</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">合同管理</ul>
             </div>
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;财务管理" >
-                <ul  onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">财务管理</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">财务管理</ul>
             </div>
         </div>
     </div>
@@ -71,7 +75,7 @@
 
     <!---center S--->
     <!-- 中间可以用来存放tabs,通过左边点击事件来填充tabs -->
-    <div region="center" title="center title"
+    <div region="center"
          style="padding: 5px; background: #eee;">
         <div id="tts" class="easyui-tabs"
              data-options="border:false,fit:true">

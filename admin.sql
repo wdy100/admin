@@ -8,6 +8,8 @@ CREATE TABLE `department`
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code`	varchar(20) NOT NULL COMMENT '编码',
   `name`	varchar(50) NOT NULL COMMENT '名称',
+  `description`	varchar(200) DEFAULT NULL COMMENT '描述',
+  `parent_id`   int(11) NOT NULL COMMENT '上级部门id',
   `created_at` datetime NOT NULL COMMENT '创建时间',
   `updated_at` datetime NOT NULL COMMENT '最近更新时间',
   `created_by` varchar(20) NOT NULL COMMENT '创建人',
