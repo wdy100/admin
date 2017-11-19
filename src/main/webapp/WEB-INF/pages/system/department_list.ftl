@@ -24,7 +24,7 @@
           <tr>
             <td class="cxlabel">部门名称:</td>
             <td class="cxinput">
-              <input id="name" name="department.name" class="easyui-textbox" style="width:100%;">
+              <input id="name" name="name" class="easyui-textbox" style="width:100px;">
             </td>
             <td class="cxlabel">
               <a href="#"  id = "searchPt"  class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
@@ -41,6 +41,7 @@
           <th data-options="field:'ck',checkbox:true"></th>
           <th field="name" width="300" align="center">部门名称</th>
           <th field="code" width="200" align="center">部门编码</th>
+            <th field="description" width="300" align="center">部门描述</th>
         </tr>
         </thead>
       </table>
@@ -213,7 +214,7 @@
         text:'保存',
         iconCls:'icon-ok',
         handler:function(){
-          submitManageDepartmentForm('/system/createDepartment',"保存");
+            createDepartmentCommit();
         }
       },{
         text:'取消',
@@ -229,6 +230,36 @@
       $('#parent_department_id').combotree("setValue","");
       $('#ddescription').textbox("setValue","");
     $("#manageDepartmentDiv").dialog("open");
+  }
+
+  function createDepartmentCommit(){
+      var name = $('#dname').val();
+      var code = $('#dcode').val();
+      var parentId = $('#parent_department_id').combotree("getValue");
+      var description = $('#ddescription').val();
+      $.ajax({
+          type:'post',
+          url:'/system/createDepartment',
+          dataType : "json",
+          data:{name:name, code:code, parentId:parentId, description:description},
+          cache:false,
+          async:false,
+          success:function(data){
+              $.messager.progress('close');
+              if(!data.success){
+                  $.messager.alert('提示',data.message);
+              }
+              $('#manageDepartmentDiv').dialog('close');
+              $('#tree').tree('reload');
+              var r = $("#tree").tree("getRoot");
+              $("#tree").tree("expandAll",r.target);
+              $('#parent_department_id').combotree("tree").tree("reload");
+              $('#dg').datagrid('reload');//重新加载数据
+          },
+          error:function(d){
+              $.messager.alert('提示',"请刷新重试");
+          }
+      });
   }
 
   function updateDepartment(){
@@ -272,26 +303,12 @@
     $('#manageDepartmentForm').form('submit',{
       url:submitUrl,
       onSubmit: function(){
-        var flag = $(this).form('validate');
-        if(flag){
-          var type = $('#dtype').combobox("getValue");
-          if(""==type){
-            $.messager.alert('提示','请选择部门类别！','warning');
-            return false;
-          }
-
-          //打开遮罩层
-//              showLoadMast(window,"正在"+text+"，请稍后...");
           $.messager.progress({
-            text : "正在"+text+"，请稍后...",
-            interval : 100
+              text : "正在"+text+"，请稍后...",
+              interval : 100
           });
-        }
-        return flag;
       },
       success:function(result){
-        //关闭遮罩层
-// 	       	 hideLoadMast(window);
         $.messager.progress('close');
         handleActionResult(result,{
           onSuccess:function(){
