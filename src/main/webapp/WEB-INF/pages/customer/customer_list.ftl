@@ -1,12 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
-<%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="security" uri="/security-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%-- <script type="text/javascript" src="${staticURL}/hzscripts/enterSearch.js"></script> --%>
+<#include "../common/easyui_core.ftl"/>
     <title>客户信息查询</title>
     <style type="text/css">
 
@@ -20,10 +16,8 @@ pageEncoding="UTF-8"%>
         <form onsubmit="return false;" id="searchForm">
             <table class="fixedTb">
                 <tr>
-                    <td class="cxlabel">客户代码:</td>
-                    <td class="cxinput"><input name="customer.cusCode" type="text" class="easyui-textbox" style="width:100%;"/></td>
                     <td class="cxlabel">客户名称:</td>
-                    <td class="cxinput"><input name="customer.cusName" type="text" class="easyui-textbox" style="width:100%;"/></td>
+                    <td class="cxinput"><input name="q_customerName" type="text" class="easyui-textbox" style="width:100px;"/></td>
                     <td class="cxlabel">
                         <a id="searchPt" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
                     </td>
@@ -34,8 +28,8 @@ pageEncoding="UTF-8"%>
         </form>
     </div>
     <div id="tb" >
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="deleteCustomer()">删除</a>
-        <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="updateCustomer()">修改</a>
+        <#--<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="deleteCustomer()">删除</a>-->
+        <#--<a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="updateCustomer()">修改</a>-->
         <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="createCustomer()">新增</a>
 
     </div>
@@ -44,11 +38,11 @@ pageEncoding="UTF-8"%>
             <thead>
             <tr>
                 <th data-options="field:'ck',checkbox:true,formatter : function(value, row, index) {return row.id;}"></th>
-                <th data-options="field:'areaDesc',width:100,halign:'center',align:'left'">大区</th>
-                <th data-options="field:'officeDesc',width:100,halign:'center',align:'left'">办事处</th>
-                <th data-options="field:'warroomDesc',width:100,halign:'center',align:'left'">作战室</th>
-                <th data-options="field:'cusCode',width:100,halign:'center',align:'left'">客户代码</th>
-                <th data-options="field:'cusName',width:400,halign:'center',align:'left'">客户名称</th>
+                <th data-options="field:'customerName',width:200,halign:'center',align:'left'">客户名称</th>
+                <th data-options="field:'phone',width:100,halign:'center',align:'left'">电话</th>
+                <th data-options="field:'address',width:400,halign:'center',align:'left'">地址</th>
+                <th data-options="field:'corporate',width:100,halign:'center',align:'left'">公司法人</th>
+                <th data-options="field:'manager',width:100,halign:'center',align:'left'">总经理</th>
             </tr>
             </thead>
         </table>
@@ -59,68 +53,105 @@ pageEncoding="UTF-8"%>
 <!-- create  -->
 <div class="easyui-dialog" id="addCustomerDiv" style="width:320px;height:380px;"
      data-options="modal:true,closed:true,resizable:false" >
-    <form id="createCustomerForm" method="post" action="${dynamicURL}/basic/createCustomer.action">
-        <table>
-            <tr>
-                <td style="text-align: right;width:70px;">所属大区<span style="color:red;">*</span>:</td>
-                <td>
-                    <input name="customer.area" id="area" class="easyui-combobox" style="color:red;width: 200px;" required="true" missingMessage="该输入项为必输项" panelHeight="100px"  editable="false" data-options="onSelect:changeArea"/>
-                    <input id="areaDesc" type="hidden" name="customer.areaDesc" />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: right;width:70px;">所属办事处<span style="color:red;">*</span>:</td>
-                <td>
-                    <input id="office"  name="customer.office" required = true class="easyui-combobox"  style="width:200px;"  data-options="onSelect:changeOffice"/>
-                    <input id="officeDesc" type="hidden" name="customer.officeDesc" />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: right;width:70px;">所属作战室<span style="color:red;">*</span>:</td>
-                <td>
-                    <input id="warroom"  name="customer.warroom" required = true class="easyui-combobox"  style="width:200px;" data-options="onSelect:changeWarroom"/>
-                    <input id="warroomDesc" type="hidden" name="customer.warroomDesc" />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: right;">客户代码<span style="color:red;">*</span>:</td>
-                <td>
-                    <input id="cusCode" name="customer.cusCode" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;"></input>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: right;">客户名称<span style="color:red;">*</span>:</td>
-                <td>
-                    <input id="cusName" name="customer.cusName" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;"></input>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: right;">联系人:</td>
-                <td>
-                    <input id="contact" name="customer.contact" type="text" class="easyui-textbox" style="width:200px;"></input>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: right;">联系人电话:</td>
-                <td>
-                    <input id="contactPhone" name="customer.contactPhone" type="text" class="easyui-textbox" style="width:200px;"></input>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: right;">地址:</td>
-                <td>
-                    <input id="dealerAddress" name="customer.dealerAddress" type="text" class="easyui-textbox" style="width:200px;"></input>
-                </td>
-            </tr>
-        </table>
-    </form>
+    <table>
+        <tr>
+            <td style="text-align: right;">客户名称<span style="color:red;">*</span>:</td>
+            <td>
+                <input id="customerName" name="customerName" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">所属行业:</td>
+            <td>
+                <input id="typeName" name="typeName" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">电话:</td>
+            <td>
+                <input id="phone" name="phone" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">传真:</td>
+            <td>
+                <input id="fax" name="fax" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">地址:</td>
+            <td>
+                <input id="address" name="address" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">网址:</td>
+            <td>
+                <input id="url" name="url" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">公司法人:</td>
+            <td>
+                <input id="corporate" name="corporate" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">总经理:</td>
+            <td>
+                <input id="manager" name="manager" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">联系方式:</td>
+            <td>
+                <input id="contact" name="contact" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">对接部门:</td>
+            <td>
+                <input id="dockDepartment" name="dockDepartment" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">对接部门联系人:</td>
+            <td>
+                <input id="dockPerson" name="dockPerson" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">对接部门联系方式:</td>
+            <td>
+                <input id="dockContact" name="dockContact" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">关联部门:</td>
+            <td>
+                <input id="relateDepartment" name="relateDepartment" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">关联部门联系人:</td>
+            <td>
+                <input id="relatePerson" name="relatePerson" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">关联部门联系方式:</td>
+            <td>
+                <input id="relateContact" name="relateContact" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+    </table>
 </div>
 
 
 <!-- 修改框 -->
 <div class="easyui-dialog" id="customerEditDialog" style="width:320px;height:380px;"
      data-options="modal:true,closed:true,resizable:false" >
-    <form id="updateCustomerData" method="post" action="${dynamicURL}/basic/updateCustomer.action">
+    <form id="updateCustomerData" method="post" action="/customer/updateCustomer">
         <input id ="customerid" type="hidden"  name = "customer.id">
         <table>
             <tr>
@@ -183,7 +214,8 @@ pageEncoding="UTF-8"%>
     var addCustomerDialog;
     var customerEditDialog;
     function loaddata(){
-        $('#dg').datagrid({url:'${dynamicURL}/basic/searchCustomer.action?'+$("#searchForm").form().serialize()});
+        <#--$('#dg').datagrid({url:'${dynamicURL}/basic/searchCustomer.action?'+$("#searchForm").form().serialize()});-->
+        $('#dg').datagrid('load',sy.serializeObject($("#searchForm").form()));
     }
     function formatDateTime(val,row){
         if(!val.time){
@@ -197,47 +229,13 @@ pageEncoding="UTF-8"%>
         return statusMap[val];
     }
 
-    //更改大区时改变办事处、作战室
-    function changeArea(){
-        var areaCode =  $("#area").combobox("getValue");
-        $("#office").combobox({
-            url:'${dynamicURL}/basic/departmentCombox.action?type='+areaCode,
-            valueField:'id',
-            textField:'text',
-            value:''
-        });
-        var areaDesc = $("#area").combobox('getText');
-        $("#areaDesc").val(areaDesc);
-        $("#office").combobox("reload");
-        $("#warroom").empty();
-    }
-
-    //更改大区时改变办事处、作战室
-    function changeOffice(){
-        var officeCode =  $("#office").combobox("getValue");
-        $("#warroom").combobox({
-            url:'${dynamicURL}/basic/departmentCombox.action?type='+officeCode,
-            valueField:'id',
-            textField:'text',
-            value:''
-        });
-        $("#warroom").combobox("reload");
-
-        var officeDesc = $("#office").combobox('getText');
-        $("#officeDesc").val(officeDesc);
-    }
-
-    function changeWarroom(){
-        var warroomDesc = $("#warroom").combobox('getText');
-        $("#warroomDesc").val(warroomDesc);
-    }
     //客户禁用
     function deleteCustomer(){
         var row = $('#dg').datagrid('getSelected');
         var ids = "";
         if(row){
             $.ajax({
-                url : '${dynamicURL}/basic/deleteCustomer.action',
+                url : '/customer/deleteCustomer',
                 data : {id : row.id},
                 dataType : 'json',
                 cache : false,
@@ -271,19 +269,6 @@ pageEncoding="UTF-8"%>
     }
 
     $(function(){
-
-        $("#area").combobox({
-            valueField:'id',
-            textField:'text',
-            url:'${dynamicURL}/basic/departmentCombox.action?type=10'
-        });
-
-//         	materialDetailDialog = $('#customerDetailDialog').show().dialog({
-//         		title : '客户信息',
-// 				modal : true,
-// 				closed : true
-// 			});
-
         $('#dg').datagrid({
             title:'客户列表',
             toolbar:'#tb',
@@ -296,28 +281,31 @@ pageEncoding="UTF-8"%>
             pagePosition : 'bottom',
             pageList: [5,10,15,20], //可以调整每页显示的数据，即调整pageSize每次向后台请求数据时的数据
             pageSize: 20, //读取分页条数，即向后台读取数据时传过去的值
-            url:'${dynamicURL}/basic/searchCustomer.action?model.flag=1',
+            url:'/customer/customerList',
             nowrap : true,
-            border : false,
-            onDblClickRow:function(rowIndex, rowData){
-                //双击行弹出该项目的详细信息。
-                //$('#mpricedg').datagrid({url:'${dynamicURL}/basic/searchCustomerDetail.action?mcode='+rowData.cusCode});
-                //materialDetailDialog.dialog('open');
-            }
+            border : false
         });
 
         //增加网点
         addCustomerDialog = $("#addCustomerDiv").dialog({
             title: '新增',
-            iconCls:'icon-save',
+            width: 400,
+            height: 450,
+            top: 30,
             closed: true,
-            resizable:false,
+            cache: false,
             modal: true,
             buttons:[{
                 text:'保存',
                 iconCls:'icon-ok',
                 handler:function(){
                     submitForm();
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    addCustomerDialog.dialog('close');
                 }
             }]
         });
@@ -340,32 +328,50 @@ pageEncoding="UTF-8"%>
     //错误提示
 
     function submitForm(){
-        $('#createCustomerForm').form('submit', {
-            onSubmit : function() {
-                var flag = $(this).form('validate')
-                if(flag==true){
-                    $.messager.progress({
-                        text : "正在保存，请稍后...",
-                        interval : 100
-                    });
-                }
-                return flag;
-            },
-            success : function(result) {
+        var customerCode = $('#customerCode').val();
+        var customerName = $('#customerName').val();
+        var typeCode = $('#typeCode').val();
+        var typeName = $('#typeName').val();
+        var phone = $('#phone').val();
+        var fax = $('#fax').val();
+        var address = $('#address').val();
+        var url = $('#url').val();
+        var corporate = $('#corporate').val();
+        var manager = $('#manager').val();
+        var contact = $('#contact').val();
+        var dockDepartment = $('#dockDepartment').val();
+        var dockPerson = $('#dockPerson').val();
+        var dockContact = $('#dockContact').val();
+        var relateDepartment = $('#relateDepartment').val();
+        var relatePerson = $('#relatePerson').val();
+        var relateContact = $('#relateContact').val();
+        $.ajax({
+            type:'post',
+            url:'/customer/createCustomer',
+            dataType : "json",
+            data:{customerCode:customerCode, customerName:customerName, typeCode:typeCode,
+                typeName:typeName, phone:phone, fax:fax, address:address,
+                url:url, corporate:corporate, manager:manager,
+                contact:contact, dockDepartment:dockDepartment, dockPerson:dockPerson,
+                dockContact:dockContact, relateDepartment:relateDepartment, relatePerson:relatePerson,
+                relateContact:relateContact},
+            cache:false,
+            async:false,
+            success:function(data){
                 $.messager.progress('close');
-                handleActionResult(result, {
-                    onSuccess : function() {
-                        $.messager.show({
-                            title : '提示',
-                            msg : '保存成功'
-                        });
-                        $('#dg').datagrid('reload');
-                        $('#createCustomerForm').form('clear');
-                        addCustomerDialog.dialog('close');
-                    }
-                });
+                if(!data.success){
+                    $.messager.alert('提示',data.message);
+                }
+                $('#dg').datagrid('reload');
+                $('#createCustomerForm').form('clear');
+                addCustomerDialog.dialog('close');
+                $.messager.alert('提示',"新增客户成功");
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
             }
         });
+
     }
 
     //修改数据
