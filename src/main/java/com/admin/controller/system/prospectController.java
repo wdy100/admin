@@ -47,19 +47,19 @@ public class prospectController {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("m", (page - 1) * rows);
             params.put("n", rows);
-            //²ÎÊı¼ÓÈëparamsÀï
+            //å‚æ•°åŠ å…¥paramsé‡Œ
             params.put("customerName", customerName);
             params.put("customerStatus", customerStatus);
             params.put("prospectStatus", prospectStatus);
 
             ServiceResult<List<Prospect>> result = prospectService.getProspectList(params);
             if(result == null || !result.getSuccess()) {
-                logger.error("¿±²ìÈ·ÈÏµ¥ÁĞ±í²éÑ¯Ê§°Ü");
-                throw new BusinessException("¿±²ìÈ·ÈÏµ¥ÁĞ±í²éÑ¯Ê§°Ü");
+                logger.error("å‹˜å¯Ÿç¡®è®¤å•åˆ—è¡¨æŸ¥è¯¢å¤±è´¥");
+                throw new BusinessException("å‹˜å¯Ÿç¡®è®¤å•åˆ—è¡¨æŸ¥è¯¢å¤±è´¥");
             }
             List<Prospect> prospectList = result.getResult();
 
-            //»ñµÃÌõÊı
+            //è·å¾—æ¡æ•°
             int resultcount = prospectList.size();
             Map<String, Object> retMap = new HashMap<String, Object>();
             retMap.put("total", resultcount);
@@ -68,8 +68,8 @@ public class prospectController {
             response.getWriter().flush();
             response.getWriter().close();
         } catch (IOException e) {
-            logger.error("¿±²ìÈ·ÈÏµ¥ÁĞ±í²éÑ¯Ê§°Ü", e);
-            throw new BusinessException("¿±²ìÈ·ÈÏµ¥ÁĞ±í²éÑ¯Ê§°Ü" + e.getMessage());
+            logger.error("å‹˜å¯Ÿç¡®è®¤å•åˆ—è¡¨æŸ¥è¯¢å¤±è´¥", e);
+            throw new BusinessException("å‹˜å¯Ÿç¡®è®¤å•åˆ—è¡¨æŸ¥è¯¢å¤±è´¥" + e.getMessage());
         }
     }
 
@@ -78,9 +78,10 @@ public class prospectController {
                          @RequestParam(value = "id", required = false) Integer id,
                          HttpServletRequest request, ModelMap model) {
         ServiceResult<Prospect> result = prospectService.getById(id);
+
         if(result == null || !result.getSuccess()) {
-            logger.error("¸ù¾İid²éÑ¯¿±²ìÈ·ÈÏµ¥ĞÅÏ¢£¬·¢ÉúÒì³£");
-            throw new BusinessException("¸ù¾İid²éÑ¯¿±²ìÈ·ÈÏµ¥ĞÅÏ¢£¬·¢ÉúÒì³£");
+            logger.error("æ ¹æ®idæŸ¥è¯¢å‹˜å¯Ÿç¡®è®¤å•ä¿¡æ¯ï¼Œå‘ç”Ÿå¼‚å¸¸");
+            throw new BusinessException("æ ¹æ®idæŸ¥è¯¢å‹˜å¯Ÿç¡®è®¤å•ä¿¡æ¯ï¼Œå‘ç”Ÿå¼‚å¸¸");
         }
         Prospect prospect = result.getResult();
 
@@ -91,14 +92,18 @@ public class prospectController {
             targetFile.mkdirs();
         }
 
-        //±£´æ
+        //ä¿å­˜
         try {
             file.transferTo(targetFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("fileUrl", request.getContextPath() + "/upload/" + fileName);
+        String fileUrl = request.getContextPath() + "/upload/" + fileName;
+        model.addAttribute("fileUrl", fileUrl);
 
-        return "result";
+        prospect.setProspectFileAddress(fileUrl);
+        prospectService.update(prospect);
+
+        return "/prospect/prospectList";
     }
 }
