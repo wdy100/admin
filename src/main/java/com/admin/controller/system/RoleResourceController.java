@@ -1,21 +1,27 @@
 package com.admin.controller.system;
 
+import com.admin.entity.system.Department;
 import com.admin.entity.system.Role;
+import com.admin.entity.system.RoleResource;
 import com.admin.entity.system.User;
+import com.admin.entity.util.ClosedDepartmentTreeNodeFactory;
 import com.admin.service.system.RoleResourceService;
 import com.admin.service.system.RoleService;
 import com.admin.service.system.UserService;
+import com.admin.web.util.HttpJsonResult;
 import com.haier.common.BusinessException;
 import com.haier.common.ServiceResult;
 import com.haier.common.util.JsonUtil;
 
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -90,6 +96,21 @@ public class RoleResourceController {
              response.getWriter().flush();
              response.getWriter().close();
          } catch (IOException e) {
+             log.error("权限列表查询失败", e);
+             throw new BusinessException("权限列表查询失败" + e.getMessage());
+         }
+    }  
+    
+    @RequestMapping("/roleResourceTree")
+    @ResponseBody
+    public void roleResourceList(HttpServletRequest request) throws Exception {
+    	 try {
+    		 HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
+    	        List<RoleResource> roots = null;
+    	        roots = roleResourceService.selectAll().getResult();
+    	        //JSONArray departmentNodes = JSONArray.fromObject(new ClosedDepartmentTreeNodeFactory().buildTreeNodeList(roots));
+    	        //jsonResult.setData(departmentNodes);
+         } catch (Exception e) {
              log.error("权限列表查询失败", e);
              throw new BusinessException("权限列表查询失败" + e.getMessage());
          }

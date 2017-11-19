@@ -17,11 +17,6 @@ public class ProspectDao extends BaseDao {
         return this.getSqlSession().selectOne(namespace+"getById", id);
     }
 
-    /**
-     * 获取勘察确认单列表
-     * @param paramMap
-     * @return 勘察确认单列表
-     */
     public List<Prospect> getProspectList(Map<String, Object> paramMap){
         return this.getSqlSession().selectList(namespace + "getProspectList", paramMap);
     }

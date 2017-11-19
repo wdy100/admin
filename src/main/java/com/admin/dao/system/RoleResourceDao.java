@@ -17,11 +17,11 @@ public class RoleResourceDao   extends BaseDao{
 	
 
 	public List<RoleResource> selectAllByRoleId(RoleResource roleResource){
-		return this.getSqlSession().selectList(namespace + "selectByRoleId", roleResource);
+		return this.getSqlSession().selectList(namespace + "selectAllByRoleId", roleResource);
 	}
 	
 	public List<RoleResource> selectAll(){
-		return this.getSqlSession().selectList(namespace + "selectByRoleId");
+		return this.getSqlSession().selectList(namespace + "selectAll");
 	}
 	
     public Integer insert(RoleResource roleResource){

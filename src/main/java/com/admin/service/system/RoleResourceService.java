@@ -1,4 +1,7 @@
 package com.admin.service.system;
+import java.util.List;
+
+import com.admin.entity.system.RoleResource;
 import com.admin.entity.system.User;
 import com.haier.common.ServiceResult;
 
@@ -7,8 +10,13 @@ import com.haier.common.ServiceResult;
  */
 
 public interface RoleResourceService {
-    /**
-     * 根据手机号获取用户信息
-     * */
-    public ServiceResult<User> getByMobile(String mobile);
+
+
+	public ServiceResult<List<RoleResource>> selectAllByRoleId(RoleResource roleResource);
+	
+	public ServiceResult<List<RoleResource>> selectAll();
+	
+	public ServiceResult<Integer> insert(RoleResource roleResource);
+	
+	public ServiceResult<Integer> deleteByRoleId(RoleResource roleResource);
 }
