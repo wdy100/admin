@@ -14,29 +14,57 @@
     <result column="is_delete" jdbcType="BIT" property="isDelete" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, name, description, created_at, updated_at, created_by, updated_by, remark, 
+    code, name, description, created_at, updated_at, created_by, updated_by, remark,
     is_delete
   </sql>
+  <sql id="table">role</sql>
+
+    <select id="getRoleList"  parameterType="Map"  resultMap="roleMap">
+        SELECT id,<include refid="Base_Column_List"/>
+        FROM <include refid="table"/>
+        WHERE enable = 0
+        <include refid="roleQuery"/>
+        Order By updated_at DESC
+        <if test="m!=null and n!=null">
+            Limit ${m},${n}
+        </if>
+    </select>
+    <sql id="roleQuery">
+        <if test="name != null and name != ''">
+            AND name = #{name}
+        </if>
+        <if test="description != null">
+            AND description = #{description}
+        </if>
+    </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="roleMap">
-    select 
-    <include refid="Base_Column_List" />
+    select id,
+      <include refid="Base_Column_List" />
     from role
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from role
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="Role">
-    insert into role (id, code, name, 
-      description, created_at, updated_at, 
-      created_by, updated_by, remark, 
-      is_delete)
-    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
-      #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{isDelete,jdbcType=BIT})
-  </insert>
+
+    <insert id="insert" parameterType="Role" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO <include refid="table"/>(<include refid="Base_Column_List"/>)
+        VALUES(
+        #{code},
+        #{name},
+        #{description},
+        now(),
+        now(),
+        #{createdBy},
+        #{updatedBy},
+        #{remark},
+        0
+        )
+    </insert>
+
   <insert id="insertSelective" parameterType="Role">
     insert into role
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -104,6 +132,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="Role">
     update role
     <set>
@@ -137,6 +166,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="Role">
     update role
     set code = #{code,jdbcType=VARCHAR},
