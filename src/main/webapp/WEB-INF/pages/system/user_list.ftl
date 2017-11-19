@@ -65,6 +65,7 @@
 		 closed="true" buttons="#dlg-buttons">
 		<form id="fm" method="post" novalidate >
 			<table style="width:100%;">
+                <input name="userId" id="reset_password_user_id" type="hidden"/>
 				<tr style="height: 25px;">
 					<td >&nbsp;&nbsp;新密码<font color="red">*</font>:</td>
 					<td style="padding-right: 20px;">
@@ -234,31 +235,29 @@
 		}
 	}
 	function saveUser(){
-		$('#fm').form('submit',{
-			url: '/system/resetPassword',
-			onSubmit: function(){
-				var flag = $(this).form('validate');
-				if(flag){
-					$.messager.progress({
-						text : '正在重置，请稍后...',
-						interval : 100
-					});
-				}
-				return flag;
-			},
-			success: function(result){
-				$.messager.progress('close');
-				handleActionResult(result,{
-					onSuccess:function(){
-						$('#dlg').dialog('close');        // close the dialog
-						$.messager.show({
-							title : '提示',
-							msg : '重置成功！'
-						});
-					}
-				});
-			}
-		});
+        var userId = $('#reset_password_user_id').val();
+        var newPassword = $('#user_newPassword').val();
+        var confirmPassword = $('#user_confirmPassword').val();
+        $.ajax({
+            type:'post',
+            url:'/system/resetPassword',
+            dataType : "json",
+            data:{userId:userId, newPassword:newPassword, confirmPassword:confirmPassword},
+            cache:false,
+            async:false,
+            success:function(data){
+                $.messager.progress('close');
+                if(!data.success){
+                    $.messager.alert('提示',data.message);
+                }
+                $('#dlg').dialog('close');
+                $.messager.alert('提示',"操作成功");
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
+            }
+        });
+
 	}
 	<#--function doExport(){-->
 		<#--$('#searchForm').form('submit',{-->

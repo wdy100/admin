@@ -138,13 +138,23 @@ public class UserInfoController {
     public Object resetPassword(HttpServletRequest request) {
         HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
         String userId = request.getParameter("userId");
+        String newPassword = request.getParameter("newPassword");
+        String confirmPassword = request.getParameter("confirmPassword");
+        if(newPassword == null || confirmPassword == null || "".equals(newPassword) || "".equals(confirmPassword)){
+            jsonResult.setMessage("新密码和确认密码输入有误，请检查！");
+            return jsonResult;
+        }
+        if(!newPassword.equals(confirmPassword)){
+            jsonResult.setMessage("新密码和确认密码不一致，请检查！");
+            return jsonResult;
+        }
         UserInfo userInfo = new UserInfo();
         userInfo.setId(Long.parseLong(userId));
-        userInfo.setStatus(1);
+        userInfo.setPassword(newPassword);
         ServiceResult<UserInfo> result = userInfoService.updateUserInfo(userInfo);
         if (!result.getSuccess()) {
-            log.error("审核通过失败！");
-            jsonResult.setMessage("审核通过失败！");
+            log.error("重置密码失败！");
+            jsonResult.setMessage("重置密码失败！");
             return jsonResult;
         }
         jsonResult.setData(result.getSuccess());

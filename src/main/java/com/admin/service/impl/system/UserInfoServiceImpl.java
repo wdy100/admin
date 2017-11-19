@@ -82,6 +82,8 @@ public class UserInfoServiceImpl implements UserInfoService {
             executeResult.setMessage("该用户不存在或已经被删除。");
             return executeResult;
         }
+        dbUserInfo.setStatus(userInfo.getStatus());
+        dbUserInfo.setPassword(userInfo.getPassword());
         dbUserInfo.setUpdatedBy(userInfo.getUpdatedBy());
         dbUserInfo.setUpdatedAt(new Date());
         userInfoDao.update(dbUserInfo);
