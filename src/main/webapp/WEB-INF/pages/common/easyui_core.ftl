@@ -4,6 +4,8 @@
 <!-- 引用EasyUI的国际化文件,让它显示中文 -->
 <script type="text/javascript" src="${domainUrlUtil.staticURL}/js/easyui-lang-zh_CN.js" ></script>
 
+<script type="text/javascript" src="${domainUrlUtil.staticURL}/js/hz.js" ></script>
+
 <script type="text/javascript" src="${domainUrlUtil.staticURL}/jquery-easyui-1.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${domainUrlUtil.staticURL}/jquery-easyui-1.4/datagrid-groupview.js"></script>
 

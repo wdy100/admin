@@ -57,7 +57,7 @@
       )
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
-      #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}, #{parentId}
+      #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}, #{parent.id}
       )
   </insert>
 
@@ -229,14 +229,18 @@
 
   <!-- 根据区域名称查询区域编码 -->
   <select id="getDepartmentByName" resultMap="departmentMap" parameterType="string">
-    <include refid="selectAllDepartmentColumns"/>
-    WHERE department.name = #{name}
+    select
+    <include refid="Base_Column_List" />
+    from department
+    WHERE name = #{name}
   </select>
 
   <!-- 根据部门编码获取部门 -->
   <select id="getDepartmentByCode" resultMap="departmentMap" parameterType="string">
-    <include refid="selectAllDepartmentColumns"/>
-    WHERE department.code = #{code}
+    select
+    <include refid="Base_Column_List" />
+    from department
+    WHERE code = #{code}
   </select>
 
   <select id="searchDepartmentByUserId" resultMap="departmentMap" parameterType="long">

@@ -53,7 +53,7 @@
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/department.html')">部门管理</ul>
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/role.html')">角色管理</ul>
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/roleResource.html')">权限管理</ul>
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/department.html')">用户管理</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/user.html')">用户管理</ul>
             </div>
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;客户管理"  >
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customer.html')">客户接入</ul>

@@ -51,8 +51,12 @@ public class DepartmentController {
         Map <String, Object> criteria = Maps.newHashMap();
         try {
             String parentId = request.getParameter("parentId");
+            String name = request.getParameter("name");
             if(parentId != null && !"".equals(parentId) && !"0".equals(parentId)){
                 criteria.put("parentId", parentId);
+            }
+            if(name != null && !"".equals(name)){
+                criteria.put("name", name);
             }
             PagerInfo pager = WebUtil.handlerPagerInfo(request, dataMap);
             ServiceResult<Map<String, Object>> serviceResult = departmentService.searchDepartments(criteria, pager);
@@ -63,6 +67,7 @@ public class DepartmentController {
                     int total = (Integer)map.get("total");
                     dataMap.put("total", total);
                     dataMap.put("rows", list);
+                    response.setContentType("application/json;charset=UTF-8");
                     response.getWriter().write(JsonUtil.toJson(dataMap));
                     response.getWriter().flush();
                     response.getWriter().close();
@@ -90,19 +95,36 @@ public class DepartmentController {
         return departmentNodes;
     }
 
-//    @RequestMapping("/departmentTree")
-//    public void departmentTree(HttpServletRequest request, HttpServletResponse response, Map<String, Object> dataMap){
-//        Map <String, Object> criteria = Maps.newHashMap();
-//        try {
-//            List<Department> roots = departmentService.getAll();
-//            JSONArray departmentNodes = JSONArray.fromObject(new ClosedDepartmentTreeNodeFactory().buildTreeNodeList(roots));
-//            dataMap.put("rows", departmentNodes);
-//            response.getWriter().write(JsonUtil.toJson(dataMap));
-//            response.getWriter().flush();
-//            response.getWriter().close();
-//        }catch (Exception e) {
-//            log.error("查询部门树失败，error={}", Throwables.getStackTraceAsString(e));
-//            throw new BusinessException("查询部门树失败");
-//        }
-//    }
+    /**
+     * 新增
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/createDepartment", method = RequestMethod.POST)
+    @ResponseBody
+    public Object createDepartment(HttpServletRequest request) {
+        HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
+        String name = request.getParameter("name");
+        String code = request.getParameter("code");
+        String parentId = request.getParameter("parentId");
+        String description = request.getParameter("description");
+        Department parent = new Department();
+        parent.setId(Long.parseLong(parentId));
+        Department department = new Department();
+        department.setName(name);
+        department.setCode(code);
+        department.setParent(parent);
+        department.setDescription(description);
+        department.setCreatedBy("system");
+        department.setUpdatedBy("system");
+        ServiceResult<Department> result = departmentService.createDepartment(department);
+        if (!result.getSuccess()) {
+            log.error("新增部门失败！");
+            jsonResult.setMessage("新增部门失败！");
+            return jsonResult;
+        }
+        jsonResult.setData(result.getSuccess());
+        return jsonResult;
+    }
+
 }  
