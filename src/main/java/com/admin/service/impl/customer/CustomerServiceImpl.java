@@ -72,6 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
 //        dbCustomer.setStatus(customer.getStatus());
 //        dbCustomer.setPassword(customer.getPassword());
+        dbCustomer.setResponsiblePerson(customer.getResponsiblePerson());
         dbCustomer.setUpdatedBy(customer.getUpdatedBy());
         dbCustomer.setUpdatedAt(new Date());
         customerDao.update(dbCustomer);

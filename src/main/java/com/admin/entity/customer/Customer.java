@@ -52,4 +52,6 @@ public class Customer extends BaseEntity{
 
     private String relateContact;
 
+    private String responsiblePerson;
+
 }

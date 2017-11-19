@@ -30,6 +30,7 @@
     <div id="tb" >
         <#--<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="deleteCustomer()">删除</a>-->
         <#--<a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="updateCustomer()">修改</a>-->
+            <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="distributionCustomer()">分配</a>
         <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="createCustomer()">新增</a>
 
     </div>
@@ -38,11 +39,12 @@
             <thead>
             <tr>
                 <th data-options="field:'ck',checkbox:true,formatter : function(value, row, index) {return row.id;}"></th>
-                <th data-options="field:'customerName',width:200,halign:'center',align:'left'">客户名称</th>
+                <th data-options="field:'customerName',width:150,halign:'center',align:'left'">客户名称</th>
                 <th data-options="field:'phone',width:100,halign:'center',align:'left'">电话</th>
-                <th data-options="field:'address',width:400,halign:'center',align:'left'">地址</th>
+                <th data-options="field:'address',width:250,halign:'center',align:'left'">地址</th>
                 <th data-options="field:'corporate',width:100,halign:'center',align:'left'">公司法人</th>
                 <th data-options="field:'manager',width:100,halign:'center',align:'left'">总经理</th>
+                <th data-options="field:'responsiblePerson',width:100,halign:'center',align:'left'">负责人</th>
             </tr>
             </thead>
         </table>
@@ -209,10 +211,25 @@
     </form>
 </div>
 
+<!-- 分配  -->
+<div class="easyui-dialog" id="distributionCustomerDiv" style="width:320px;height:280px;"
+     data-options="modal:true,closed:true,resizable:false" >
+    <table>
+        <tr>
+            <td style="text-align: right;">责任人<span style="color:red;">*</span>:</td>
+            <td>
+                <input id="responsiblePerson" name="responsiblePerson" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;"></input>
+            </td>
+        </tr>
+
+    </table>
+</div>
+
 
 <script type="text/javascript">
     var addCustomerDialog;
     var customerEditDialog;
+    var distributionCustomerDialog;
     function loaddata(){
         <#--$('#dg').datagrid({url:'${dynamicURL}/basic/searchCustomer.action?'+$("#searchForm").form().serialize()});-->
         $('#dg').datagrid('load',sy.serializeObject($("#searchForm").form()));
@@ -268,6 +285,11 @@
         addCustomerDialog.dialog('open');
     }
 
+    //分配
+    function distributionCustomer() {
+        distributionCustomerDialog.dialog('open');
+    }
+
     $(function(){
         $('#dg').datagrid({
             title:'客户列表',
@@ -321,6 +343,30 @@
                 iconCls:'icon-ok',
                 handler:function(){
                     editForm();
+                }
+            }]
+        });
+
+        //分配
+        distributionCustomerDialog = $("#distributionCustomerDiv").dialog({
+            title: '分配',
+            width: 400,
+            height: 250,
+            top: 30,
+            closed: true,
+            cache: false,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                iconCls:'icon-ok',
+                handler:function(){
+                    submitDistribution();
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    distributionCustomerDialog.dialog('close');
                 }
             }]
         });
@@ -426,6 +472,33 @@
                 });
             }
         });
+    }
+
+    function submitDistribution(){
+        var row = $('#dg').datagrid('getSelected');
+        var customeId = row.id;
+        var responsiblePerson = $('#responsiblePerson').val();
+        $.ajax({
+            type:'post',
+            url:'/customer/distributionCustomer',
+            dataType : "json",
+            data:{customeId:customeId, responsiblePerson:responsiblePerson},
+            cache:false,
+            async:false,
+            success:function(data){
+                $.messager.progress('close');
+                if(!data.success){
+                    $.messager.alert('提示',data.message);
+                }
+                $('#dg').datagrid('reload');
+                distributionCustomerDialog.dialog('close');
+                $.messager.alert('提示',"客户分配成功");
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
+            }
+        });
+
     }
 
     function showErrorMsg(result){

@@ -123,4 +123,29 @@ public class CustomerController {
         jsonResult.setData(result.getSuccess());
         return jsonResult;
     }
+
+    /**
+     * 分配
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/distributionCustomer", method = RequestMethod.POST)
+    @ResponseBody
+    public Object distributionCustomer(HttpServletRequest request) {
+        HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
+        String customeId = request.getParameter("customeId");
+        String responsiblePerson = request.getParameter("responsiblePerson");
+        Customer customer = new Customer();
+        customer.setId(Long.parseLong(customeId));
+        customer.setResponsiblePerson(responsiblePerson);
+        ServiceResult<Customer> result = customerService.updateCustomer(customer);
+        if (!result.getSuccess()) {
+            log.error("客户分配失败！");
+            jsonResult.setMessage("客户分配失败！");
+            return jsonResult;
+        }
+        jsonResult.setData(result.getSuccess());
+        return jsonResult;
+    }
+
 }  

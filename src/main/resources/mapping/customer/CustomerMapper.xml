@@ -26,12 +26,13 @@
     <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="responsible_person" jdbcType="VARCHAR" property="responsiblePerson" />
   </resultMap>
   <sql id="Base_Column_List">
     id, customer_code, customer_name, type_code, type_name, phone, fax, address, url, 
     corporate, manager, contact, dock_department, dock_person, dock_contact, relate_department, 
     relate_person, relate_contact, created_at, updated_at, created_by, updated_by, remark, 
-    is_delete
+    is_delete, responsible_person
   </sql>
 
   <sql id="table">customer</sql>
@@ -54,7 +55,7 @@
       dock_department, dock_person, dock_contact, 
       relate_department, relate_person, relate_contact, 
       created_at, updated_at, created_by, 
-      updated_by, remark, is_delete
+      updated_by, remark, is_delete, responsible_person
       )
     values (#{id,jdbcType=INTEGER}, #{customerCode,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, 
       #{typeCode,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
@@ -63,7 +64,7 @@
       #{dockDepartment,jdbcType=VARCHAR}, #{dockPerson,jdbcType=VARCHAR}, #{dockContact,jdbcType=VARCHAR}, 
       #{relateDepartment,jdbcType=VARCHAR}, #{relatePerson,jdbcType=VARCHAR}, #{relateContact,jdbcType=VARCHAR}, 
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
-      #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}
+      #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}, #{responsiblePerson}
       )
   </insert>
 
@@ -139,6 +140,9 @@
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=BIT},
       </if>
+      <if test="responsiblePerson != null">
+        responsible_person = #{responsiblePerson},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -156,6 +160,9 @@
       </if>
       <if test="manager!=null">
         AND manager = #{manager}
+      </if>
+      <if test="responsiblePerson!=null">
+        AND responsible_person = #{responsiblePerson}
       </if>
     </where>
   </sql>
