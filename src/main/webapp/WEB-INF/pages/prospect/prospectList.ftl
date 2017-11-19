@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>¿±²é·´À¡</title>
+    <title>å‹˜æŸ¥åé¦ˆ</title>
     <link rel="stylesheet" type="text/css" href="/resources/easyui-themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="/resources/easyui-themes/icon.css">
     <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
@@ -12,390 +12,82 @@
 </head>
 <body>
 <div class="easyui-layout" data-options="fit : true,border : false">
-    <div data-options="region:'north',title:'²éÑ¯Ìõ¼ş',border:false" style="height:200px;overflow: auto;" align="left">
-        <form id="filterForm" action="#">
+    <div data-options="region:'north',title:'æŸ¥è¯¢æ¡ä»¶',border:false" style="height:200px;overflow: auto;" align="left">
+        <form id="prospectForm" action="/uploadReportFile.html" method="post" enctype="multipart/form-data">
             <table>
                 <tr>
-                    <td>¿Í»§Ãû³Æ</td>
+                    <td>å®¢æˆ·åç§°</td>
                     <td>
                         <input id="customerName" class="txt" name="customerName">
                     </td>
-                    <td>¿Í»§×´Ì¬</td>
+                    <td>å®¢æˆ·çŠ¶æ€</td>
                     <td>
                         <input class="easyui-combobox" id="customerStatus"  name="customerStatus"  data-options="
 	       								valueField: 'value',textField: 'text',panelHeight:'auto',editable:false,value:'',
-										data: [{value: '',text: 'ËùÓĞ'},
-												{value: '0',text: '´ı½ÓÊÕ'},
-										       {value: '1',text: '¿±²éÖĞ'},
-												{value: '2',text: 'ÒÑ¿±²é'},
-												{value: '3',text: '´ı°²×°'},
-												{value: '4',text: '´ıÑéÊÕ'},
-												{value: '5',text: 'ÒÑÑéÊÕ'}
+										data: [{value: '',text: 'æ‰€æœ‰'},
+												{value: '0',text: 'å¾…æ¥æ”¶'},
+										       {value: '1',text: 'å‹˜æŸ¥ä¸­'},
+												{value: '2',text: 'å·²å‹˜æŸ¥'},
+												{value: '3',text: 'å¾…å®‰è£…'},
+												{value: '4',text: 'å¾…éªŒæ”¶'},
+												{value: '5',text: 'å·²éªŒæ”¶'}
 												]" />
                     </td>
-                    <td>¿±²é×´Ì¬</td>
+                    <td>å‹˜æŸ¥çŠ¶æ€</td>
                     <td>
                         <input class="easyui-combobox" id="prospectStatus"  name="prospectStatus"  data-options="
 	       								valueField: 'value',textField: 'text',panelHeight:'auto',editable:false,value:'',
-										data: [{value: '',text: 'ËùÓĞ'},
-												{value: '0',text: 'Î´ÅÉµ¥'},
-										       {value: '1',text: '¿±²éÖĞ'},
-												{value: '2',text: '¿±²éÍê³É'},
-												{value: '3',text: '¿±²éÊı¾İ´ıÉÏ´«'},
-												{value: '4',text: '¿±²é±¨¸æ´ıÉú³É'}
+										data: [{value: '',text: 'æ‰€æœ‰'},
+												{value: '0',text: 'æœªæ´¾å•'},
+										       {value: '1',text: 'å‹˜æŸ¥ä¸­'},
+												{value: '2',text: 'å‹˜æŸ¥å®Œæˆ'},
+												{value: '3',text: 'å‹˜æŸ¥æ•°æ®å¾…ä¸Šä¼ '},
+												{value: '4',text: 'å‹˜æŸ¥æŠ¥å‘Šå¾…ç”Ÿæˆ'}
 												]" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <a id='search' href="#" class="easyui-linkbutton" iconCls="icon-search">æŸ¥è¯¢</a>
+                        <a id='download' href="#" class="easyui-linkbutton">å‹˜æŸ¥æ¨¡æ¿ä¸‹è½½</a>
+                        <#--<a id='upload' href="#" class="easyui-linkbutton">å‹˜æŸ¥æ•°æ®ä¸Šä¼ </a>-->
+                        <input type="file" name="file" /><input id='upload' type="submit" value="å‹˜æŸ¥æ•°æ®ä¸Šä¼ "/>
+                        <input type="hidden" id="id"/>
+                        <a id='clean' href="#" class="easyui-linkbutton" iconCls="icon-remove">æ¸…ç©º</a>
                     </td>
                 </tr>
             </table>
         </form>
     </div>
-    <div data-options="region:'center',title:'²éÑ¯½á¹û',border:false" style="left: 0px; top: 240px; width: 1920px;">
+    <div data-options="region:'center',title:'æŸ¥è¯¢ç»“æœ',border:false" style="left: 0px; top: 240px; width: 1920px;">
         <table id="dataGrid"></table>
     </div>
 </div>
 <script type="text/javascript">
-    var datagrid;
-    var queryParameters;
+var datagrid;
+var queryParameters;
 
-    // ÅĞ¶ÏÊÇ·ñÎª¿Õ
-    $.isNotBlank = function(value) {
-        if (value != undefined && value != "undefined" && value != null && value != "null" && value != "") {
-            return true;
-        }
-        return false;
-    };
-
-    //·¢Æ±ÓÊ¼ÄÁĞ±í²éÑ¯
-    $('#search').click(function () {
-        queryParameters = {
-            customerName:$("#customerName").val(),
-            customerStatus:$("#customerStatus").combobox("getValue"),
-            prospectStatus:$("#prospectStatus").combobox("getValue")
-        };
-        if(datagrid){
-            //grid¼ÓÔØ
-            $('#dataGrid').datagrid('load',queryParameters);
-        }else{
-            datagrid = $('#dataGrid').datagrid({
-                url: "/prospect/findProspectList.html",
-                method:'GET',
-                fit: true,
-                pagination: true,
-                singleSelect: false,
-                checkOnSelect:true,
-                pageSize: 20,
-                pageList: [100,200,300],
-                nowrap: true,
-                rownumbers: true,
-                queryParams:queryParameters,
-                columns: [
-                    [
-                        {
-                            field: 'id',
-                            title: '±àºÅ',
-                            width: 10,
-                            align: 'center',
-                            hidden:true
-                        },
-                        /*{
-                            field: 'caozuo',
-                            title: '¿±²éÊı¾İÎÄ¼ş',
-                            width: 100,
-                            align: 'center',
-                            formatter:function(value,rowData,rowIndex){
-                                if($.isNotBlank(rowData.prospectFileAddress)){
-                                    //return "<form action=\"uploadReportFile.html\" method=\"post\" enctype=\"multipart/form-data\"><input type=\"file\" name=\"file\"/><input type=\"submit\" value=\"Submit\"/></form>";
-                                }else{
-                                    return "<form action=\"uploadReportFile.html\" method=\"post\" enctype=\"multipart/form-data\"><input type=\"file\" name=\"file\"/><input type=\"submit\" value=\"Submit\"/></form>";
-                                }
-                            }
-                        },*/
-                        {
-                            field: 'customerName',
-                            title: '¿Í»§Ãû³Æ',
-                            width: 150,
-                            align: 'center'
-                        },
-                        {
-                            field: 'customerAddress',
-                            title: '¿Í»§µØÖ·',
-                            width: 200,
-                            align: 'center'
-                        },
-                        {
-                            field: 'name',
-                            title: 'ÁªÏµÈË',
-                            width: 150,
-                            align: 'center'
-                        },
-                        {
-                            field: 'mobile',
-                            title: 'ÁªÏµµç»°',
-                            width: 150,
-                            align: 'center'
-                        },
-                        {
-                            field: 'prospectTime',
-                            title: '¿±²éÊ±¼ä',
-                            width: 150,
-                            align: 'center'
-                        },
-                        {
-                            field: 'prospectContent',
-                            title: '¿±²éÄÚÈİ',
-                            width: 200,
-                            align: 'center'
-                        },
-                        {
-                            field: 'prospectArea',
-                            title: '¿±²éÇøÓò',
-                            width: 200,
-                            align: 'center'
-                        },
-                        {
-                            field: 'prospectRequire',
-                            title: '¿±²éÒªÇó',
-                            width: 200,
-                            align: 'center'
-                        },
-                        {
-                            field: 'prospectName',
-                            title: '¿±²éÈËÔ±',
-                            width: 150,
-                            align: 'center'
-                        },
-                        {
-                            field: 'prospectStatus',
-                            title: '¿±²é×´Ì¬',
-                            width: 120,
-                            align: 'center',
-                            formatter:function(value,rowData,rowIndex){
-                                if(value == '0') return '´ı½ÓÊÕ';
-                                if(value == '1') return '¿±²éÖĞ';
-                                if(value == '2') return 'ÒÑ¿±²é';
-                                if(value == '3') return '´ı°²×°';
-                                if(value == '4') return '´ıÑéÊÕ';
-                                if(value == '5') return 'ÒÑÑéÊÕ';
-                                return '';
-                            }
-                        },
-                        {
-                            field: 'customerStatus',
-                            title: '¿Í»§×´Ì¬',
-                            width: 120,
-                            align: 'center',
-                            formatter:function(value,rowData,rowIndex){
-                                if(value == '0') return 'Î´ÅÉµ¥';
-                                if(value == '1') return '¿±²éÖĞ';
-                                if(value == '2') return '¿±²éÍê³É';
-                                if(value == '3') return '¿±²éÊı¾İ´ıÉÏ´«';
-                                if(value == '4') return '¿±²é±¨¸æ´ıÉú³É';
-                                return '';
-                            }
-                        },
-                        {
-                            field: 'submitName',
-                            title: 'ÏÂµ¥ÈËÔ±',
-                            width: 150,
-                            align: 'center'
-                        },
-                        {
-                            field: 'submitTime',
-                            title: 'ÏÂµ¥ÈÕÆÚ',
-                            width: 150,
-                            align: 'center'
-                        }
-                    ]
-                ]
-            });
-        }
-    });
-
-    //·¢Æ±·Ö·¢
-    $('#dispense').click(function () {
-        //»ñµÃÑ¡ÖĞĞĞ
-        var checkedItems = $('#dataGrid').datagrid('getChecked');
-        var dispenseData = new Array();
-        //É¸Ñ¡×´Ì¬Îª´ı·Ö·¢µÄ¼ÇÂ¼
-        $.each(checkedItems, function(index, item){
-            if(item.status == 2){
-                dispenseData.push(item.id);
-            }
-        });
-        if(dispenseData == null || dispenseData.length == 0){
-            $.messager.alert('´íÎó','ÇëÖÁÉÙÑ¡ÔñÒ»ĞĞ´ı·Ö·¢×´Ì¬µÄ·¢Æ±£¡','error');
-            return;
-        }
-        var dispenseData = JSON.stringify(dispenseData);
-        window.location.href="/invoice/invoicePostDispense.html?dispenseData=" + dispenseData;
-    });
-
-    //·¢Æ±Ç©ÊÕ
-    $('#receipt').click(function () {
-        //»ñµÃÑ¡ÖĞĞĞ
-        var checkedItems = $('#dataGrid').datagrid('getChecked');
-        var receiptData = new Array();
-        //É¸Ñ¡×´Ì¬Îª´ıÒµÎñÇ©ÊÕµÄ¼ÇÂ¼
-        $.each(checkedItems, function(index, item){
-            if(item.status == 3){
-                receiptData.push(item.id);
-            }
-        });
-        if(receiptData == null || receiptData.length == 0){
-            $.messager.alert('´íÎó','ÇëÖÁÉÙÑ¡ÔñÒ»ĞĞ´ıÇ©ÊÕ×´Ì¬µÄ·¢Æ±£¡','error');
-            return;
-        }
-
-        $.messager.confirm('Ç©ÊÕ','ÇëÈ·ÈÏËùÑ¡·¢Æ±ÊÇ·ñÈ«²¿ÊÕµ½£¿', function(r){
-            if (r){
-                jQuery.ajax({
-                    url: "/invoice/invoicePostReceipt.html",
-                    type: "POST",                   // ÉèÖÃÇëÇóÀàĞÍÎª"POST"£¬Ä¬ÈÏÎª"GET"
-                    data:{"receiptData": JSON.stringify(receiptData)},
-                    success: function (data) {
-                        if(!data.success) {
-                            $.messager.alert('´íÎó',data.message,'error');
-                            return;
-                        }else {
-                            $('#dataGrid').datagrid('reload');
-                        }
-                    }
-                });
-            }
-        });
-    });
-
-    //·¢Æ±ÓÊ¼ÄĞÅÏ¢Â¼Èë
-    function goExpressInputInfo(orderSn,corderSn,jdeCode,invoiceNumber,invoiceSource,receiptAddress){
-        if(orderSn == undefined || orderSn == 'undefined' || orderSn == null) {
-            orderSn = "";
-        }
-        if(invoiceSource == 2) {
-            $(".notJDE").hide();
-            $(".isJDE").show();
-        } else {
-            $(".notJDE").show();
-            $(".isJDE").hide();
-        }
-
-        if($.isNotBlank(receiptAddress)){
-            $(".ifInputReceipt").hide();
-        } else {
-            $(".ifInputReceipt").show();
-        }
-
-        $("#receiptAddress").val(receiptAddress);
-        $("#orderSn_edit").val(orderSn);
-        $("#corderSn_edit").val(corderSn);
-        $("#jdeCode_edit").val(jdeCode);
-        $("#invoiceNumber_edit").val(invoiceNumber);
-
-        $("#receiptConsignee_edit").val("");
-        $("#receiptAddress_edit").val("");
-        $("#receiptMobile_edit").val("");
-        $("#receiptZipCode_edit").val("");
-
-        $("#expressCompany").val("");
-        $("#expressNum").val("");
-        $("#expressInputInfo").show();
-        $("#expressInputInfo").dialog({
-            collapsible: true,
-            minimizable: false,
-            maximizable: false,
-            height:270,
-            width:350
-        });
+// åˆ¤æ–­æ˜¯å¦ä¸ºç©º
+$.isNotBlank = function(value) {
+    if (value != undefined && value != "undefined" && value != null && value != "null" && value != "") {
+        return true;
     }
+    return false;
+};
 
-    //·¢Æ±ÓÊ¼ÄĞÅÏ¢Â¼ÈëÌá½»
-    $("#saveBtn").click(function(){
-        var receiptAddress = $("#receiptAddress").val();
-        if(!$.isNotBlank(receiptAddress)){
-            if(!$.isNotBlank($("#receiptConsignee_edit").val())){
-                $.messager.alert("ÌáÊ¾","ÇëÌîĞ´ÊÕÆ±ÈËĞÕÃû","info")
-                return false;
-            }
-            if(!$.isNotBlank($("#receiptAddress_edit").val())){
-                $.messager.alert("ÌáÊ¾","ÇëÌîĞ´ÊÕÆ±µØÖ·","info")
-                return false;
-            }
-            if(!$.isNotBlank($("#receiptMobile_edit").val())){
-                $.messager.alert("ÌáÊ¾","ÇëÌîĞ´ÊÕÆ±µç»°","info")
-                return false;
-            }
-            if(!$.isNotBlank($("#receiptZipCode_edit").val())){
-                $.messager.alert("ÌáÊ¾","ÇëÌîĞ´ÊÕÆ±ÓÊ±à","info")
-                return false;
-            }
-        }
-        if(!$.isNotBlank($("#expressCompany").val())){
-            $.messager.alert("ÌáÊ¾","ÇëÑ¡Ôñ¿ìµİÃû³Æ","info")
-            return false;
-        }
-        if(!$.isNotBlank($("#expressNum").val())){
-            $.messager.alert("ÌáÊ¾","ÇëÌîĞ´¿ìµİºÅ","info")
-            return false;
-        }
-        $.messager.progress({text:"Ìá½»ÖĞ..."});
-        jQuery.ajax({
-            url: "/invoice/saveInvoicePostExpress.html",
-            data:{
-                "invoiceNumber": $("#invoiceNumber_edit").val(),
-                "receiptConsignee": $("#receiptConsignee_edit").val(),
-                "receiptAddress": $("#receiptAddress_edit").val(),
-                "receiptMobile": $("#receiptMobile_edit").val(),
-                "receiptZipCode": $("#receiptZipCode_edit").val(),
-                "expressCompany": $("#expressCompany").val(),
-                "expressNum": $("#expressNum").val()
-            },
-            type: "GET",
-            success: function(result) {
-                $.messager.progress('close');
-                if(result.success == true){
-                    $('#dataGrid').datagrid('reload');
-                    $("#expressInputInfo").dialog("close");
-                }else
-                    $.messager.alert('´íÎó', result.message, 'error');
-            },
-            fail: function(data) {
-                $.messager.progress('close');
-                $.messager.alert('´íÎó',"±£´æĞÅÏ¢³ö´í,ÇëÁªÏµ¹ÜÀíÔ±£¡");
-            }
-        });
-    });
-
-    //Çå¿Õ
-    $("#clean").click(function(){
-        $('#payTimeMin').datetimebox('setValue', '');
-        $('#payTimeMax').datetimebox('setValue', '');
-        $("#receiptMobile").val("");
-        $("#receiptConsignee").val("");
-        $("#orderStatus").combobox('setValue', '');
-        $('#closeTimeMin').datetimebox('setValue', '');
-        $('#closeTimeMax').datetimebox('setValue', '');
-        $("#invoiceStatus").combobox('setValue', '');
-        $("#inputStatus").combobox('setValue', '');
-        $("#invoiceNumber").val("");
-        $("#expressInputTimeMin").datetimebox('setValue', '');
-        $("#expressInputTimeMax").datetimebox('setValue', '');
-        $("#memberName").val("");
-        $("#corderSn").val("");
-        $("#orderSn").val("");
-        $("#expressInputName").val("");
-        $("#xiaowei").combobox('setValue', '');
-        $("#jdeCode").val("");
-        $("#incomeType").combobox('setValue', '');
-        $("#receiptStatus").combobox('setValue', '');
-        $("#status").combobox('setValue', '');
-        $('#managerReceiptTimeMin').datetimebox('setValue', '');
-        $('#managerReceiptTimeMax').datetimebox('setValue', '');
-        $('#receiptTimeMin').datetimebox('setValue', '');
-        $('#receiptTimeMax').datetimebox('setValue', '');
-    });
-
-    $(function(){
+//å‘ç¥¨é‚®å¯„åˆ—è¡¨æŸ¥è¯¢
+$('#search').click(function () {
+    queryParameters = {
+        customerName:$("#customerName").val(),
+        customerStatus:$("#customerStatus").combobox("getValue"),
+        prospectStatus:$("#prospectStatus").combobox("getValue")
+    };
+    if(datagrid){
+        //gridåŠ è½½
+        $('#dataGrid').datagrid('load',queryParameters);
+    }else{
         datagrid = $('#dataGrid').datagrid({
-            url: "/invoice/invoicePostList.html",
+            url: "/prospect/findProspectList.html",
             method:'GET',
             fit: true,
             pagination: true,
@@ -410,14 +102,7 @@
                 [
                     {
                         field: 'id',
-                        title: '·¢Æ±Id',
-                        width: 10,
-                        align: 'center',
-                        hidden:true
-                    },
-                    {
-                        field: 'invoiceSource',
-                        title: '·¢Æ±À´Ô´',
+                        title: 'ç¼–å·',
                         width: 10,
                         align: 'center',
                         hidden:true
@@ -429,251 +114,253 @@
                         checkbox:true
                     },
                     {
-                        field: 'caozuo',
-                        title: '²Ù×÷',
-                        width: 100,
-                        align: 'center',
-                        formatter:function(value,rowData,rowIndex){
-                            if($.isNotBlank(rowData.expressCompany) && $.isNotBlank(rowData.expressNum)){
-                                return "ÒÑÂ¼Èë";
-                            }else{
-                                if(rowData.updatedBy == '999999' && (rowData.status == 4 || rowData.status == 5)) {
-                                    return '<input type="button" onclick="goExpressInputInfo(\'' + rowData.orderSn + '\',\'' + rowData.corderSn + '\',\'' + rowData.jdeCode + '\',\'' + rowData.invoiceNumber + '\',' + rowData.invoiceSource + ',\'' + rowData.receiptAddress + '\')" value="Â¼Èë">';
-                                } else{
-                                    return '<input type="button" disabled="disabled" value="Â¼Èë">';
-                                }
-                            }
-                        }
-                    },
-                    {
-                        field: 'incomeType',
-                        title: 'ÊÕÈëÀàĞÍ',
-                        width: 120,
-                        align: 'center',
-                        formatter:function(value,rowData,rowIndex){
-                            if(value == '1') return 'Ë®Õ¾×ÔÓªÊÕÈë';
-                            if(value == '2') return 'Ë®Õ¾ÖÜ±ß²úÆ·×ÔÓªÊÕÈë';
-                            if(value == '3') return 'ÂËĞ¾ÊÕÈë';
-                            if(value == '4') return 'ÔöÖµÑÓ±£';
-                            if(value == '5') return '¼¼Êõ·şÎñ·Ñ';
-                            if(value == '6') return 'º£¶û·şÎñÊÕÈë';
-                            if(value == '7') return 'Éç»á»¯·şÎñÊÕÈë';
-                            if(value == '8') return 'ÉúÌ¬ÊÕÈë';
-                            if(value == '9') return '¹ã¸æÊÕÈë';
-                            if(value == '10') return '³äÖµÊÕÈë';
-                            if(value == '11') return 'µÚÈı·½Æ·ÅÆ¼°×ÊÔ´·½ÊÕÈë';
-                            if(value == '12') return 'ÊÛºó·şÎñÊÕÈë';
-                            if(value == '13') return '½¡¿µ²úÆ·ÊÕÈë';
-                            return '';
-                        }
-                    },
-                    {
-                        field: 'status',
-                        title: '×´Ì¬',
-                        width: 120,
-                        align: 'center',
-                        formatter:function(value,rowData,rowIndex){
-                            if(value == '1') return '´ı¿ªÆ±';
-                            if(value == '2') return '´ı·Ö·¢';
-                            if(value == '3') return '´ıÒµÎñÇ©ÊÕ';
-                            if(value == '4') return '´ıÓÊ¼Ä';
-                            if(value == '5') return '³¬ÆÚ´ıÓÊ¼Ä';
-                            if(value == '6') return '´ıÊÕÆ±ÈËÇ©ÊÕ';
-                            if(value == '7') return 'ÒÑÍê³É';
-                            return '';
-                        }
-                    },
-                    {
-                        field: 'corderSn',
-                        title: 'Íøµ¥ºÅ',
+                        field: 'customerName',
+                        title: 'å®¢æˆ·åç§°',
                         width: 150,
                         align: 'center'
                     },
                     {
-                        field: 'orderSn',
-                        title: '¶©µ¥ºÅ',
-                        width: 150,
-                        align: 'center'
-                    },
-                    {
-                        field: 'jdeCode',
-                        title: 'JDEµ¥ºÅ',
-                        width: 150,
-                        align: 'center'
-                    },
-                    {
-                        field: 'payTime',
-                        title: 'Ö§¸¶Ê±¼ä',
-                        width: 150,
-                        align: 'center'
-                    },
-                    {
-                        field: 'orderStatus',
-                        title: '¶©µ¥×´Ì¬',
-                        width: 100,
-                        align: 'center',
-                        formatter:function(value,rowData,rowIndex){
-                            if(value=='200') return 'Î´È·ÈÏ';
-                            if(value=='201') return 'ÒÑÈ·ÈÏ';
-                            if(value=='202') return 'ÒÑÈ¡Ïû';
-                            if(value=='203') return 'ÒÑÍê³É';
-                            return '';
-                        }
-                    },
-                    {
-                        field: 'closeTime',
-                        title: '¶©µ¥¹Ø±ÕÊ±¼ä',
-                        width: 150,
-                        align: 'center'
-                    },
-                    {
-                        field: 'xiaowei',
-                        title: '¶©µ¥ËùÊôĞ¡Î¢',
-                        width: 120,
-                        align: 'center',
-                        formatter:function(value,rowData,rowIndex){
-                            if(value == '14') return 'ÉúÌ¬ÊÕÈë';
-                            if(value == '15') return 'ÂôÉè±¸';
-                            if(value == '16') return 'O2O';
-                            if(value == '17') return '´óÓ®¼ÒÆóÒµÎ¢µêÖ÷';
-                            if(value == '18') return '´óÓ®¼Ò¸öÈËÎ¢µêÖ÷';
-                            if(value == '19') return 'ÏßÉÏ';
-                            return '';
-                        }
-                    },
-                    {
-                        field: 'managerName',
-                        title: '·¢Æ±ÔğÈÎÈË',
-                        width: 120,
-                        align: 'center'
-                    },
-                    {
-                        field: 'managerReceiptTime',
-                        title: 'ÔğÈÎÈËÇ©ÊÕÊ±¼ä',
-                        width: 150,
-                        align: 'center'
-                    },
-                    {
-                        field: 'memberName',
-                        title: 'Âò¼ÒÕËºÅ',
-                        width: 100,
-                        align: 'center'
-                    },
-                    {
-                        field: 'mobile',
-                        title: 'Âò¼ÒÊÖ»úºÅ',
-                        width: 100,
-                        align: 'center'
-                    },
-                    {
-                        field: 'receiptConsignee',
-                        title: 'ÊÕÆ±ÈË',
-                        width: 100,
-                        align: 'center'
-                    },
-                    {
-                        field: 'receiptAddress',
-                        title: 'ÊÕÆ±µØÖ·',
+                        field: 'customerAddress',
+                        title: 'å®¢æˆ·åœ°å€',
                         width: 200,
                         align: 'center'
                     },
                     {
-                        field: 'receiptMobile',
-                        title: 'ÊÕÆ±µç»°',
-                        width: 100,
-                        align: 'center',
-                    },
-                    {
-                        field: 'receiptZipCode',
-                        title: 'ÊÕÆ±ÓÊ±à',
-                        width: 80,
+                        field: 'name',
+                        title: 'è”ç³»äºº',
+                        width: 150,
                         align: 'center'
                     },
                     {
-                        field: 'invoiceStatus',
-                        title: '¿ª¾ß×´Ì¬',
-                        width: 80,
-                        align: 'center',
-                        formatter:function(value,rowData,rowIndex){
-                            if(value=='0') return 'Î´¿ª¾ß';
-                            if(value=='1') return 'ÒÑ¿ª¾ß';
-                            if(value=='3') return '¿ª¾ßÖĞ';
-                            return 'Î´¿ª¾ß';
-                        }
-                    },
-                    {
-                        field: 'invoiceNumber',
-                        title: '·¢Æ±ºÅ',
-                        width: 100,
+                        field: 'mobile',
+                        title: 'è”ç³»ç”µè¯',
+                        width: 150,
                         align: 'center'
                     },
                     {
-                        field: 'invoiceType',
-                        title: '·¢Æ±ÀàĞÍ',
-                        width: 80,
+                        field: 'prospectTime',
+                        title: 'å‹˜æŸ¥æ—¶é—´',
+                        width: 150,
+                        align: 'center'
+                    },
+                    {
+                        field: 'prospectContent',
+                        title: 'å‹˜æŸ¥å†…å®¹',
+                        width: 200,
+                        align: 'center'
+                    },
+                    {
+                        field: 'prospectArea',
+                        title: 'å‹˜æŸ¥åŒºåŸŸ',
+                        width: 200,
+                        align: 'center'
+                    },
+                    {
+                        field: 'prospectRequire',
+                        title: 'å‹˜æŸ¥è¦æ±‚',
+                        width: 200,
+                        align: 'center'
+                    },
+                    {
+                        field: 'prospectName',
+                        title: 'å‹˜æŸ¥äººå‘˜',
+                        width: 150,
+                        align: 'center'
+                    },
+                    {
+                        field: 'prospectStatus',
+                        title: 'å‹˜æŸ¥çŠ¶æ€',
+                        width: 120,
                         align: 'center',
                         formatter:function(value,rowData,rowIndex){
-                            if(value=='1') return 'ÔöÆ±';
-                            if(value=='2') return 'ÆÕÆ±£¨Ö½ÖÊ£©';
+                            if(value == '0') return 'å¾…æ¥æ”¶';
+                            if(value == '1') return 'å‹˜æŸ¥ä¸­';
+                            if(value == '2') return 'å·²å‹˜æŸ¥';
+                            if(value == '3') return 'å¾…å®‰è£…';
+                            if(value == '4') return 'å¾…éªŒæ”¶';
+                            if(value == '5') return 'å·²éªŒæ”¶';
                             return '';
                         }
                     },
                     {
-                        field: 'billingTime',
-                        title: '¿ªÆ±Ê±¼ä',
-                        width: 150,
-                        align: 'center'
-                    },
-                    {
-                        field: 'expressCompany',
-                        title: '¿ìµİÃû³Æ',
-                        width: 100,
-                        align: 'center'
-                    },
-                    {
-                        field: 'expressNum',
-                        title: '¿ìµİºÅ',
-                        width: 100,
-                        align: 'center'
-                    },
-                    {
-                        field: 'expressInputName',
-                        title: 'Â¼ÈëÈË',
-                        width: 80,
-                        align: 'center'
-                    },
-                    {
-                        field: 'expressInputTime',
-                        title: 'Â¼ÈëÊ±¼ä',
-                        width: 150,
-                        align: 'center'
-                    },
-                    {
-                        field: 'receiptStatus',
-                        title: '¿ìµİÇ©ÊÕ×´Ì¬',
-                        width: 100,
+                        field: 'customerStatus',
+                        title: 'å®¢æˆ·çŠ¶æ€',
+                        width: 120,
                         align: 'center',
                         formatter:function(value,rowData,rowIndex){
-                            if(value=='0') return 'Î´Ç©ÊÕ';
-                            if(value=='1') return 'ÒÑÇ©ÊÕ';
-                            return 'Î´Ç©ÊÕ';
+                            if(value == '0') return 'æœªæ´¾å•';
+                            if(value == '1') return 'å‹˜æŸ¥ä¸­';
+                            if(value == '2') return 'å‹˜æŸ¥å®Œæˆ';
+                            if(value == '3') return 'å‹˜æŸ¥æ•°æ®å¾…ä¸Šä¼ ';
+                            if(value == '4') return 'å‹˜æŸ¥æŠ¥å‘Šå¾…ç”Ÿæˆ';
+                            return '';
                         }
                     },
                     {
-                        field: 'receiptTime',
-                        title: '¿ìµİÇ©ÊÕÊ±¼ä',
+                        field: 'submitName',
+                        title: 'ä¸‹å•äººå‘˜',
                         width: 150,
                         align: 'center'
                     },
                     {
-                        field: 'timeoutDays',
-                        title: 'ÓÊ¼Ä³¬ÆÚÌìÊı',
-                        width: 100,
+                        field: 'submitTime',
+                        title: 'ä¸‹å•æ—¥æœŸ',
+                        width: 150,
                         align: 'center'
                     }
                 ]
             ]
         });
-    })
+    }
+});
+
+//å‹˜æŸ¥æ•°æ®ä¸Šä¼ 
+$('#upload').click(function () {
+    //è·å¾—é€‰ä¸­è¡Œ
+    var item = $('#dataGrid').datagrid('getChecked');
+    var prospectData = new Array();
+    //ç­›é€‰çŠ¶æ€ä¸ºå¾…åˆ†å‘çš„è®°å½•
+    if(item.prospectStatus != 0){
+        $.messager.alert('é”™è¯¯','è¯·å…ˆé€‰æ‹©ä¸€è¡Œæœªæ´¾å•çš„å‹˜æŸ¥è®°å½•ï¼','error');
+        return;
+    }
+    var id = item.id;
+    $("#prospectForm").submit();
+});
+
+//æ¸…ç©º
+$("#clean").click(function(){
+    $("#customerName").val("");
+    $("#customerStatus").combobox('setValue', '');
+    $("#prospectStatus").combobox('setValue', '');
+});
+
+$(function(){
+    datagrid = $('#dataGrid').datagrid({
+        url: "/prospect/findProspectList.html",
+        method:'GET',
+        fit: true,
+        pagination: true,
+        singleSelect: false,
+        checkOnSelect:true,
+        pageSize: 20,
+        pageList: [100,200,300],
+        nowrap: true,
+        rownumbers: true,
+        queryParams:queryParameters,
+        columns: [
+            [
+                {
+                    field: 'id',
+                    title: 'ç¼–å·',
+                    width: 10,
+                    align: 'center',
+                    hidden:true
+                },
+                {
+                    field: 'checked',
+                    width: 10,
+                    align: 'center',
+                    checkbox:true
+                },
+                {
+                    field: 'customerName',
+                    title: 'å®¢æˆ·åç§°',
+                    width: 150,
+                    align: 'center'
+                },
+                {
+                    field: 'customerAddress',
+                    title: 'å®¢æˆ·åœ°å€',
+                    width: 200,
+                    align: 'center'
+                },
+                {
+                    field: 'name',
+                    title: 'è”ç³»äºº',
+                    width: 150,
+                    align: 'center'
+                },
+                {
+                    field: 'mobile',
+                    title: 'è”ç³»ç”µè¯',
+                    width: 150,
+                    align: 'center'
+                },
+                {
+                    field: 'prospectTime',
+                    title: 'å‹˜æŸ¥æ—¶é—´',
+                    width: 150,
+                    align: 'center'
+                },
+                {
+                    field: 'prospectContent',
+                    title: 'å‹˜æŸ¥å†…å®¹',
+                    width: 200,
+                    align: 'center'
+                },
+                {
+                    field: 'prospectArea',
+                    title: 'å‹˜æŸ¥åŒºåŸŸ',
+                    width: 200,
+                    align: 'center'
+                },
+                {
+                    field: 'prospectRequire',
+                    title: 'å‹˜æŸ¥è¦æ±‚',
+                    width: 200,
+                    align: 'center'
+                },
+                {
+                    field: 'prospectName',
+                    title: 'å‹˜æŸ¥äººå‘˜',
+                    width: 150,
+                    align: 'center'
+                },
+                {
+                    field: 'prospectStatus',
+                    title: 'å‹˜æŸ¥çŠ¶æ€',
+                    width: 120,
+                    align: 'center',
+                    formatter:function(value,rowData,rowIndex){
+                        if(value == '0') return 'å¾…æ¥æ”¶';
+                        if(value == '1') return 'å‹˜æŸ¥ä¸­';
+                        if(value == '2') return 'å·²å‹˜æŸ¥';
+                        if(value == '3') return 'å¾…å®‰è£…';
+                        if(value == '4') return 'å¾…éªŒæ”¶';
+                        if(value == '5') return 'å·²éªŒæ”¶';
+                        return '';
+                    }
+                },
+                {
+                    field: 'customerStatus',
+                    title: 'å®¢æˆ·çŠ¶æ€',
+                    width: 120,
+                    align: 'center',
+                    formatter:function(value,rowData,rowIndex){
+                        if(value == '0') return 'æœªæ´¾å•';
+                        if(value == '1') return 'å‹˜æŸ¥ä¸­';
+                        if(value == '2') return 'å‹˜æŸ¥å®Œæˆ';
+                        if(value == '3') return 'å‹˜æŸ¥æ•°æ®å¾…ä¸Šä¼ ';
+                        if(value == '4') return 'å‹˜æŸ¥æŠ¥å‘Šå¾…ç”Ÿæˆ';
+                        return '';
+                    }
+                },
+                {
+                    field: 'submitName',
+                    title: 'ä¸‹å•äººå‘˜',
+                    width: 150,
+                    align: 'center'
+                },
+                {
+                    field: 'submitTime',
+                    title: 'ä¸‹å•æ—¥æœŸ',
+                    width: 150,
+                    align: 'center'
+                }
+            ]
+        ]
+    });
+})
 </script>
 </body>
