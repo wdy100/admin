@@ -49,6 +49,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         params.put("start", start);
         params.put("size", size);
+        params.put("parentId", params.get("parentId"));
         List<Department> departments = departmentDao.queryListBy(params);
         map.put("data", departments);
         map.put("total", rowsCount);
@@ -160,8 +161,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
     @Override
     public List<Department> getAll() {
-        Map<String, Object> map = new HashMap<String, Object>();
-        return departmentDao.queryListBy(map);
+        return departmentDao.getAll();
     }
 
     /**

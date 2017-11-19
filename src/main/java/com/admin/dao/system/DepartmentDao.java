@@ -37,6 +37,14 @@ public class DepartmentDao extends BaseDao{
     }
 
     /**
+     * 获取所有部门
+     *
+     */
+    public List<Department> getAll(){
+        return this.getSqlSession().selectList(namespace+"getAll");
+    }
+
+    /**
      * 查询子部门
      * @param departmentId
      * @return

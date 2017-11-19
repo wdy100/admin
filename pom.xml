@@ -304,7 +304,7 @@
                 <pom.server.dynamic>/crm</pom.server.dynamic>
                 <pom.app.url>http://localhost:8080/crm</pom.app.url>
 
-                <pom.jdbc.url>jdbc:mysql://47.100.31.217:3306/crm</pom.jdbc.url>
+                <pom.jdbc.url>jdbc:mysql://47.100.31.217:3306/crm?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</pom.jdbc.url>
 				<pom.jdbc.username>root</pom.jdbc.username>
 				<pom.jdbc.password>wdlinux.cn</pom.jdbc.password>
 			</properties>
@@ -319,7 +319,7 @@
 				<pom.server.dynamic>/crm</pom.server.dynamic>
 				<pom.app.url>http://localhost:8080/crm</pom.app.url>
 
-                <pom.jdbc.url>jdbc:mysql://47.100.31.217:3306/crm</pom.jdbc.url>
+                <pom.jdbc.url>jdbc:mysql://47.100.31.217:3306/crm?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</pom.jdbc.url>
                 <pom.jdbc.username>root</pom.jdbc.username>
                 <pom.jdbc.password>wdlinux.cn</pom.jdbc.password>
 			</properties>

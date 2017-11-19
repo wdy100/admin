@@ -1,7 +1,6 @@
 package com.admin.entity.util;
 
-import com.crm.basic.domain.Department;
-import com.huazheng.openplatform.util.TreeNode;
+import com.admin.entity.system.Department;
 
 /**
  * 用来构建用户可访问的资源树形结构
