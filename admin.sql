@@ -179,5 +179,23 @@ CREATE TABLE `customer`
   `responsible_person`	varchar(50) DEFAULT NULL COMMENT '负责人',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='客户表';
+
+--客户反馈
+DROP TABLE IF EXISTS `customer_feedback`;
+CREATE TABLE `customer_feedback`
+(
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_code`	varchar(20) DEFAULT NULL COMMENT '客户编码',
+  `customer_name`	varchar(50) NOT NULL COMMENT '客户名称',
+  `responsible_person`	varchar(50) DEFAULT NULL COMMENT '负责人',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NOT NULL COMMENT '最近更新时间',
+  `created_by` varchar(20) NOT NULL COMMENT '创建人',
+  `updated_by` varchar(20) NOT NULL COMMENT '最近更新人',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `is_delete` tinyint(1) DEFAULT '0' COMMENT '是否删除 1:是   0:否',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='客户反馈表';
 --admin系统业务表 end--
 

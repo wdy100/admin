@@ -30,8 +30,9 @@
     <div id="tb" >
         <#--<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="deleteCustomer()">删除</a>-->
         <#--<a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="updateCustomer()">修改</a>-->
-            <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="distributionCustomer()">分配</a>
         <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="createCustomer()">新增</a>
+            <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="distributionCustomer()">分配</a>
+            <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="feedback()">反馈</a>
 
     </div>
     <div region="center" border="false">
@@ -225,11 +226,31 @@
     </table>
 </div>
 
+<!-- 反馈  -->
+<div class="easyui-dialog" id="addCustomerFeedbackDiv" style="width:320px;height:380px;"
+     data-options="modal:true,closed:true,resizable:false" >
+    <table>
+        <tr>
+            <td style="text-align: right;">负责人:</td>
+            <td>
+                <input id="f_responsiblePerson" name="f_responsiblePerson" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">反馈详情:</td>
+            <td>
+                <input id="f_description" name="f_description" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+    </table>
+</div>
+
 
 <script type="text/javascript">
     var addCustomerDialog;
     var customerEditDialog;
     var distributionCustomerDialog;
+    var customerFeedbackDialog;
     function loaddata(){
         <#--$('#dg').datagrid({url:'${dynamicURL}/basic/searchCustomer.action?'+$("#searchForm").form().serialize()});-->
         $('#dg').datagrid('load',sy.serializeObject($("#searchForm").form()));
@@ -288,6 +309,11 @@
     //分配
     function distributionCustomer() {
         distributionCustomerDialog.dialog('open');
+    }
+
+    //反馈
+    function feedback() {
+        customerFeedbackDialog.dialog('open');
     }
 
     $(function(){
@@ -367,6 +393,30 @@
                 iconCls:'icon-cancel',
                 handler:function(){
                     distributionCustomerDialog.dialog('close');
+                }
+            }]
+        });
+
+        //反馈
+        customerFeedbackDialog = $("#addCustomerFeedbackDiv").dialog({
+            title: '反馈',
+            width: 400,
+            height: 250,
+            top: 30,
+            closed: true,
+            cache: false,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                iconCls:'icon-ok',
+                handler:function(){
+                    submitFeedback();
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    customerFeedbackDialog.dialog('close');
                 }
             }]
         });
@@ -493,6 +543,35 @@
                 $('#dg').datagrid('reload');
                 distributionCustomerDialog.dialog('close');
                 $.messager.alert('提示',"客户分配成功");
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
+            }
+        });
+
+    }
+
+    function submitFeedback(){
+        var row = $('#dg').datagrid('getSelected');
+        var customerCode = row.customerCode;
+        var customerName = row.customerName;
+        var responsiblePerson = $('#f_responsiblePerson').val();
+        var description = $('#f_description').val();
+        $.ajax({
+            type:'post',
+            url:'/customer/createCustomerFeedback',
+            dataType : "json",
+            data:{customerCode:customerCode, customerName:customerName, responsiblePerson:responsiblePerson, description:description},
+            cache:false,
+            async:false,
+            success:function(data){
+                $.messager.progress('close');
+                if(!data.success){
+                    $.messager.alert('提示',data.message);
+                }
+                $('#dg').datagrid('reload');
+                customerFeedbackDialog.dialog('close');
+                $.messager.alert('提示',"客户反馈成功");
             },
             error:function(d){
                 $.messager.alert('提示',"请刷新重试");

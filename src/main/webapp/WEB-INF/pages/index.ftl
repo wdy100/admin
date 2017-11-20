@@ -57,7 +57,7 @@
             </div>
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;客户管理"  >
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customer.html')">客户接入</ul>
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">客户反馈</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customerFeedback.html')">客户反馈</ul>
             </div>
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;订单管理" >
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单查询</ul>
