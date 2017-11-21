@@ -45,7 +45,7 @@
                 <th data-options="field:'address',width:250,halign:'center',align:'left'">地址</th>
                 <th data-options="field:'corporate',width:100,halign:'center',align:'left'">公司法人</th>
                 <th data-options="field:'manager',width:100,halign:'center',align:'left'">总经理</th>
-                <th data-options="field:'responsiblePerson',width:100,halign:'center',align:'left'">负责人</th>
+                <th data-options="field:'responsiblePerson',width:100,halign:'center',align:'left'">业务人员</th>
             </tr>
             </thead>
         </table>
@@ -217,7 +217,7 @@
      data-options="modal:true,closed:true,resizable:false" >
     <table>
         <tr>
-            <td style="text-align: right;">责任人<span style="color:red;">*</span>:</td>
+            <td style="text-align: right;">业务人员<span style="color:red;">*</span>:</td>
             <td>
                 <input id="responsiblePerson" name="responsiblePerson" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;"></input>
             </td>
@@ -231,7 +231,7 @@
      data-options="modal:true,closed:true,resizable:false" >
     <table>
         <tr>
-            <td style="text-align: right;">负责人:</td>
+            <td style="text-align: right;">业务人员:</td>
             <td>
                 <input id="f_responsiblePerson" name="f_responsiblePerson" type="text" class="easyui-textbox" style="width:200px;"></input>
             </td>

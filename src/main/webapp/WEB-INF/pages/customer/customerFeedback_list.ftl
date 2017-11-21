@@ -40,7 +40,7 @@
             <tr>
                 <th data-options="field:'ck',checkbox:true,formatter : function(value, row, index) {return row.id;}"></th>
                 <th data-options="field:'customerName',width:150,halign:'center',align:'left'">客户名称</th>
-                <th data-options="field:'responsiblePerson',width:100,halign:'center',align:'left'">负责人</th>
+                <th data-options="field:'responsiblePerson',width:100,halign:'center',align:'left'">业务人员</th>
                 <th data-options="field:'description',width:350,halign:'center',align:'left'">反馈详情</th>
             </tr>
             </thead>
@@ -60,7 +60,7 @@
             </td>
         </tr>
         <tr>
-            <td style="text-align: right;">负责人:</td>
+            <td style="text-align: right;">业务人员:</td>
             <td>
                 <input id="f_responsiblePerson" name="f_responsiblePerson" type="text" class="easyui-textbox" style="width:200px;"></input>
             </td>
