@@ -316,7 +316,7 @@
 				<profiles.activation>prod</profiles.activation>
 
 				<pom.server.static>http://47.100.31.217:8080/assets</pom.server.static>
-				<pom.server.dynamic>/</pom.server.dynamic>
+				<pom.server.dynamic>http://47.100.31.217:8080</pom.server.dynamic>
 				<pom.app.url>http://47.100.31.217:8080/crm</pom.app.url>
 
                 <pom.jdbc.url>jdbc:mysql://47.100.31.217:3306/crm</pom.jdbc.url>
