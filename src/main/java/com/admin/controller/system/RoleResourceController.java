@@ -1,23 +1,17 @@
 package com.admin.controller.system;
 
-import com.admin.entity.system.Department;
 import com.admin.entity.system.Role;
 import com.admin.entity.system.RoleResource;
-import com.admin.entity.system.User;
-import com.admin.entity.util.ClosedDepartmentTreeNodeFactory;
 import com.admin.service.system.RoleResourceService;
 import com.admin.service.system.RoleService;
 import com.admin.service.system.UserService;
 import com.admin.web.util.HttpJsonResult;
 import com.haier.common.BusinessException;
+import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 import com.haier.common.util.JsonUtil;
-
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
-
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -80,12 +73,12 @@ public class RoleResourceController {
              params.put("name", name);
              params.put("description", description);
 
-             ServiceResult<List<Role>> result = roleService.getRoleList(params);
+             ServiceResult<Map<String, Object>> result = roleService.getRoleList(params, new PagerInfo());
              if(result == null || !result.getSuccess()) {
                  log.error("权限列表查询失败");
                  throw new BusinessException("权限列表查询失败");
              }
-             List<Role> roleList = result.getResult();
+             List<Role> roleList = (List<Role>)result.getResult();
 
              //获得条数
              int resultcount = roleList.size();
