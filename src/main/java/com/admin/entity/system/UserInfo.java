@@ -34,4 +34,13 @@ public class UserInfo  extends BaseEntity{
 
     private String nickName;
 
+    public static enum StatusEnum{
+        INIT(0),ENABLE(1),DISABLE(-1),LOCKED(-2);
+        @Getter
+        private Integer status;
+        private StatusEnum(Integer status) {
+            this.status = status;
+        }
+    }
+
 }

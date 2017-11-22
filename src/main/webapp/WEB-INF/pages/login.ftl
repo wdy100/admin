@@ -29,7 +29,7 @@
 					if(data.data){
 	            		window.location.href = "/index.html";
 	                }else{
-	                	window.location.href = "/index.html";
+                        $.messager.alert('提示',data.message);
 	                }
 		        }
 			});
@@ -37,7 +37,7 @@
 
         function apply(){
             $("#applyDiv").dialog({
-                title: '新增部门',
+                title: '注册账号',
                 width: 340,
                 height: 250,
                 top: 100,
@@ -72,6 +72,21 @@
             var mobile = $('#dmobile').val();
             var email = $('#demail').val();
             var nickName = $('#dnickName').val();
+            if (userName == "") {
+                $("#userName").duserName();
+                alert("用户名不能为空");
+                return false;
+            }
+            if (password == "") {
+                $("#dpassword").focus();
+                alert("密码不能为空");
+                return false;
+            }
+            if (nickName == "") {
+                $("#dnickName").focus();
+                alert("真实姓名不能为空");
+                return false;
+            }
             $.ajax({
                 type:'post',
                 url:'/system/createUser',

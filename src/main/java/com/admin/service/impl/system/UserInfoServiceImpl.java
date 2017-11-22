@@ -6,6 +6,7 @@ import com.admin.entity.system.UserInfo;
 import com.admin.entity.system.User;
 import com.admin.service.system.UserInfoService;
 import com.admin.service.system.UserService;
+import com.admin.web.util.PasswordUtil;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +69,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public ServiceResult<UserInfo> createUserInfo(UserInfo userInfo) {
         ServiceResult<UserInfo> executeResult = new ServiceResult<UserInfo>();
+        UserInfo dbUserInfo = userInfoDao.getByUserName(userInfo.getUserName());
+        if(dbUserInfo != null){
+            executeResult.setError("", "该用户名已存在。");
+            return executeResult;
+        }
         userInfo.setCreatedAt(new Date());
         userInfo.setUpdatedAt(new Date());
         userInfoDao.insert(userInfo);
@@ -79,7 +85,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         ServiceResult<UserInfo> executeResult = new ServiceResult<UserInfo>();
         UserInfo dbUserInfo = userInfoDao.getById(userInfo.getId());
         if(dbUserInfo == null){
-            executeResult.setMessage("该用户不存在或已经被删除。");
+            executeResult.setError("", "该用户不存在或已经被删除。");
             return executeResult;
         }
         dbUserInfo.setStatus(userInfo.getStatus());
@@ -87,6 +93,30 @@ public class UserInfoServiceImpl implements UserInfoService {
         dbUserInfo.setUpdatedBy(userInfo.getUpdatedBy());
         dbUserInfo.setUpdatedAt(new Date());
         userInfoDao.update(dbUserInfo);
+        return executeResult;
+    }
+
+    @Override
+    public ServiceResult<UserInfo> login(String userName, String password,
+                                     String ipAddress) {
+        ServiceResult<UserInfo> executeResult = new ServiceResult<UserInfo>();
+        UserInfo userInfo = userInfoDao.getByUserName(userName);
+        final String errorMsg = "用户名或密码错误";
+
+        // 用户名和密码以及用户状态是否匹配
+        if (userInfo == null) {
+            executeResult.setError("", errorMsg);
+            return executeResult;
+        }
+        if(UserInfo.StatusEnum.INIT.getStatus().equals(userInfo.getStatus())){
+            executeResult.setError("", "用户处于审核状态，请审核通过后登录");
+            return executeResult;
+        }
+        if (!userInfo.getPassword().equals(PasswordUtil.encrypt(password))) {
+            executeResult.setError("", errorMsg);
+            return executeResult;
+        }
+
         return executeResult;
     }
 }

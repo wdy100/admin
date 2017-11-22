@@ -36,4 +36,12 @@ public interface UserInfoService {
      * @param userInfo
      */
     public ServiceResult<UserInfo> updateUserInfo(UserInfo userInfo);
+
+    /**
+     * 登录
+     * @param userName
+     * @param password
+     */
+    public ServiceResult<UserInfo> login(String userName, String password,
+                                                  String ipAddress);
 }

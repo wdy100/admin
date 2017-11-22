@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.admin.entity.customer.Customer;
+import com.admin.entity.system.UserInfo;
+import com.admin.service.system.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Controller;  
@@ -33,17 +36,24 @@ import com.haier.common.ServiceResult;
 @Slf4j
 public class LoginController {  
     @Resource  
-    private UserService userService;  
+    private UserInfoService userInfoService;
     
     @RequestMapping(value = "/loginCommit", method = { RequestMethod.POST })
 	@ResponseBody
-	public HttpJsonResult<Object> loginCommit(HttpServletRequest request,
+	public Object loginCommit(HttpServletRequest request,
 			HttpServletResponse response){
-    	HttpJsonResult<Object> result = new HttpJsonResult<Object>();
-//		String statusStr = StringUtils.defaultIfEmpty(request.getParameter("status"), "");
-//		String id = StringUtils.defaultIfEmpty(request.getParameter("id"), "");
-    	result.setData(true);
-        return result;  
+    	HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
+        String userName = request.getParameter("userName");
+        String password = request.getParameter("password");
+        ServiceResult<UserInfo> result = userInfoService.login(userName, password, "");
+        if (!result.getSuccess()) {
+            log.error(result.getMessage());
+            jsonResult.setMessage(result.getMessage());
+            jsonResult.setData(false);
+            return jsonResult;
+        }
+        jsonResult.setData(result.getSuccess());
+        return jsonResult;
     }
     
     @RequestMapping("/index.html")

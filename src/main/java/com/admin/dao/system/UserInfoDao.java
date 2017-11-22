@@ -18,6 +18,10 @@ public class UserInfoDao   extends BaseDao{
         return this.getSqlSession().selectOne(namespace+"getById", id);
     }
 
+    public UserInfo getByUserName(String userName){
+        return this.getSqlSession().selectOne(namespace+"getByUserName", userName);
+    }
+
     public List<UserInfo> queryListBy(Map<String, Object> params){
         return this.getSqlSession().selectList(namespace+"queryListBy", params);
     }

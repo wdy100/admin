@@ -6,6 +6,7 @@ import com.admin.entity.system.UserInfo;
 import com.admin.service.system.UserInfoService;
 import com.admin.service.system.UserService;
 import com.admin.web.util.HttpJsonResult;
+import com.admin.web.util.PasswordUtil;
 import com.admin.web.util.WebUtil;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
@@ -88,7 +89,8 @@ public class UserInfoController {
         String nickName = request.getParameter("nickName");
         UserInfo userInfo = new UserInfo();
         userInfo.setUserName(userName);
-        userInfo.setPassword(password);
+        userInfo.setPassword(PasswordUtil.encrypt(password));
+        //userInfo.setPassword(password);
         userInfo.setStatus(0);
         userInfo.setMobile(mobile);
         userInfo.setEmail(email);
@@ -150,7 +152,8 @@ public class UserInfoController {
         }
         UserInfo userInfo = new UserInfo();
         userInfo.setId(Long.parseLong(userId));
-        userInfo.setPassword(newPassword);
+        userInfo.setPassword(PasswordUtil.encrypt(newPassword));
+        //userInfo.setPassword(newPassword);
         ServiceResult<UserInfo> result = userInfoService.updateUserInfo(userInfo);
         if (!result.getSuccess()) {
             log.error("重置密码失败！");
