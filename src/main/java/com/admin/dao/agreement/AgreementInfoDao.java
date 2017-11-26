@@ -38,4 +38,8 @@ public class AgreementInfoDao extends BaseDao{
 	public int updateById(AgreementInfo agreementInfo){
 		return this.getSqlSession().update(namespace+"updateById", agreementInfo);
 	}
+	
+	public int deleteAgreementInfo(Long agreementInfoId){
+		return this.getSqlSession().delete(namespace+"deleteAgreementInfo", agreementInfoId);
+	}
 }

@@ -9,7 +9,7 @@
 <body>
 <div class="easyui-layout" data-options="fit : true,border : false">
     <div data-options="region:'north',title:'查询条件',border:false" style="height:120px;" class="zoc">
-        <form id="roleForm" action="/uploadReportFile.html" method="post">
+        <form id="Form" action="/uploadReportFile.html" method="post">
             <table class="fixedTb">
                 <tr>
                     <td class="cxlabel">客户名称:</td>
@@ -41,17 +41,15 @@
                   </table>
                      
                     <td class="cxlabel">
-                        <a href="#"  id = "searchPt"  class="easyui-linkbutton" iconCls="icon-search">查询</a>
-                        <a id="add" href="#" class="easyui-linkbutton" iconCls="icon-add"  plain="false" >新增</a>
-                        <a id="update" href="#" class="easyui-linkbutton" iconCls="icon-edit"  plain="false"  onclick="updateRole()">修改</a>
-                        <a id="delete" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="delRole()">删除</a>
+                        <a id="searchPt" href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+                        <a id="addAgreement" href="#" class="easyui-linkbutton" iconCls="icon-add"  plain="false" >新增</a>
+                        <a id="delAgreement" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" >删除</a>
+                        <a id="approval" href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="approval()">审核</a>
                     </td>
-
-           
 
         </form>
     </div>
-    <div data-options="region:'center',title:'查询结果',border:false" style="left: 0px; top: 240px; width: 1920px;">
+    <div data-options="region:'center',border:false" style="left: 0px; top: 240px; width: 1920px;">
         <table id="dataGrid"></table>
     </div>
 </div>
@@ -100,21 +98,46 @@ $('#searchPt').click(function () {
     $('#dataGrid').datagrid('load',queryParamsHandler());
 });
 
-//角色新增
-$("#add").click(function(){
-    $("#name_edit").val("");
-    $("#description_edit").val("");
-    $("#createdBy_edit").val("");
-
-    $("#roleInputInfo").show();
-    $("#roleInputInfo").dialog({
-        collapsible: true,
-        minimizable: false,
-        maximizable: false,
-        height:270,
-        width:350
-    });
+//删除
+$("#delAgreement").click(function(){
+	var selectedCode = $('#dataGrid').datagrid('getSelected');
+	if(!selectedCode){
+		$.messager.alert('提示','请选择操作行。');
+		return;
+	}
+	if(selectedCode.approvalStatus!=0){
+		$.messager.alert('提示','该行数据已经提交，不可删除！');
+		return;
+	}
+	$.messager.confirm('提示', '确定删除该行数据吗？', function(r){
+				if (r){
+					$.messager.progress({text:"提交中..."});
+					$.ajax({
+						type:"GET",
+					    url: "/agreementInfo/delete",
+						dataType: "json",
+					    data: "id=" + selectedCode.id,
+					    cache:false,
+						success:function(data, textStatus){
+							if (data.success) {
+								$('#dataGrid').datagrid('reload');
+						    } else {
+						    	$.messager.alert('提示',data.message);
+						    	$('#dataGrid').datagrid('reload');
+						    }
+							$.messager.progress('close');
+						}
+					});
+			    }
+			});
 });
+
+
+//新增
+$("#addAgreement").click(function(){
+    window.location.href="/agreementInfo/toAdd";
+});
+
 
 //新增提交
 $("#saveBtn").click(function(){
@@ -237,6 +260,20 @@ $(function(){
                     align: 'center',
                     formatter: function(value, row, index){
                     	var result = '<a href="#" onclick="doEdit(\'' + row.id + '\' )">详情</a> ';
+                    	return result;
+                    }
+                },{
+                    field: 'operate',
+                    title: '操作',
+                    width: 70,
+                    align: 'center',
+                    formatter: function(value, row, index){
+                    	var result='';
+                    	if(row.approvalStatus==0){
+                    		result = '<a href="#" onclick="doEdit(\'' + row.id + '\' )">编辑</a> ';
+                    	}else {
+                    		
+                    	}
                     	return result;
                     }
                 }

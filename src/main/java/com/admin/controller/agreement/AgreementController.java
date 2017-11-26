@@ -141,4 +141,15 @@ public class AgreementController {
     	result.setData(resultMap);
         return result;  
     }  
+    
+    @RequestMapping("/delete")  
+    @ResponseBody
+    public HttpJsonResult<Map<String,Object>> delete(HttpServletRequest request,String id,Map<String, Object> stack){  
+    	HttpJsonResult<Map<String,Object>> result=new HttpJsonResult<Map<String, Object>>();
+    	Map<String,Object> resultMap=new HashMap<String, Object>();
+    		ServiceResult<Boolean> resultId = agreementService.deleteAgreementInfo(Long.valueOf(id));
+    		resultMap.put("id", resultId.getResult());
+    	result.setData(resultMap);
+        return result;  
+    }  
 }  

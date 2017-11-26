@@ -104,5 +104,18 @@ public class AgreementServiceImpl implements AgreementService {
     	}
     	return result;
     }
-
+    
+    @Override
+    public ServiceResult<Boolean> deleteAgreementInfo(Long agreementInfoId){
+    	checkNotNull(agreementInfoId, "agreementInfoId不能为空");
+    	ServiceResult<Boolean> result = new ServiceResult<Boolean>();
+    	try{
+    		int id = agreementInfoDao.deleteAgreementInfo(agreementInfoId);
+    		result.setResult(true);
+    	}catch(Exception e){
+    		result.setError("error","删除合同信息失败");
+    		log.error("删除合同信息失败:" + Throwables.getStackTraceAsString(e) );
+    	}
+    	return result;
+    }
 }

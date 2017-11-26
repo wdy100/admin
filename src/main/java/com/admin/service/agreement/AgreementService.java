@@ -20,4 +20,6 @@ public interface AgreementService {
     
     public ServiceResult<AgreementInfo> selectByIdAgreementInfo(AgreementInfo agreementInfo);
     
+    public ServiceResult<Boolean> deleteAgreementInfo(Long agreementInfoId);
+    
 }

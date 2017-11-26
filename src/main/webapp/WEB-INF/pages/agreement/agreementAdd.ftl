@@ -5,7 +5,8 @@
 <meta property="wb:webmaster" content="6ffdc657eef2403e" />
 <title>合同签订</title>
 <meta name="generator" content="PEC" />
-	<script type="text/javascript" src="${domainUrlUtil.staticURL}/portal/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="${domainUrlUtil.staticURL}/js/jquery-1.11.1.min.js"></script>
+	<link href="${domainUrlUtil.staticURL}/css/styleAgreement.css"  rel="stylesheet" />
 </head>
 <body id="ehaiertop">
 
@@ -19,38 +20,60 @@
 			<a href=""><i class="icon-font icon-crumb"></i>首页</a> &gt;
 				<span>合同管理</span> &gt;<strong class="now">合同签订</strong>
 		</div>
-		<div class="">
-			<span style="margin-left:55px;">选择客户：<em style="font-style:normal;color:#c7003a">*</em></span>
-				<select class="" id="customerId" name="customerId">
-			        <option value="11">张三</option>
-			        <option value="22">李四</option>
-				</select>
-			<span id="mainBankId_mes"></span>
-            <br/>
+		<div class="newedit">
+		<strong style="color: #1361a6;line-height:30px">新增合同:</strong>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tbody>
+			<tr>
+				<td class="tdright" width="130">选择客户：<em style="font-style:normal;color:#c7003a">*</em></td>
+				<td> <select id="customerId" name="customerId" style="width:170px;height: 24px;">
+			           <option value="0">客户1</option>
+			           <option value="1">客户2</option>
+			           <option value="2">客户3</option>
+			        </select>       
+			    </td>
+		  	</tr>
+			
+			<tr>
+				<td class="tdright" width="130">合同签署单位：<em style="font-style:normal;color:#c7003a">*</em></td>
+				<td><input class="" name="firstParty" id="firstParty" />     
+			    </td>
+		  	</tr>
+		  	
+		  	<tr>
+				<td class="tdright" width="130">项目名称：<em style="font-style:normal;color:#c7003a">*</em></td>
+				<td><input class="" name="projectName" id="projectName" />    
+			    </td>
+		  	</tr>
+		  	
+		  	<tr>
+				<td class="tdright" width="130">合同金额：<em style="font-style:normal;color:#c7003a">*</em></td>
+				<td><input class="" name="agreementAmount" id="agreementAmount" />    
+			    </td>
+		  	</tr>
+		  	
+		  	<tr>
+				<td class="tdright" width="130">签订日期：<em style="font-style:normal;color:#c7003a">*</em></td>
+				<td><input class="" name="agreeDate" id="agreeDate" />    
+			    </td>
+		  	</tr>
+		  	
+		  	<tr>
+		    	<td class="tdright">合同年限：<em style="font-style:normal;color:#c7003a">*</em></td>
+		    	<td><input name="serviceLife" id="serviceLife" type="text" placeholder="" style="width:50px; text-align: center;"/>  年</td>
+		  	</tr>
+		  		
+			</tbody>
+		</table>		  	
             
-            <span style="margin-left:55px;">合同签署单位：<em style="font-style:normal;color:#c7003a">*</em></span>
-				<input class="inl260" name="firstParty" id="firstParty" />&nbsp;
-			<span id="mainBankId_mes"></span>
-            <br/>
-            
-            <span style="margin-left:55px;">项目名称：<em style="font-style:normal;color:#c7003a">*</em></span>
-				<input class="inl260" name="projectName" id="projectName" />&nbsp;
-			<span id="mainBankId_mes"></span>
-            <br/>
-            
-            <span style="margin-left:55px;">合同金额：<em style="font-style:normal;color:#c7003a">*</em></span>
-				<input class="inl260" name="agreementAmount" id="agreementAmount" />&nbsp;
-			<span id="mainBankId_mes"></span>
-            <br/>
-            
-            <span style="margin-left:55px;">签订日期：<em style="font-style:normal;color:#c7003a">*</em></span>
-				<input class="inl260" name="agreeDate" id="agreeDate" />&nbsp;
-			<span id="mainBankId_mes"></span>
-            <br/>
             <input type="hidden" id="agreementId" name="agreementId" value="${(agreementId)!''}"/>
             
-            <button class="saveAgreement"  onclick="javascript:saveAgreement('0');" >暂存</button>
-            <button class="saveAgreement"  onclick="javascript:saveAgreement('1');" >下一步</button>
+            <div class="naebtn">
+			    <input id="Button1" type="submit" text="暂存" value="暂存" onclick="javascript:saveAgreement('0');" /> 
+			    &nbsp;&nbsp;     
+			    <input name="" type="reset" value="提交审核"  onclick="javascript:saveAgreement('1');" />
+			 	<div class="clear"></div>             
+			</div>
 		</div>
   
 	<!--主要内容-->

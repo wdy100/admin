@@ -176,4 +176,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
+  <delete id="deleteAgreementInfo">
+		delete  from  <include refid="table_name" /> where id = #{agreementInfoId}
+	</delete>
   </mapper>
