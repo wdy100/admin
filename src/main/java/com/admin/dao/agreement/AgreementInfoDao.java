@@ -1,5 +1,8 @@
 package com.admin.dao.agreement;
 
+import java.util.List;
+import java.util.Map;
+
 import com.admin.dao.BaseDao;
 import com.admin.entity.agreement.AgreementInfo;
 import com.admin.entity.system.User;
@@ -11,6 +14,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class AgreementInfoDao extends BaseDao{
+	
+	public List<AgreementInfo> getAgreementList(Map<String, Object> params){
+    	return this.getSqlSession().selectList(namespace+"getAgreementList", params);
+    }
+	
+	public Integer getAgreementListCount(Map<String, Object> params){
+        return this.getSqlSession().selectOne(namespace+"getAgreementListCount", params);
+    }
 	
 	public AgreementInfo selectById(Long id){
     	return this.getSqlSession().selectOne(namespace+"selectById", id);

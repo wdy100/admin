@@ -1,17 +1,18 @@
-<!-- ÒýÓÃJqueryµÄJsÎÄ¼þ -->
+<!-- ï¿½ï¿½ï¿½ï¿½Jqueryï¿½ï¿½Jsï¿½Ä¼ï¿½ -->
 <script type="text/javascript" src="${domainUrlUtil.staticURL}/js/jquery-1.11.1.min.js" ></script>
-
-<!-- ÒýÓÃEasyUIµÄ¹ú¼Ê»¯ÎÄ¼þ,ÈÃËüÏÔÊ¾ÖÐÎÄ -->
-<script type="text/javascript" src="${domainUrlUtil.staticURL}/js/easyui-lang-zh_CN.js" ></script>
 
 <script type="text/javascript" src="${domainUrlUtil.staticURL}/js/hz.js" ></script>
 
 <script type="text/javascript" src="${domainUrlUtil.staticURL}/jquery-easyui-1.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${domainUrlUtil.staticURL}/jquery-easyui-1.4/datagrid-groupview.js"></script>
+<script type="text/javascript" src="${domainUrlUtil.staticURL}/js/easyui-lang-zh_CN.js" ></script>
 
-<!-- µ¼ÈëEasy UIµÄÖ÷ÌâCssÎÄ¼þ -->
+<script type="text/javascript" src="${domainUrlUtil.staticURL}/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${domainUrlUtil.staticURL}/js/func.js"></script>
+
+<!-- ï¿½ï¿½ï¿½ï¿½Easy UIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Cssï¿½Ä¼ï¿½ -->
 <link id="easyuiTheme" href="${domainUrlUtil.staticURL}/jquery-easyui-1.4/themes/default/easyui.css" rel="stylesheet" type="text/css" />
 
-<!-- µ¼ÈëEasy UIµÄÍ¼±êCssÎÄ¼þ -->
+<!-- ï¿½ï¿½ï¿½ï¿½Easy UIï¿½ï¿½Í¼ï¿½ï¿½Cssï¿½Ä¼ï¿½ -->
 <link href="${domainUrlUtil.staticURL}/jquery-easyui-1.4/themes/icon.css" rel="stylesheet" type="text/css" />
 

@@ -39,6 +39,20 @@
     created_by, created_at, updated_by, updated_at, remark
   </sql>
   
+  <select id="getAgreementList"  parameterType="Map"  resultMap="agreementInfoMap">
+      SELECT id,<include refid="Base_Column_List"/>
+      FROM <include refid="table_name"/>
+      <include refid="where_sql"/>
+      Order By id DESC
+    LIMIT #{start},#{size}
+  </select>
+
+  <select id="getAgreementListCount"  parameterType="Map"  resultType="Integer">
+    SELECT COUNT(id)
+    FROM <include refid="table_name"/>
+    <include refid="where_sql"/>
+  </select>
+  
   <select id="selectById" parameterType="java.lang.Integer" resultMap="agreementInfoMap">
     select 
     id, <include refid="Base_Column_List" />
@@ -47,20 +61,23 @@
   </select>
 
   <sql id="where_sql">
-  <where>
-      <if test="approvalStatus != null and approvalStatus != ''">
-          AND approval_status = #{approvalStatus}
-      </if>
-      <if test="customerName != null and customerName != ''">
-          AND customer_name = #{customerName}
-      </if>
-      <if test="customerId != null and customerId != ''">
-          AND customer_id = #{customerId}
-      </if>
-      <if test="agreeDate != null and agreeDate != ''">
-          AND agree_date like concat('%', #{agreeDate}, '%') 
-      </if>
-  </where>
+	  <where>
+	      <if test="approvalStatus != null and approvalStatus != ''">
+	          AND approval_status = #{approvalStatus}
+	      </if>
+	       <if test="firstParty != null and firstParty != ''">
+	          AND first_party = #{firstParty}
+	      </if>
+	      <if test="customerName != null and customerName != ''">
+	          AND customer_name = #{customerName}
+	      </if>
+	      <if test="customerId != null and customerId != ''">
+	          AND customer_id = #{customerId}
+	      </if>
+	      <if test="agreeDate != null and agreeDate != ''">
+	          AND agree_date like concat('%', #{agreeDate}, '%') 
+	      </if>
+	  </where>
   </sql>
   
   <delete id="deleteById" parameterType="java.lang.Integer">
