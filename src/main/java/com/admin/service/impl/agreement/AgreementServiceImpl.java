@@ -5,12 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.admin.dao.agreement.AgreementInfoDao;
-import com.admin.dao.system.UserDao;
 import com.admin.entity.agreement.AgreementInfo;
-import com.admin.entity.system.Role;
-import com.admin.entity.system.User;
 import com.admin.service.agreement.AgreementService;
-import com.admin.service.system.UserService;
 import com.google.common.base.Throwables;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;

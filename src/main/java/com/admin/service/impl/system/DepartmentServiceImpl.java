@@ -1,13 +1,9 @@
 package com.admin.service.impl.system;
 
 import com.admin.dao.system.DepartmentDao;
-import com.admin.dao.system.UserDao;
 import com.admin.entity.system.Department;
-import com.admin.entity.system.User;
 import com.admin.entity.util.ComboBox;
 import com.admin.service.system.DepartmentService;
-import com.admin.service.system.UserService;
-import com.google.common.collect.Lists;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +11,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.*;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by GaoJingFei on 2017/11/13.

@@ -1,5 +1,4 @@
 package com.admin.service.customer;
-import com.admin.entity.system.User;
 import com.admin.entity.customer.Customer;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;

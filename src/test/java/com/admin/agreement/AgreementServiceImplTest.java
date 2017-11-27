@@ -8,9 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;  
 
 import com.admin.entity.agreement.AgreementInfo;
-import com.admin.entity.system.User;
 import com.admin.service.agreement.AgreementService;
-import com.admin.service.system.UserService;
 import com.haier.common.ServiceResult;
 
  /**
@@ -29,7 +27,7 @@ public class AgreementServiceImplTest{
 		AgreementInfo agreementInfo = new AgreementInfo();
 		agreementInfo.setCustomerId(111L);
 		agreementInfo.setRemark("remark");
-		ServiceResult<Boolean> result = agreementService.insertAgreementInfo(agreementInfo);
+		ServiceResult<Integer> result = agreementService.insertAgreementInfo(agreementInfo);
 		System.out.println(result.getSuccess());
 	}
 

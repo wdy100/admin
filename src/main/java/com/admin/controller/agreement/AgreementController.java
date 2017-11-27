@@ -33,10 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.admin.entity.agreement.AgreementInfo;
-import com.admin.entity.system.Role;
-import com.admin.entity.system.User;  
 import com.admin.service.agreement.AgreementService;
-import com.admin.service.system.UserService;  
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.WebUtil;
 import com.google.common.collect.Maps;

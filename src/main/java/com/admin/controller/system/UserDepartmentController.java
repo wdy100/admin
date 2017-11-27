@@ -1,7 +1,5 @@
 package com.admin.controller.system;
 
-import com.admin.entity.system.User;
-import com.admin.service.system.UserService;
 import com.haier.common.ServiceResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -22,24 +20,16 @@ import java.util.Map;
 @RequestMapping("/system") 
 @Slf4j
 public class UserDepartmentController {
-    @Resource  
-    private UserService userService;
 
     @RequestMapping(value = "userDepartment.html", method = { RequestMethod.GET, RequestMethod.POST })
     public String index(HttpServletRequest request, Model model) throws Exception {
-        String mobile = "18765996558";
-        ServiceResult<User> result = this.userService.getByMobile(mobile);
-        model.addAttribute("user", result.getResult());
+        
         return "system/userDepartment_list";
     }
     
     @RequestMapping("/userDepartmentList")
     public String userDepartmentList(HttpServletRequest request,Map<String, Object> stack){
-        String mobile = request.getParameter("mobile");  
-        ServiceResult<User> result = this.userService.getByMobile(mobile); 
-        log.info("测试2");
-        //model.addAttribute("user", result.getResult());
-        stack.put("user", result.getResult());
+        
         return "showUser2";  
     }  
 }  

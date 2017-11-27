@@ -1,11 +1,11 @@
 package com.admin.service.impl.system;
 
-import com.admin.dao.system.UserDao;
-import com.admin.entity.system.User;
+import com.admin.entity.system.Notice;
 import com.admin.service.system.NoticeService;
-import com.admin.service.system.UserService;
 import com.haier.common.ServiceResult;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +17,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Slf4j
 @Service
 public class NoticeServiceImpl implements NoticeService {
-    @Autowired
-    private UserDao userDao;
     @Override
-    public ServiceResult<User> getByMobile(String mobile){
+    public ServiceResult<Notice> getByMobile(String mobile){
         checkNotNull(mobile, "mobile不能为空");
-        ServiceResult<User> result = new ServiceResult<User>();
-        User user = userDao.getByMobile(mobile);
-        log.info("根据手机号查询用户信息,mobile={}", mobile);
-        result.setResult(user);
+        ServiceResult<Notice> result = new ServiceResult<Notice>();
         return result;
     }
 }

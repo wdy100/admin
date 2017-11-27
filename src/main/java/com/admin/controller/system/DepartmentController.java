@@ -1,10 +1,8 @@
 package com.admin.controller.system;
 
 import com.admin.entity.system.Department;
-import com.admin.entity.system.User;
 import com.admin.entity.util.ClosedDepartmentTreeNodeFactory;
 import com.admin.service.system.DepartmentService;
-import com.admin.service.system.UserService;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.WebUtil;
 import com.google.common.base.Throwables;
@@ -36,8 +34,6 @@ import java.util.Map;
 @RequestMapping("/system") 
 @Slf4j
 public class DepartmentController {
-    @Resource  
-    private UserService userService;
     @Resource
     private DepartmentService departmentService;
 

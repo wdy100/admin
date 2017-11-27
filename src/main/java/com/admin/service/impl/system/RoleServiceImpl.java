@@ -1,12 +1,8 @@
 package com.admin.service.impl.system;
 
 import com.admin.dao.system.RoleDao;
-import com.admin.dao.system.UserDao;
-import com.admin.entity.system.Department;
 import com.admin.entity.system.Role;
-import com.admin.entity.system.User;
 import com.admin.service.system.RoleService;
-import com.admin.service.system.UserService;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by GaoJingFei on 2017/11/13.

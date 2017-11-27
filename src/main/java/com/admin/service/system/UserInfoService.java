@@ -1,6 +1,5 @@
 package com.admin.service.system;
-import com.admin.entity.system.Department;
-import com.admin.entity.system.User;
+
 import com.admin.entity.system.UserInfo;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
@@ -12,10 +11,6 @@ import java.util.Map;
  */
 
 public interface UserInfoService {
-    /**
-     * 根据手机号获取用户信息
-     * */
-    public ServiceResult<User> getByMobile(String mobile);
 
     /**
      * 分页查询

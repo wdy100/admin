@@ -1,6 +1,5 @@
 package com.admin.dao.system;
 
-import com.admin.entity.system.User;
 import com.admin.entity.system.UserInfo;
 import org.springframework.stereotype.Repository;
 

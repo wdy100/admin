@@ -6,8 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;  
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;  
-import com.admin.entity.system.User;
-import com.admin.service.system.UserService;
+import com.admin.entity.system.UserInfo;
+import com.admin.service.system.UserInfoService;
 import com.haier.common.ServiceResult;
 
  /**
@@ -22,14 +22,11 @@ import com.haier.common.ServiceResult;
 public class UserServiceImplTest{
 	private static Logger logger = Logger.getLogger(UserServiceImplTest.class);  
 	@Resource
-	private UserService userService;
+	private UserInfoService userInfoService;
 	
 	@Test
 	public void testGetByMobile(){
-		ServiceResult<User> result = userService.getByMobile("18765996558");
-		System.out.println(result.getSuccess());
-		System.out.println(result.getResult().getName());
-		logger.info("用户姓名：" + result.getResult().getName()); 
+		
 	}
 
 	@Test

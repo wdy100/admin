@@ -1,6 +1,5 @@
 package com.admin.service.system;
 import com.admin.entity.system.Role;
-import com.admin.entity.system.User;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 

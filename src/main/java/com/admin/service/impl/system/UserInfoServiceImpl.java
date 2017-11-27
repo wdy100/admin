@@ -1,16 +1,12 @@
 package com.admin.service.impl.system;
 
-import com.admin.dao.system.UserDao;
 import com.admin.dao.system.UserInfoDao;
 import com.admin.entity.system.UserInfo;
-import com.admin.entity.system.User;
 import com.admin.service.system.UserInfoService;
-import com.admin.service.system.UserService;
 import com.admin.web.util.PasswordUtil;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,18 +24,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
-    private UserDao userDao;
-    @Autowired
     private UserInfoDao userInfoDao;
-    @Override
-    public ServiceResult<User> getByMobile(String mobile){
-        checkNotNull(mobile, "mobile不能为空");
-        ServiceResult<User> result = new ServiceResult<User>();
-        User user = userDao.getByMobile(mobile);
-        log.info("根据手机号查询用户信息,mobile={}", mobile);
-        result.setResult(user);
-        return result;
-    }
+   
 
     @Override
     public ServiceResult<Map<String, Object>> searchUserInfos(Map<String, Object> params, PagerInfo pagerInfo) {
@@ -116,7 +102,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             executeResult.setError("", errorMsg);
             return executeResult;
         }
-
+        executeResult.setResult(userInfo);
         return executeResult;
     }
 }

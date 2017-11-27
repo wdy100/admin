@@ -2,9 +2,7 @@ package com.admin.controller.system;
 
 import com.admin.entity.system.Department;
 import com.admin.entity.system.Role;
-import com.admin.entity.system.User;
 import com.admin.service.system.RoleService;
-import com.admin.service.system.UserService;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.WebUtil;
 import com.google.common.base.Throwables;

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.admin.dao.system.RoleResourceDao;
 import com.admin.entity.system.RoleResource;
-import com.admin.entity.system.User;
 import com.admin.service.system.RoleResourceService;
 import com.google.common.base.Throwables;
 import com.haier.common.ServiceResult;

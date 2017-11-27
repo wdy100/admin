@@ -1,10 +1,8 @@
 package com.admin.controller.system;
 
 import com.admin.entity.system.Department;
-import com.admin.entity.system.User;
 import com.admin.entity.system.UserInfo;
 import com.admin.service.system.UserInfoService;
-import com.admin.service.system.UserService;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.PasswordUtil;
 import com.admin.web.util.WebUtil;

@@ -4,7 +4,6 @@ import com.admin.entity.system.Role;
 import com.admin.entity.system.RoleResource;
 import com.admin.service.system.RoleResourceService;
 import com.admin.service.system.RoleService;
-import com.admin.service.system.UserService;
 import com.admin.web.util.HttpJsonResult;
 import com.haier.common.BusinessException;
 import com.haier.common.PagerInfo;
@@ -34,8 +33,6 @@ import java.util.Map;
 @RequestMapping("/system") 
 @Slf4j
 public class RoleResourceController {
-    @Resource  
-    private UserService userService;
 
     @Resource
     private RoleService roleService;

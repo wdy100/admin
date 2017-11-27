@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.admin.dao.BaseDao;
 import com.admin.entity.agreement.AgreementInfo;
-import com.admin.entity.system.User;
 
 import org.springframework.stereotype.Repository;
 
