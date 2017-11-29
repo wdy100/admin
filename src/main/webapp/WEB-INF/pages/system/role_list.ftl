@@ -18,9 +18,9 @@
                     </td>
                     <td class="cxlabel">
                         <a href="#"  id = "searchPt"  class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
-                        <a id="add" href="#" class="easyui-linkbutton" iconCls="icon-add"  plain="false"  onclick="addRole()">新增</a>
-                        <a id="update" href="#" class="easyui-linkbutton" iconCls="icon-edit"  plain="false"  onclick="updateRole()">修改</a>
-                        <a id="delete" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="delRole()">删除</a>
+                        <a id="add" href="#" class="easyui-linkbutton" iconCls="icon-add"  plain="false" >新增</a>
+                        <a id="update" href="#" class="easyui-linkbutton" iconCls="icon-edit"  plain="false"  >修改</a>
+                        <a id="delete" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false">删除</a>
                     </td>
 
                 </tr>
@@ -34,7 +34,6 @@
 </div>
 
 <div id="roleInputInfo" style="padding:10px;display:none;" title="新增角色">
-    ##    <div id="w" class="easyui-dialog" title="" data-options="modal:true,closed:true,iconCls:'icon-save'" style="padding:10px;">
     <table>
         <tr>
             <td>角色编码</td>
@@ -48,15 +47,10 @@
             <td>角色描述</td>
             <td><input id="description_edit" type="text"/></td>
         </tr>
-        <tr>
-            <td>创建者</td>
-            <td><input id="createdBy_edit" type="text"/></td>
-        </tr>
     </table>
     </br>
     <div style="text-align:center"><input id="saveBtn" type="button" value="保存" class="l-btn" style=" font-size: 12px;line-height: 24px; width: 52px; font-family: 微软雅黑"/>
     </div>
-    ##    </div>
 </div>
 
 <script type="text/javascript">
@@ -155,15 +149,14 @@ $('#searchPt').click(function () {
 $("#add").click(function(){
     $("#name_edit").val("");
     $("#description_edit").val("");
-    $("#createdBy_edit").val("");
 
     $("#roleInputInfo").show();
     $("#roleInputInfo").dialog({
         collapsible: true,
         minimizable: false,
         maximizable: false,
-        height:270,
-        width:350
+        height:200,
+        width:300
     });
 });
 
@@ -181,20 +174,15 @@ $("#saveBtn").click(function(){
         $.messager.alert("提示","请填写角色描述","info")
         return false;
     }
-    if(!$.isNotBlank($("#createdBy_edit").val())){
-        $.messager.alert("提示","请填写创建人","info")
-        return false;
-    }
     $.messager.progress({text:"提交中..."});
     jQuery.ajax({
-        url: "/system/saveRole.html",
+        url: "/system/saveRole",
         data:{
             "code": $("#code_edit").val(),
             "name": $("#name_edit").val(),
-            "description": $("#description_edit").val(),
-            "createdBy": $("#createdBy_edit").val()
+            "description": $("#description_edit").val()
         },
-        type: "GET",
+        type: "POST",
         success: function(result) {
             $.messager.progress('close');
             if(result.success == true){

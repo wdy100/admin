@@ -1,9 +1,9 @@
 package com.admin.controller.system;
 
-import com.admin.entity.system.Department;
 import com.admin.entity.system.Role;
 import com.admin.service.system.RoleService;
 import com.admin.web.util.HttpJsonResult;
+import com.admin.web.util.SessionSecurityConstants;
 import com.admin.web.util.WebUtil;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
@@ -24,8 +24,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,14 +76,13 @@ public class RoleController {
         }
     }
 
-    @RequestMapping(value = { "saveRole.html" }, method = { RequestMethod.GET })
+    @RequestMapping(value = { "saveRole" }, method = { RequestMethod.POST })
     @ResponseBody
-    HttpJsonResult<Boolean> saveInvoicePostExpress(@RequestParam(required = false) String code,
+    public HttpJsonResult<Object> saveRole(@RequestParam(required = false) String code,
                                                    @RequestParam(required = false) String name,
                                                    @RequestParam(required = false) String description,
-                                                   @RequestParam(required = false) String createdBy,
                                                    HttpServletRequest request, HttpServletResponse response) {
-        HttpJsonResult<Boolean> result = new HttpJsonResult<Boolean>();
+        HttpJsonResult<Object> result = new HttpJsonResult<Object>();
 
         ServiceResult<Role> seResult = roleService.getByName(name.trim());
         if(seResult.getSuccess() && seResult != null && seResult.getResult() != null) {
@@ -96,8 +93,8 @@ public class RoleController {
         role.setCode(code);
         role.setName(name);
         role.setDescription(description);
-        role.setCreatedBy(createdBy);
-        role.setUpdatedBy(createdBy);
+        role.setCreatedBy((String)(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME)));
+        role.setUpdatedBy((String)(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME)));
 
         try {
             ServiceResult<Integer> roleResult = roleService.insert(role);
