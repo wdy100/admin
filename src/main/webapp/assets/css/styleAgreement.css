@@ -38,7 +38,7 @@ h3{
 }
   /*login*/
 .managelogin {
-	background-color: #fff;
+	background-color: #f2f1f1;
 }
 .login-all{
 	width:100%;
@@ -49,16 +49,27 @@ h3{
 	background-position: center;
 	margin:5% auto;	
 	border-bottom:1px solid #ccc;
-	/*box-shadow: 5px 5px 3px #ccc;*/
-	
+	z-index:-2;	
+	/*box-shadow: 5px 5px 3px #ccc;*/	
 	}
-.login {
-	background:#fff;
+.login {	
 	width:340px;
 	height: 310px;
 	padding: 20px 45px;
-	border-radius: 10px;	
-	margin:10px auto;	
+	margin:10px auto;
+	position: relative;		
+}
+.login img,.loginfrom,.loginbtn{z-index:3;}
+.loginbg{
+	width:430px;
+	height: 350px;
+	background:#fff;
+	opacity: 0.3;
+	border-radius: 10px;
+	position: absolute;
+	top: 0;
+	left: 0;	
+	z-index:-1;
 }
 .loginfrom {
 	width: 300px;
@@ -338,21 +349,22 @@ h3{
 	margin: 10px;
 }
 
-.list thead {
+.list thead{
 	background-color: #eef3f7;
 }
 
-.list thead td {
+.list thead td{
 	border-bottom: 1px solid #d6dde3;
 	height: 30px;
 	font-weight: bold
 }
 
-.list td {
+.list td{
 	padding-left: 15px;
 	border-bottom: 1px solid #eee;
 	height: 30px;
 }
+
 
 .edit a{
 	display: block;

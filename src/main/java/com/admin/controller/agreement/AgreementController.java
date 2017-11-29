@@ -1,5 +1,10 @@
 package com.admin.controller.agreement;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +23,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;  
 import org.springframework.ui.Model;  
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;  
   
 
@@ -32,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.admin.entity.agreement.AgreementGoods;
 import com.admin.entity.agreement.AgreementInfo;
 import com.admin.service.agreement.AgreementService;
 import com.admin.web.util.HttpJsonResult;
@@ -49,6 +58,14 @@ public class AgreementController {
     @Resource  
     private AgreementService agreementService;  
 
+    /** mvc 将string类型转换为 Date*/
+    @InitBinder
+    public void bindingPreparation(WebDataBinder binder) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        CustomDateEditor orderDateEditor = new CustomDateEditor(dateFormat, true);
+        binder.registerCustomEditor(Date.class, orderDateEditor);
+    }
+    
     @RequestMapping(value = "agreement.html", method = { RequestMethod.GET, RequestMethod.POST })
     public String index(HttpServletRequest request, Model model) throws Exception {
         return "agreement/agreementList";
@@ -101,21 +118,47 @@ public class AgreementController {
     	return "agreement/agreementAdd";
     }  
     
-    @RequestMapping("/add")  
-    @ResponseBody
-    public HttpJsonResult<Map<String,Object>> add(HttpServletRequest request,AgreementInfo agreementInfo,Map<String, Object> stack){  
-    	HttpJsonResult<Map<String,Object>> result=new HttpJsonResult<Map<String, Object>>();
-    	Map<String,Object> resultMap=new HashMap<String, Object>();
-    	if(agreementInfo.getId() == null ){
-    		ServiceResult<Integer> resultId = agreementService.insertAgreementInfo(agreementInfo);
-    		resultMap.put("id", resultId.getResult());
-    	}else{
-    		agreementService.updateAgreementInfo(agreementInfo);
-    		resultMap.put("id", agreementInfo.getId());
-    	}
-    	result.setData(resultMap);
-        return result;  
-    }  
+    @RequestMapping( value ="/add", method = { RequestMethod.POST })
+    public String add(HttpServletRequest request,AgreementInfo agreementInfo,
+    				Map<String, Object> stack){  
+    	
+    	List<AgreementGoods> goodsList = new ArrayList<AgreementGoods>();
+    	
+    	String[] systemNames = request.getParameterValues("systemName");
+    	String[] hardwareNames = request.getParameterValues("hardwareName");
+    	String[] goodsNums = request.getParameterValues("goodsNum");
+    	String[] prices = request.getParameterValues("price");
+    	String[] hardwareAmounts = request.getParameterValues("hardwareAmount");
+    	String[] serviceAmounts = request.getParameterValues("serviceAmount");
+    	String[] allAmounts = request.getParameterValues("allAmount");
+    	 for(int i = 0; i < systemNames.length; i++){
+    		 if(systemNames[i]!=null && systemNames[i].length()>0){//输入框有值
+    			 AgreementGoods agreementGoods = new AgreementGoods();
+    			 agreementGoods.setSystemName(systemNames[i]);
+    			 agreementGoods.setHardwareName(hardwareNames[i]);
+    			 agreementGoods.setGoodsNum(Integer.valueOf(goodsNums[i]));
+    			 agreementGoods.setPrice(new BigDecimal(prices[i]));
+    			 agreementGoods.setHardwareAmount(new BigDecimal(hardwareAmounts[i]));
+    			 agreementGoods.setServiceAmount(new BigDecimal(serviceAmounts[i]));
+    			 agreementGoods.setAllAmount(new BigDecimal(allAmounts[i]));
+    			 
+    			 goodsList.add(agreementGoods);
+    		 }
+    	 }
+    	try {
+	    	if(agreementInfo.getId() == null ){
+	    		ServiceResult<Integer> resultId = agreementService.insertAgreementInfo(agreementInfo,goodsList);
+	    	}else{
+	    		agreementService.deleteAgreementGoods(agreementInfo.getId());
+	    		agreementService.updateAgreementInfo(agreementInfo,goodsList);
+	    	}
+    	} catch (Exception e) {
+             log.error("合同信息保存失败", e);
+             throw new BusinessException("合同信息保存失败" + e.getMessage());
+        }
+    	
+        return "redirect:agreement.html";
+    }
     
     @RequestMapping("/toApproval")  
     public String toApproval(HttpServletRequest request,AgreementInfo agreementInfo,Map<String, Object> stack){  
@@ -130,7 +173,7 @@ public class AgreementController {
     	HttpJsonResult<Map<String,Object>> result=new HttpJsonResult<Map<String, Object>>();
     	Map<String,Object> resultMap=new HashMap<String, Object>();
 		
-    	agreementService.updateAgreementInfo(agreementInfo);
+    	//agreementService.updateAgreementInfo(agreementInfo);
     	//保存到审核信息表
     	
 		resultMap.put("id", agreementInfo.getId());

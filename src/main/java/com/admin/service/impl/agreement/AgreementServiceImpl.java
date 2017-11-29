@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.admin.dao.agreement.AgreementGoodsDao;
 import com.admin.dao.agreement.AgreementInfoDao;
+import com.admin.entity.agreement.AgreementGoods;
 import com.admin.entity.agreement.AgreementInfo;
 import com.admin.service.agreement.AgreementService;
 import com.google.common.base.Throwables;
@@ -27,6 +29,9 @@ public class AgreementServiceImpl implements AgreementService {
     
 	@Autowired
     private AgreementInfoDao agreementInfoDao;
+
+	@Autowired
+	private AgreementGoodsDao agreementGoodsDao;
     
 	@Override
 	public ServiceResult<Map<String, Object>> getAgreementList(
@@ -60,12 +65,20 @@ public class AgreementServiceImpl implements AgreementService {
 	}
 	
     @Override
-    public ServiceResult<Integer> insertAgreementInfo(AgreementInfo agreementInfo){
+    public ServiceResult<Integer> insertAgreementInfo(AgreementInfo agreementInfo,List<AgreementGoods> agreementGoodsList){
         checkNotNull(agreementInfo, "agreementInfo不能为空");
         ServiceResult<Integer> result = new ServiceResult<Integer>();
         try{
-            int id = agreementInfoDao.insert(agreementInfo);
-            result.setResult( agreementInfo.getId().intValue());
+            agreementInfoDao.insert(agreementInfo);
+            Long agreementId = agreementInfo.getId();
+            result.setResult( agreementId.intValue());
+            
+            if(agreementGoodsList!=null && agreementGoodsList.size()>0){
+            	for(AgreementGoods agreementGoods :agreementGoodsList){
+            		agreementGoods.setAgreementId(agreementId);
+            	}
+            	agreementGoodsDao.insertAgreementGoodsBatch(agreementGoodsList);
+            }
         }catch(Exception e){
         	result.setError("error","合同信息插入失败");
         	log.error("合同信息插入失败:" + Throwables.getStackTraceAsString(e) );
@@ -74,11 +87,19 @@ public class AgreementServiceImpl implements AgreementService {
     }
     
     @Override
-    public ServiceResult<Boolean> updateAgreementInfo(AgreementInfo agreementInfo){
+    public ServiceResult<Boolean> updateAgreementInfo(AgreementInfo agreementInfo,List<AgreementGoods> agreementGoodsList){
     	checkNotNull(agreementInfo, "agreementInfo不能为空");
     	ServiceResult<Boolean> result = new ServiceResult<Boolean>();
     	try{
     		int id = agreementInfoDao.updateById(agreementInfo);
+    		Long agreementId = agreementInfo.getId();
+    		
+    		if(agreementGoodsList!=null && agreementGoodsList.size()>0){
+            	for(AgreementGoods agreementGoods :agreementGoodsList){
+            		agreementGoods.setAgreementId(agreementId);
+            	}
+            	agreementGoodsDao.insertAgreementGoodsBatch(agreementGoodsList);
+            }
     		result.setResult(true);
     	}catch(Exception e){
     		result.setError("error","合同信息更新失败");
@@ -111,6 +132,20 @@ public class AgreementServiceImpl implements AgreementService {
     	}catch(Exception e){
     		result.setError("error","删除合同信息失败");
     		log.error("删除合同信息失败:" + Throwables.getStackTraceAsString(e) );
+    	}
+    	return result;
+    }
+    
+    @Override
+    public ServiceResult<Boolean> deleteAgreementGoods(Long agreementInfoId){
+    	checkNotNull(agreementInfoId, "agreementInfoId不能为空");
+    	ServiceResult<Boolean> result = new ServiceResult<Boolean>();
+    	try{
+    		int id = agreementGoodsDao.deleteByAgreementId(agreementInfoId);
+    		result.setResult(true);
+    	}catch(Exception e){
+    		result.setError("error","删除合同货品清单失败");
+    		log.error("删除合同货品清单 失败:" + Throwables.getStackTraceAsString(e) );
     	}
     	return result;
     }

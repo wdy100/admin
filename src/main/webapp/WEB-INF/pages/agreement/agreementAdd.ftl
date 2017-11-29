@@ -3,10 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta property="wb:webmaster" content="6ffdc657eef2403e" />
-<title>合同签订</title>
-<meta name="generator" content="PEC" />
-	<script type="text/javascript" src="${domainUrlUtil.staticURL}/js/jquery-1.11.1.min.js"></script>
+	<title>合同签订</title>
+	<#include "../common/easyui_core.ftl"/>
 	<link href="${domainUrlUtil.staticURL}/css/styleAgreement.css"  rel="stylesheet" />
+	
+	<meta name="generator" content="PEC" />
 </head>
 <body id="ehaiertop">
 
@@ -24,16 +25,7 @@
 		<strong style="color: #1361a6;line-height:30px">新增合同:</strong>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tbody>
-			<tr>
-				<td class="tdright" width="130">选择客户：<em style="font-style:normal;color:#c7003a">*</em></td>
-				<td> <select id="customerId" name="customerId" style="width:170px;height: 24px;">
-			           <option value="0">客户1</option>
-			           <option value="1">客户2</option>
-			           <option value="2">客户3</option>
-			        </select>       
-			    </td>
-		  	</tr>
-			
+			<@form.form method="post" class="validForm" id="addForm" name="addForm">
 			<tr>
 				<td class="tdright" width="130">合同签署单位：<em style="font-style:normal;color:#c7003a">*</em></td>
 				<td><input class="" name="firstParty" id="firstParty" />     
@@ -47,6 +39,22 @@
 		  	</tr>
 		  	
 		  	<tr>
+				<td class="tdright" width="130">选择客户：<em style="font-style:normal;color:#c7003a">*</em></td>
+				<td> <select id="customerId" name="customerId" style="width:170px;height: 24px;">
+			           <option value="0">客户1</option>
+			           <option value="1">客户2</option>
+			           <option value="2">客户3</option>
+			        </select>       
+			    </td>
+		  	</tr>
+		  	
+		  	<tr>
+		    	<td class="tdright">联络人：</td>
+		    	<td><input name="" type="text" placeholder=""/></td>
+		  	</tr>
+		  	
+		  	
+		  	<tr>
 				<td class="tdright" width="130">合同金额：<em style="font-style:normal;color:#c7003a">*</em></td>
 				<td><input class="" name="agreementAmount" id="agreementAmount" />    
 			    </td>
@@ -54,7 +62,7 @@
 		  	
 		  	<tr>
 				<td class="tdright" width="130">签订日期：<em style="font-style:normal;color:#c7003a">*</em></td>
-				<td><input class="" name="agreeDate" id="agreeDate" />    
+				<td><input class="" name="agreeDate" id="agreeDate" class="Wdate {required:true}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm:ss'})"/>    
 			    </td>
 		  	</tr>
 		  	
@@ -62,12 +70,115 @@
 		    	<td class="tdright">合同年限：<em style="font-style:normal;color:#c7003a">*</em></td>
 		    	<td><input name="serviceLife" id="serviceLife" type="text" placeholder="" style="width:50px; text-align: center;"/>  年</td>
 		  	</tr>
-		  		
+		  	
+		  	<tr>
+		    	<td class="tdright">设备费合计：</td>
+		    	<td><span style="color: red;">¥</span> 
+		    		<input name="" type="text" placeholder=""style="width:80px;"/> 元</td>
+		  	</tr>
+		  	<tr>
+		    	<td class="tdright">安装费合计 ：</td>
+		    	<td><span style="color: red;">¥</span> 
+		    		<input name="" type="text" placeholder="" style="width:80px;"/> 元</td>
+		  	</tr>
+		  	<tr>
+		    	<td class="tdright">服务费合计：</td>
+		    	<td><span style="color: red;">¥</span> 
+		    		<input name="" type="text" placeholder="" style="width:80px;"/> 元</td>
+		  	</tr>
+		  	<tr>
+		    	<td class="tdright">费用总合计：</td>
+		    	<td><span style="color: red;">¥</span> 
+		    		<input name="" type="text" placeholder="" style="width:80px;"/> 元</td>
+		  	</tr>
+		  	<tr>
+		    	<td class="tdright">应付款：</td>
+		    	<td><span style="color: red;">¥</span> 
+		    		<input name="" type="text" placeholder="" style="width:80px;"/> 元</td>
+		  	</tr>
+		  	<tr>
+		    	<td class="tdright">服务费：</td>
+		    	<td>
+		    		第二年
+		    		<input name="" type="text" placeholder="" style="width:30px; text-align: center;"/> 月
+		    		<input name="" type="text" placeholder="" style="width:30px; text-align: center;"/> 日 
+		    		起付 <span style="color: red;">¥</span> <input name="" type="text" placeholder="" style="width:80px;"/> 元（每年）
+		    	</td>
+		  	</tr>
+		  	<tr>
+		    	<td class="tdright">合同应付款总额：</td>
+		    	<td>
+		    		<input name="" type="text" placeholder="" style="width:100px; text-align: center;"/> 圆整 
+		    		人民币小写:<span style="color: red;">¥</span> 
+		    		<input name="" type="text" placeholder="" style="width:80px;"/> 元
+		    	</td>
+		  	</tr>
+		  	
 			</tbody>
 		</table>		  	
-            
+        
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="listtable" style="text-align: center;">
+                <thead bgcolor="#eef3f7">
+                <tr>
+                    <td>系统名称</td>
+                    <td>硬件名称</td>
+                    <td>数量</td>
+                    <td>单价</td>
+                    <td>设备费合计(元）</td>
+                    <td>服务费（元/年）</td>
+					<td>安装费及辅材费用合计（元/套）</td>
+                    
+                </tr>
+                </thead>                  
+                <tr>
+                	<td><input type="text" value="系统名称" name="systemName" /></td>
+                	<td><input type="text" value="硬件名称" name="hardwareName" /></td>
+                	<td><input type="text" value="" name="goodsNum" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="500.0" name="price" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="200.0" name="hardwareAmount" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="100.0" name="serviceAmount" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="300.0" name="allAmount" style="width:80px; text-align: center;"/></td>
+                </tr>
+                <tr>
+                	<td><input type="text" value="系统名称2" name="systemName" /></td>
+                	<td><input type="text" value="硬件名称2" name="hardwareName" /></td>
+                	<td><input type="text" value="" name="goodsNum" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="501.0" name="price" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="201.0" name="hardwareAmount" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="101.0" name="serviceAmount" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="301.0" name="allAmount" style="width:80px; text-align: center;"/></td>
+                </tr>
+                <tr>
+                	<td><input type="text" value="" name="systemName" /></td>
+                	<td><input type="text" value="" name="" /></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                </tr> 
+                <tr>
+                	<td><input type="text" value="" name="" /></td>
+                	<td><input type="text" value="" name="" /></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                </tr> 
+                <tr>
+                	<td><input type="text" value="" name="" /></td>
+                	<td><input type="text" value="" name="" /></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
+                </tr> 
+            </table>    
             <input type="hidden" id="agreementId" name="agreementId" value="${(agreementId)!''}"/>
             
+            </@form.form>
             <div class="naebtn">
 			    <input id="Button1" type="submit" text="暂存" value="暂存" onclick="javascript:saveAgreement('0');" /> 
 			    &nbsp;&nbsp;     
@@ -195,32 +306,12 @@
 	var dataJson1 = {};
 	var dataJson2 = {};
 	//function saveAgreement(){}
-	// 保存用户信息
+	// 保存
 	function saveAgreement(approvalStatus){
-		var agreementId = $('#agreementId').val();
-		var customerId = $('#customerId').val();// 用户姓名
-		var customerName = $("#customerId").find("option:selected").text();
-		var firstParty = $('#firstParty').val();//甲方
-		var projectName = $('#projectName').val();
-		var agreementAmount = $('#agreementAmount').val();
-		var approvalStatus = approvalStatus;
-		var agreementId = $('#agreementId').val();
-		var dataJson  = {id: agreementId,customerId:customerId,firstParty:firstParty,projectName:projectName,agreementAmount:agreementAmount,approvalStatus:approvalStatus};
-		$.ajax({
-			url:'/agreementInfo/add?',
-			type:'get',
-			dataType:'json',
-			data:dataJson,
-			success:function(data){
-				if(agreementId==''){
-					$('#agreementId').val(data.data.id)
-				}
-				var agreementId = $('#agreementId').val();
-				if(approvalStatus==1){
-					window.location.href="/agreementInfo/toApproval?id="+agreementId;
-				}
-			}
-		});
+		
+        $("#addForm").attr("action", "/agreementInfo/add")
+                .attr("method", "POST")
+                .submit();
 	}
 </script>
 
