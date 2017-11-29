@@ -109,7 +109,7 @@ public class AgreementServiceImpl implements AgreementService {
     }
     
     @Override
-    public ServiceResult<AgreementInfo> selectByIdAgreementInfo(AgreementInfo agreementInfo){
+    public ServiceResult<AgreementInfo> selectAgreementInfoById(AgreementInfo agreementInfo){
     	checkNotNull(agreementInfo, "agreementInfo不能为空");
     	ServiceResult<AgreementInfo> result = new ServiceResult<AgreementInfo>();
     	try{
@@ -146,6 +146,21 @@ public class AgreementServiceImpl implements AgreementService {
     	}catch(Exception e){
     		result.setError("error","删除合同货品清单失败");
     		log.error("删除合同货品清单 失败:" + Throwables.getStackTraceAsString(e) );
+    	}
+    	return result;
+    }
+    
+    @Override
+    public ServiceResult<List<AgreementGoods>> selectAgreementGoodsByAgreementInfoId(Long agreementInfoId){
+    	ServiceResult<List<AgreementGoods>> result = new ServiceResult<List<AgreementGoods>>();
+    	try{
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("agreementId", agreementInfoId);
+    		List<AgreementGoods> agreementGoodsList = agreementGoodsDao.getAgreementGoodsList(params);
+    		result.setResult(agreementGoodsList);
+    	}catch(Exception e){
+    		result.setError("error","查询合同货品清单失败");
+    		log.error("查询合同货品清单失败:" + Throwables.getStackTraceAsString(e) );
     	}
     	return result;
     }

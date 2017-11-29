@@ -160,9 +160,21 @@ public class AgreementController {
         return "redirect:agreement.html";
     }
     
+    @RequestMapping("/toEdit")  
+    public String toEdit(HttpServletRequest request,
+    		AgreementInfo agreementInfo,Map<String, Object> stack){ 
+    	ServiceResult<AgreementInfo> agreementInfoResult= agreementService.selectAgreementInfoById(agreementInfo);
+    	if(agreementInfoResult!=null && agreementInfoResult.getSuccess() && agreementInfoResult.getResult()!=null){
+    		ServiceResult<List<AgreementGoods>> agreementGoodsListResult = agreementService.selectAgreementGoodsByAgreementInfoId(agreementInfo.getId());
+    		stack.put("agreementInfo", agreementInfoResult.getResult());
+    		stack.put("agreementGoodsList", agreementGoodsListResult.getResult());
+    	}
+    	return "agreement/agreementEdit";
+    }  
+    
     @RequestMapping("/toApproval")  
     public String toApproval(HttpServletRequest request,AgreementInfo agreementInfo,Map<String, Object> stack){  
-    	ServiceResult<AgreementInfo> result = agreementService.selectByIdAgreementInfo(agreementInfo);
+    	ServiceResult<AgreementInfo> result = agreementService.selectAgreementInfoById(agreementInfo);
     	stack.put("agreementInfo", result.getResult());
     	return "agreement/agreementApproval";
     }  

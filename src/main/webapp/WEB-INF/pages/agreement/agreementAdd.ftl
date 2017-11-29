@@ -68,49 +68,49 @@
 		  	
 		  	<tr>
 		    	<td class="tdright">合同年限：<em style="font-style:normal;color:#c7003a">*</em></td>
-		    	<td><input name="serviceLife" id="serviceLife" type="text" placeholder="" style="width:50px; text-align: center;"/>  年</td>
+		    	<td><input name="serviceLife" id="serviceLife" type="text"  style="width:50px; text-align: center;"/>  年</td>
 		  	</tr>
 		  	
 		  	<tr>
 		    	<td class="tdright">设备费合计：</td>
 		    	<td><span style="color: red;">¥</span> 
-		    		<input name="" type="text" placeholder=""style="width:80px;"/> 元</td>
+		    		<input name="hardwareAll" type="text" style="width:80px;"/> 元</td>
 		  	</tr>
 		  	<tr>
 		    	<td class="tdright">安装费合计 ：</td>
 		    	<td><span style="color: red;">¥</span> 
-		    		<input name="" type="text" placeholder="" style="width:80px;"/> 元</td>
+		    		<input name="installAll" type="text" style="width:80px;"/> 元</td>
 		  	</tr>
 		  	<tr>
 		    	<td class="tdright">服务费合计：</td>
 		    	<td><span style="color: red;">¥</span> 
-		    		<input name="" type="text" placeholder="" style="width:80px;"/> 元</td>
+		    		<input name="serviceAll" type="text" style="width:80px;"/> 元</td>
 		  	</tr>
 		  	<tr>
 		    	<td class="tdright">费用总合计：</td>
 		    	<td><span style="color: red;">¥</span> 
-		    		<input name="" type="text" placeholder="" style="width:80px;"/> 元</td>
+		    		<input name="expensesAll" type="text" placeholder="" style="width:80px;"/> 元</td>
 		  	</tr>
 		  	<tr>
 		    	<td class="tdright">应付款：</td>
 		    	<td><span style="color: red;">¥</span> 
-		    		<input name="" type="text" placeholder="" style="width:80px;"/> 元</td>
+		    		<input name="payablesAll" type="text" placeholder="" style="width:80px;"/> 元</td>
 		  	</tr>
 		  	<tr>
 		    	<td class="tdright">服务费：</td>
 		    	<td>
 		    		第二年
-		    		<input name="" type="text" placeholder="" style="width:30px; text-align: center;"/> 月
-		    		<input name="" type="text" placeholder="" style="width:30px; text-align: center;"/> 日 
-		    		起付 <span style="color: red;">¥</span> <input name="" type="text" placeholder="" style="width:80px;"/> 元（每年）
+		    		<input name="serviceMonth" type="text" placeholder="" style="width:30px; text-align: center;"/> 月
+		    		<input name="serviceDay" type="text" placeholder="" style="width:30px; text-align: center;"/> 日 
+		    		起付 <span style="color: red;">¥</span> <input name="serviceYearAll" type="text" placeholder="" style="width:80px;"/> 元（每年）
 		    	</td>
 		  	</tr>
 		  	<tr>
 		    	<td class="tdright">合同应付款总额：</td>
 		    	<td>
-		    		<input name="" type="text" placeholder="" style="width:100px; text-align: center;"/> 圆整 
+		    		<input name="agreementAmountUpper" type="text" placeholder="" style="width:100px; text-align: center;"/> 圆整 
 		    		人民币小写:<span style="color: red;">¥</span> 
-		    		<input name="" type="text" placeholder="" style="width:80px;"/> 元
+		    		<input name="agreementAmount" type="text" placeholder="" style="width:80px;"/> 元
 		    	</td>
 		  	</tr>
 		  	
