@@ -21,6 +21,13 @@ public interface UserInfoService {
     public ServiceResult<Map<String, Object>> searchUserInfos(Map<String, Object> params, PagerInfo pagerInfo);
 
     /**
+     * getById
+     * @param id
+     */
+    public ServiceResult<UserInfo> getById(Long id);
+
+
+    /**
      * 创建
      * @param userInfo
      */

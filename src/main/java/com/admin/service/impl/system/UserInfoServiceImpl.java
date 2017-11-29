@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Created by GaoJingFei on 2017/11/13.
  */
@@ -50,6 +48,13 @@ public class UserInfoServiceImpl implements UserInfoService {
         map.put("total", rowsCount);
         result.setResult(map);
         return result;
+    }
+
+    @Override
+    public ServiceResult<UserInfo> getById(Long id) {
+        ServiceResult<UserInfo> executeResult = new ServiceResult<UserInfo>();
+        executeResult.setResult(userInfoDao.getById(id));
+        return executeResult;
     }
 
     @Override

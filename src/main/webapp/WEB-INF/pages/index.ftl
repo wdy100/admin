@@ -26,7 +26,7 @@
 		   <div class="nav">
 			   <div class="clear"></div>
 		   </div>
-		   <div class="welcomequit">您好，<strong id="User" >admin</strong><a href="#"> [退出]</a> <a href="#"> [网站首页]</a></div>
+		   <div class="welcomequit">您好，<strong id="User" >${(user.nickName)!''}</strong><a href="#"> [退出]</a> <a href="#"> [网站首页]</a></div>
 		   </div>
 		  <div class="clear"></div>
 		</div>
