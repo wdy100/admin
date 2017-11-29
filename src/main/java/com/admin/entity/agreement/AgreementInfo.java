@@ -50,6 +50,8 @@ public class AgreementInfo extends BaseEntity{
     private Integer serviceDay;
 
     private BigDecimal agreementAmount;
+    
+    private String agreementAmountUpper;
 
     private Integer repairYears;
 
