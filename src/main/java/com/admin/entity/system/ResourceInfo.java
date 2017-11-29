@@ -32,4 +32,6 @@ public class ResourceInfo  extends BaseEntity{
 
     private Integer order;
 
+    private Long parentId;
+
 }
