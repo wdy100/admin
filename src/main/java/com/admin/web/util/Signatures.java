@@ -7,7 +7,6 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.common.hash.Hashing;
-import com.sun.istack.internal.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
@@ -81,7 +80,7 @@ public class Signatures {
 
         Map<String, String> filterMap = Maps.filterValues(params, new Predicate<String>() {
             @Override
-            public boolean apply(@Nullable String input) {
+            public boolean apply(String input) {
                 return input != null;
             }
         });
