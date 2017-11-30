@@ -18,8 +18,7 @@
     <result column="is_delete" jdbcType="BIT" property="isDelete" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, name, description, url, type, order, parent_id, created_at, updated_at, created_by,
-    updated_by, remark, is_delete
+    id, code, name, description, url, type, `order`, parent_id, created_at, updated_at, created_by,updated_by, remark, is_delete
   </sql>
 
   <sql id="table">resource_info</sql>
@@ -34,9 +33,8 @@
   <!-- 查询所有 -->
   <select id="getAll" resultMap="resourceInfoMap">
     SELECT <include refid="Base_Column_List"/>
-    FROM <include refid="table"/>
-    <include refid="condition"/>
-    ORDER BY id DESC
+     FROM <include refid="table"/>
+     <include refid="condition"/>
   </select>
 
   <sql id="condition">

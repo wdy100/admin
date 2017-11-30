@@ -48,8 +48,7 @@
         <tr>
             <td>角色权限</td>
             <td>
-                <select style="width:342px;" name="resourceIds" id="resourceIds" multiple  class="easyui-combotree"
-                        style="width: 100%;"
+                <select style="width:174px;" name="resourceIds" id="resourceIds" multiple  class="easyui-combotree"
                         data-options="
 							url: '/system/allModuleResourceTree',
 							animate: true,
@@ -165,7 +164,7 @@
             collapsible: true,
             minimizable: false,
             maximizable: false,
-            height:250,
+            height:230,
             width:300
         });
     });
