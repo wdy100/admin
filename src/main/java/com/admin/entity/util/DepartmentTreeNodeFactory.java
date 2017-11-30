@@ -1,12 +1,10 @@
 package com.admin.entity.util;
 
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
-
 import com.admin.entity.system.Department;
+import org.apache.commons.lang.ObjectUtils;
 
 /**
- * 用来构建用户可访问的资源树形结构
+ * 用来构建用户可访问的组织树形结构
  * @author GaoJingFei
  *
  */

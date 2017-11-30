@@ -1,6 +1,7 @@
 package com.admin.service.system;
 import com.admin.entity.system.ResourceInfo;
-import com.haier.common.ServiceResult;
+
+import java.util.List;
 
 /**
  * Created by GaoJingFei on 2017/11/13.
@@ -8,7 +9,8 @@ import com.haier.common.ServiceResult;
 
 public interface ResourceInfoService {
     /**
-     * 根据手机号获取用户信息
-     * */
-    public ServiceResult<ResourceInfo> getByMobile(String mobile);
+     * 获取系统中所有
+     * @return
+     */
+    public List<ResourceInfo> getAll();
 }
