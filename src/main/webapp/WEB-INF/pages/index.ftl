@@ -26,7 +26,7 @@
 		   <div class="nav">
 			   <div class="clear"></div>
 		   </div>
-		   <div class="welcomequit">您好，<strong id="User" >${(user.nickName)!''}</strong><a href="#"> [退出]</a> <a href="#"> [网站首页]</a></div>
+		   <div class="welcomequit">您好，<strong id="User" >${(user.nickName)!''}</strong><a href="#"> 欢迎回家！ [退出]</a> <a href="#"> [网站首页]</a></div>
 		   </div>
 		  <div class="clear"></div>
 		</div>
@@ -58,13 +58,15 @@
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;客户管理"  >
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customer.html')">客户接入</ul>
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customerFeedback.html')">客户反馈</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customer.html')">协助客户</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customer.html')">客户公海</ul>
             </div>
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;订单管理" >
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单查询</ul>
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单执行</ul>
             </div>
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;合同管理" >
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">合同管理</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/agreementInfo/agreement.html')">合同管理</ul>
             </div>
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;财务管理" >
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">财务管理</ul>
