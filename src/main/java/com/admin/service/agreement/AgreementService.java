@@ -28,6 +28,8 @@ public interface AgreementService {
     
     public ServiceResult<List<AgreementGoods>> selectAgreementGoodsByAgreementInfoId(Long agreementInfoId);
     
-    /** 获取评价信息*/
-    //public ServiceResult<List<AgreementApproval>> selectAgreementApprovalByAgreementInfoId(Long agreementInfoId);
+    /** 获取审核信息*/
+    public ServiceResult<List<AgreementApproval>> selectAgreementApprovalByAgreeId(Long agreeId);
+    
+    public ServiceResult<Boolean> saveAgreementApproval(AgreementApproval agreementApproval);
 }

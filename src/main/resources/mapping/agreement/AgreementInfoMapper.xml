@@ -19,6 +19,9 @@
     <result column="service_month" property="serviceMonth" jdbcType="INTEGER" />
     <result column="service_day" property="serviceDay" jdbcType="INTEGER" />
     <result column="agreement_amount" property="agreementAmount" jdbcType="DECIMAL" />
+    <result column="agreement_amount_upper" property="agreementAmountUpper" jdbcType="VARCHAR"/>
+    <result column="first_ratio" property="firstRatio" jdbcType="DECIMAL"/>
+    <result column="last_ratio" property="lastRatio" jdbcType="DECIMAL"/>
     <result column="repair_years" property="repairYears" jdbcType="INTEGER" />
     <result column="approval_status" property="approvalStatus" jdbcType="INTEGER" />
     <result column="refuse_info" property="refuseInfo" jdbcType="VARCHAR" />
@@ -35,7 +38,8 @@
   <sql id="Base_Column_List">
     agree_sn, first_party, customer_id, contact_id, contact_name, service_life, project_name, 
     hardware_all, install_all, service_all, expenses_all, payables_all, service_year_all, 
-    service_month, service_day, agreement_amount, repair_years, approval_status, refuse_info, agree_date,
+    service_month, service_day, agreement_amount, agreement_amount_upper,first_ratio,last_ratio,
+    repair_years, approval_status, refuse_info, agree_date,
     created_by, created_at, updated_by, updated_at, remark
   </sql>
   
@@ -93,7 +97,8 @@
       #{serviceLife,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{hardwareAll,jdbcType=DECIMAL}, 
       #{installAll,jdbcType=DECIMAL}, #{serviceAll,jdbcType=DECIMAL}, #{expensesAll,jdbcType=DECIMAL}, 
       #{payablesAll,jdbcType=DECIMAL}, #{serviceYearAll,jdbcType=DECIMAL}, #{serviceMonth,jdbcType=INTEGER}, 
-      #{serviceDay,jdbcType=INTEGER}, #{agreementAmount,jdbcType=DECIMAL}, #{repairYears,jdbcType=INTEGER}, 
+      #{serviceDay,jdbcType=INTEGER}, #{agreementAmount,jdbcType=DECIMAL}, #{agreementAmountUpper,jdbcType=VARCHAR}, 
+      #{firstRatio,jdbcType=DECIMAL},#{lastRatio,jdbcType=DECIMAL},#{repairYears,jdbcType=INTEGER}, 
       #{approvalStatus,jdbcType=INTEGER}, #{refuseInfo,jdbcType=VARCHAR}, #{agreeDate,jdbcType=TIMESTAMP}, 
       #{createdBy,jdbcType=VARCHAR}, now(), #{updatedBy,jdbcType=VARCHAR}, #{updatedAt,jdbcType=TIMESTAMP}, 
       #{remark,jdbcType=VARCHAR}
@@ -150,6 +155,15 @@
       </if>
       <if test="agreementAmount != null" >
         agreement_amount = #{agreementAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="agreementAmountUpper != null" >
+        agreement_amount_upper = #{agreementAmountUpper,jdbcType=VARCHAR},
+      </if>
+      <if test="firstRatio != null" >
+        first_ratio = #{firstRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="lastRatio != null" >
+        last_ratio = #{lastRatio,jdbcType=DECIMAL},
       </if>
       <if test="repairYears != null" >
         repair_years = #{repairYears,jdbcType=INTEGER},

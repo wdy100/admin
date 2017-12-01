@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.admin.dao.agreement.AgreementApprovalDao;
 import com.admin.dao.agreement.AgreementGoodsDao;
 import com.admin.dao.agreement.AgreementInfoDao;
+import com.admin.entity.agreement.AgreementApproval;
 import com.admin.entity.agreement.AgreementGoods;
 import com.admin.entity.agreement.AgreementInfo;
 import com.admin.service.agreement.AgreementService;
@@ -32,6 +34,9 @@ public class AgreementServiceImpl implements AgreementService {
 
 	@Autowired
 	private AgreementGoodsDao agreementGoodsDao;
+	
+	@Autowired
+	private AgreementApprovalDao agreementApprovalDao;
     
 	@Override
 	public ServiceResult<Map<String, Object>> getAgreementList(
@@ -164,4 +169,30 @@ public class AgreementServiceImpl implements AgreementService {
     	}
     	return result;
     }
+
+	@Override
+	public ServiceResult<List<AgreementApproval>> selectAgreementApprovalByAgreeId(
+			Long agreeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ServiceResult<Boolean> saveAgreementApproval(AgreementApproval agreementApproval) {
+		ServiceResult<Boolean> result = new ServiceResult<Boolean>();
+		try{
+    		agreementApprovalDao.insert(agreementApproval);
+    		
+    		AgreementInfo agreementInfo = new AgreementInfo();
+    		agreementInfo.setId(agreementApproval.getAgreeId());
+    		agreementInfo.setApprovalStatus(agreementApproval.getStatus());//审核状态需要修改
+    		agreementInfo.setRefuseInfo( agreementApproval.getApprovalInfo() );
+    		agreementInfoDao.updateById(agreementInfo);
+    		result.setResult(true);
+    	}catch(Exception e){
+    		result.setError("error","保存合同审核信息失败");
+    		log.error("保存合同审核信息失败:" + Throwables.getStackTraceAsString(e) );
+    	}
+    	return result;
+	}
 }

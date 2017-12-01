@@ -52,6 +52,10 @@ public class AgreementInfo extends BaseEntity{
     private BigDecimal agreementAmount;
     
     private String agreementAmountUpper;
+    
+    private BigDecimal firstRatio;//首付比例
+    
+    private BigDecimal lastRatio;
 
     private Integer repairYears;
 

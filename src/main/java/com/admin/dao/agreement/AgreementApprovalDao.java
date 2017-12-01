@@ -14,13 +14,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class AgreementApprovalDao extends BaseDao{
 	
-	public List<AgreementApproval> selectByAgreeId(Long id){
-    	return this.getSqlSession().selectList(namespace+"selectByAgreeId", id);
+	public List<AgreementApproval> selectByAgreeId(Long agreeId){
+    	return this.getSqlSession().selectList(namespace+"selectByAgreeId", agreeId);
     }
 	
-	public AgreementApproval selectLastByAgreeId(Long id){
-    	return this.getSqlSession().selectOne(namespace+"selectLastByAgreeId", id);
+	public AgreementApproval selectLastByAgreeId(Long agreeId){
+    	return this.getSqlSession().selectOne(namespace+"selectLastByAgreeId", agreeId);
     }
+	
+	public AgreementApproval selectById(Long id){
+		return this.getSqlSession().selectOne(namespace+"selectById", id);
+	}
 	
 	public int insert(AgreementApproval agreementApproval){
 		return this.getSqlSession().insert(namespace+"insert", agreementApproval);
