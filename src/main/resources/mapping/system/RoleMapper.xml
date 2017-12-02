@@ -50,12 +50,32 @@
         where name = #{name}
     </select>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="roleMap">
+  <select id="getById" parameterType="java.lang.Integer" resultMap="roleMap">
     select id,
       <include refid="Base_Column_List" />
     from role
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <!-- 查询所有 -->
+  <select id="getAll" resultMap="roleMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM <include refid="table"/>
+    <include refid="condition"/>
+    ORDER BY id DESC
+  </select>
+
+  <sql id="condition">
+    <where>
+      is_delete = 0
+      <if test="code!=null">
+        AND code = #{code}
+      </if>
+      <if test="name!=null">
+        AND name = #{name}
+      </if>
+    </where>
+  </sql>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from role
@@ -76,74 +96,6 @@
         0
         )
     </insert>
-
-  <insert id="insertSelective" parameterType="Role">
-    insert into role
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="code != null">
-        code,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="createdAt != null">
-        created_at,
-      </if>
-      <if test="updatedAt != null">
-        updated_at,
-      </if>
-      <if test="createdBy != null">
-        created_by,
-      </if>
-      <if test="updatedBy != null">
-        updated_by,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="isDelete != null">
-        is_delete,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="createdAt != null">
-        #{createdAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedAt != null">
-        #{updatedAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createdBy != null">
-        #{createdBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updatedBy != null">
-        #{updatedBy,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="isDelete != null">
-        #{isDelete,jdbcType=BIT},
-      </if>
-    </trim>
-  </insert>
 
   <update id="updateByPrimaryKeySelective" parameterType="Role">
     update role
@@ -179,18 +131,5 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="Role">
-    update role
-    set code = #{code,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-      created_by = #{createdBy,jdbcType=VARCHAR},
-      updated_by = #{updatedBy,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      is_delete = #{isDelete,jdbcType=BIT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
   
 </mapper>

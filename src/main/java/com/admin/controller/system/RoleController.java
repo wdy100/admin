@@ -1,6 +1,7 @@
 package com.admin.controller.system;
 
 import com.admin.entity.system.Role;
+import com.admin.entity.util.TreeNode;
 import com.admin.service.system.RoleService;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.SessionSecurityConstants;
@@ -12,6 +13,7 @@ import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 import com.haier.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import org.apache.log4j.LogManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -106,5 +109,26 @@ public class RoleController {
             logger.error("保存失败，请稍后重试！" + Throwables.getStackTraceAsString(e));
         }
         return result;
+    }
+
+    /**
+     * 角色下拉菜单
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/searchRoleCombo", method = RequestMethod.POST)
+    @ResponseBody
+    public Object searchRoleCombo(HttpServletRequest request) {
+        List<TreeNode> nodeList = new ArrayList<TreeNode>();
+        List<Role> roleList = roleService.getAll();
+        for (Role role : roleList) {
+            TreeNode node = new TreeNode();
+            node.setId(String.valueOf(role.getId()));
+            node.setText(role.getName());
+            node.setState("open");
+            nodeList.add(node);
+        }
+        JSONArray roleNodes = JSONArray.fromObject(nodeList);
+        return roleNodes;
     }
 }  

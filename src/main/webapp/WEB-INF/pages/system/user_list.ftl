@@ -8,13 +8,13 @@
 <body>
 
 <div class="easyui-layout" fit="true">
-	<#--<div data-options="region:'west'" title="组织架构" style="width:245px;">-->
-		<#--<ul id="tree" class="easyui-tree" data-options="-->
-          		<#--url: '/system/departmentTree',-->
-          		<#--animate: true,-->
-          		<#--lines:true,-->
-          		<#--onClick: treeOnClick"></ul>-->
-	<#--</div>-->
+	<div data-options="region:'west'" title="组织架构" style="width:245px;">
+		<ul id="tree" class="easyui-tree" data-options="
+          		url: '/system/departmentTree',
+          		animate: true,
+          		lines:true,
+          		onClick: treeOnClick"></ul>
+	</div>
 	<div data-options="region:'center'">
 		<div class="easyui-layout" fit="true">
 			<div region="north" border="false" collapsible="true" collapsed="false"
@@ -88,6 +88,37 @@
 		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 	</div>
 </div>
+
+<!-- 用户审核 -->
+<div id="aduitUserDiv"  class="easyui-dialog" title=""   closed="true"
+     data-options="resizable:true,modal:true" >
+    <table style="font-weight: 400;" border="0">
+        <tr>
+            <td style="text-align: right;">真实姓名:</td>
+            <td>
+                <input id="aduit_nickName" name="aduit_nickName" size="54" class="easyui-textbox" style="width: 200px;"/></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">选择部门<span class="star">*</span>:</td>
+            <td>
+                <input name="aduit_departmentId" id="aduit_departmentId" class="easyui-combotree"  style="width:100%"
+                       data-options="
+						url: '/system/departmentTree',
+						animate: true,required:true"/>
+			</td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">设置角色<span class="star">*</span>:</td>
+            <td>
+                <select id="aduit_roleId" name="aduit_roleId" class="easyui-combotree" style="width:100%;"
+                        data-options="required:true,url:'/system/searchRoleCombo'"></select>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
 <script type="text/javascript">
 
 	function loaddata(){
@@ -142,9 +173,9 @@
 		var isLeaf = $('#tree').tree('isLeaf',nodeTarget);
 		$("#departmentId").val(node.id);
 		$('#dg').datagrid('load',sy.serializeObject($("#searchForm").form()));
-//         	$('#dg').datagrid('load',{
-//         		'departmentId' : node.id
-//         	});
+         	$('#dg').datagrid('load',{
+         		'departmentId' : node.id
+         	});
 	}
 	//双击看明细
 	<#--function showFormWin(rowIndex,rowData){-->
@@ -161,19 +192,57 @@
 		<#--});-->
 	<#--}-->
 
-	//审核通过
+	//审核通过-打开审核窗口
 	function updateUser(){
 		var selectedRow = $('#dg').datagrid('getSelected');
 		if(!selectedRow || selectedRow == null){
-			$.messager.alert('操作提示','请选择要修改的数据！','info');
+			$.messager.alert('操作提示','请选择要审核的用户！','info');
 			return;
 		}
-		var userId = selectedRow.id;
+        $("#aduitUserDiv").dialog({
+            title: '用户审核',
+            width: 340,
+            height: 50,
+            top: 50,
+            closed: true,
+            cache: false,
+            modal: true,
+            buttons:[{
+                text:'提交',
+                iconCls:'icon-ok',
+                handler:function(){
+                    updateUserCommit();
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    $('#aduitUserDiv').dialog('close');
+                }
+            }]
+        });
+        $('#aduit_nickName').textbox("setValue",selectedRow.nickName);
+        $('#aduit_departmentId').combotree("setValue","");
+        $('#aduit_roleId').combotree("setValue","");
+        $("#aduitUserDiv").dialog("open");
+
+	}
+
+    //审核通过-提交
+    function updateUserCommit() {
+        var selectedRow = $('#dg').datagrid('getSelected');
+        if (!selectedRow || selectedRow == null) {
+            $.messager.alert('操作提示', '请选择要审核的用户！', 'info');
+            return;
+        }
+        var userId = selectedRow.id;
+        var departmentId = $('#aduit_departmentId').combotree("getValue");
+        var roleId = $('#aduit_roleId').combotree("getValue");
         $.ajax({
             type:'post',
             url:'/system/updateUser',
             dataType : "json",
-            data:{userId:userId},
+            data:{userId:userId, departmentId:departmentId, roleId:roleId},
             cache:false,
             async:false,
             success:function(data){
@@ -188,8 +257,8 @@
                 $.messager.alert('提示',"请刷新重试");
             }
         });
+    }
 
-	}
 	<#--function delUser(){-->
 		<#--var selectedRow = $('#dg').datagrid('getSelected');-->
 		<#--if(!selectedRow || selectedRow == null){-->

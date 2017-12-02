@@ -1,8 +1,8 @@
 package com.admin.service.impl.system;
 
-import com.admin.dao.system.UserDepartmentDao;
-import com.admin.entity.system.UserDepartment;
-import com.admin.service.system.UserDepartmentService;
+import com.admin.dao.system.UserRoleDao;
+import com.admin.entity.system.UserRole;
+import com.admin.service.system.UserRoleService;
 import com.haier.common.ServiceResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class UserDepartmentServiceImpl implements UserDepartmentService {
+public class UserRoleServiceImpl implements UserRoleService {
     @Autowired
-    private UserDepartmentDao userDepartmentDao;
+    private UserRoleDao userRoleDao;
     @Override
-    public ServiceResult<Boolean> createUserDepartment(UserDepartment userDepartment){
+    public ServiceResult<Boolean> createUserRole(UserRole userRole){
         ServiceResult<Boolean> result = new ServiceResult<Boolean>();
-        userDepartmentDao.deleteByUserId(userDepartment.getUserId());
-        Integer count = userDepartmentDao.insert(userDepartment);
+        userRoleDao.deleteByUserId(userRole.getUserId());
+        Integer count = userRoleDao.insert(userRole);
         if(count <= 0){
             result.setResult(false);
             result.setError("", "保存失败");

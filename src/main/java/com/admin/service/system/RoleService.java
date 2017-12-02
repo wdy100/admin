@@ -17,4 +17,10 @@ public interface RoleService {
     public ServiceResult<Map<String, Object>> getRoleList(Map<String, Object> paramMap, PagerInfo pagerInfo);
 
     public ServiceResult<Integer> insert(Role role);
+
+    /**
+     * 获取系统中所有的角色
+     * @return
+     */
+    public List<Role> getAll();
 }
