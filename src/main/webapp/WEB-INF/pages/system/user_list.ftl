@@ -202,7 +202,7 @@
         $("#aduitUserDiv").dialog({
             title: '用户审核',
             width: 340,
-            height: 50,
+            height: 250,
             top: 50,
             closed: true,
             cache: false,
@@ -250,6 +250,7 @@
                 if(!data.success){
                     $.messager.alert('提示',data.message);
                 }
+                $('#aduitUserDiv').dialog('close');
                 $('#dg').datagrid('reload');//重新加载数据
                 $.messager.alert('提示',"操作成功");
             },
