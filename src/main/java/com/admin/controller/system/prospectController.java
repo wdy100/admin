@@ -32,8 +32,13 @@ public class prospectController {
     @Resource
     private ProspectService prospectService;
 
-    @RequestMapping(value = { "/findProspectList.html" }, method = { RequestMethod.GET })
-    public String findWaterVatInvoiceList(@RequestParam(required = false) String customerName,
+    @RequestMapping(value = "prospect.html", method = { RequestMethod.GET, RequestMethod.POST })
+    public String index(HttpServletRequest request,Map<String, Object> dataMap) throws Exception {
+        return "prospect/prospectList";
+    }
+
+    @RequestMapping("/findProspectList.html")
+    public void findWaterVatInvoiceList(@RequestParam(required = false) String customerName,
                                  @RequestParam(required = false) Integer customerStatus,
                                  @RequestParam(required = false) Integer prospectStatus,
                                  @RequestParam(required = false) Integer rows,
@@ -64,11 +69,15 @@ public class prospectController {
             Map<String, Object> retMap = new HashMap<String, Object>();
             retMap.put("total", resultcount);
             retMap.put("rows", prospectList);
+
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(JsonUtil.toJson(retMap));
+            response.getWriter().flush();
+            response.getWriter().close();
         } catch (Exception e) {
             logger.error("勘察确认单列表查询失败", e);
             throw new BusinessException("勘察确认单列表查询失败" + e.getMessage());
         }
-        return "/prospect/prospectList";
     }
 
     @RequestMapping(value = { "/uploadReportFile.html" }, method = { RequestMethod.POST })
