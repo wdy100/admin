@@ -59,6 +59,7 @@ public class AgreementInfo extends BaseEntity{
 
     private Integer repairYears;
 
+    /** 审批状态: 0已保存待提交 1待内勤初审 2总监审核 3合同上传 4签订完成 7已退回待修改*/
     private Integer approvalStatus;
 
     private String refuseInfo;

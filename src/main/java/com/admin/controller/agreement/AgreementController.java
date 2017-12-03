@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.admin.entity.agreement.AgreementApproval;
 import com.admin.entity.agreement.AgreementGoods;
 import com.admin.entity.agreement.AgreementInfo;
 import com.admin.service.agreement.AgreementService;
@@ -168,6 +169,8 @@ public class AgreementController {
     		ServiceResult<List<AgreementGoods>> agreementGoodsListResult = agreementService.selectAgreementGoodsByAgreementInfoId(agreementInfo.getId());
     		stack.put("agreementInfo", agreementInfoResult.getResult());
     		stack.put("agreementGoodsList", agreementGoodsListResult.getResult());
+    	}else{
+    		throw new BusinessException("合同信息查询失败！");
     	}
     	return "agreement/agreementEdit";
     }  
@@ -181,16 +184,20 @@ public class AgreementController {
     
     @RequestMapping("/approval")  
     @ResponseBody
-    public HttpJsonResult<Map<String,Object>> approval(HttpServletRequest request,AgreementInfo agreementInfo,Map<String, Object> stack){  
+    public HttpJsonResult<Map<String,Object>> approval(HttpServletRequest request,
+    			AgreementApproval agreementApproval,Map<String, Object> stack){  
     	HttpJsonResult<Map<String,Object>> result=new HttpJsonResult<Map<String, Object>>();
     	Map<String,Object> resultMap=new HashMap<String, Object>();
 		
-    	//agreementService.updateAgreementInfo(agreementInfo);
     	//保存到审核信息表
-    	
-		resultMap.put("id", agreementInfo.getId());
-		
+    	ServiceResult<Boolean>  ServiceResult = agreementService.saveAgreementApproval(agreementApproval);
+    	if(ServiceResult != null && ServiceResult.getResult() ){
+    		resultMap.put("result",true);
+    	}else{
+    		result.setMessage("保存失败！");
+    	}
     	result.setData(resultMap);
+    	
         return result;  
     }  
     
