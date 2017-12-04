@@ -36,6 +36,13 @@ img {
 h3{
 	font-size: 18px;
 }
+.talign-right{
+	text-align: right;
+}
+.flex-between{
+	display: flex;
+	justify-content: space-between;
+}
   /*login*/
 .managelogin {
 	background-color: #f2f1f1;
@@ -344,6 +351,17 @@ h3{
 .rnav  a {
 	color: #055aa5
 }
+.rnavbtn{
+	display: block;
+	background: url(../images/rnavbg2.jpg) no-repeat;
+	height: 29px;
+	width: 94px;	
+	margin: 5px;
+	line-height: 26px;
+	text-align: center;
+	font-weight: bold;
+	color: #055aa5
+}
 
 .list {
 	margin: 10px;
@@ -468,7 +486,7 @@ h3{
 	padding-left: 120px;
 }
 
-.naebtn  input {
+.naebtn input {
 	background: url(../images/rnavbg.jpg) no-repeat  0px 5px;
 	height: 35px;
 	width: 92px;
@@ -544,7 +562,7 @@ h3{
 	padding-bottom: 10px;
 }
 .label{
-	width: 80px;
+	width: 110px;
 	text-align: right;
 	display: inline-block;
 } 
@@ -577,6 +595,13 @@ h3{
 	width: 20px;
 	text-align: center;
 }
+.input150{
+	width:150px;
+	line-height: 24px;
+	padding:0 3px;
+	
+}
+.input150 placeholder{color: #ccc;}
 .searchinput225{
 	width: 225px;
 }
@@ -610,4 +635,77 @@ h3{
 .yes p{
 	color: #999;
 	font-size: 14px;
+}
+
+/*合同详情*/
+.contract{
+	width: 1000px;
+	font-size: 14px;
+	border:1px solid #000;
+	padding: 10px;
+}
+.patop20px{
+	padding-top: 20px;
+}
+.spanborbm{
+	border-bottom:1px solid #000;
+	display: inline-block
+}
+.page1{
+	text-align: center;
+}
+.contract-table{
+    width:80% ;
+	line-height: 24px;
+	margin: 20px 0;
+}
+.contract-table td{
+	padding:0 10px;
+}
+.contract-table,.contract-one{
+	border-top:1px solid #000;
+	border-left:1px solid #000;
+}
+.contract-table td,.contract-one td{
+	border-right:1px solid #000;
+	border-bottom:1px solid #000;
+}
+.tc dd{
+	text-indent: 24px;
+}
+.tc dt{
+	 font-weight: bolder;
+	 line-height: 30px;
+}
+.gz td{
+	padding: 0 10px;
+	border-bottom:none
+}
+.Popupall{
+	width: 100%;
+	height:100%;
+	z-index: 1000;
+	position: absolute;
+    top:0;
+    left:0;
+    background:none;
+    display: flex;
+    justify-content:center;
+    align-items:center;    
+}
+.Popup{
+	background-color: #fff;
+    border: 1px solid #c3d2d8;
+    padding: 10px 10px 20px 10px;  
+    box-shadow:#000 0 0 10px ;
+ }   
+.Popup td{
+	padding: 3px;
+}
+.close{
+	float: right;
+	}
+.close img{
+	width:14px;
+	height:14px
 }

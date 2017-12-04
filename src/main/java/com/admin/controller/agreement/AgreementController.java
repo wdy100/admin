@@ -114,6 +114,17 @@ public class AgreementController {
         }
     }
     
+    @RequestMapping(value = "toAgreementDetail.html", method = { RequestMethod.GET, RequestMethod.POST })
+    public String toAgreementDetail(HttpServletRequest request,
+    		AgreementInfo agreementInfo,Map<String, Object> stack) throws Exception {
+    	
+    	ServiceResult<AgreementInfo> agreementInfoResult = agreementService.selectAgreementInfoById(agreementInfo);
+    	ServiceResult<List<AgreementGoods>> agreementGoodsListResult = agreementService.selectAgreementGoodsByAgreementInfoId(agreementInfo.getId());
+    	stack.put("agreementInfo", agreementInfoResult.getResult());
+    	stack.put("agreementGoodsList", agreementGoodsListResult.getResult());
+    	return "agreement/agreementDetail";
+    }
+    
     @RequestMapping("/toAdd")  
     public String toAdd(HttpServletRequest request,Map<String, Object> stack){  
     	return "agreement/agreementAdd";
