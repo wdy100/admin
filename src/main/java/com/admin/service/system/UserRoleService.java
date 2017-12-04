@@ -1,4 +1,5 @@
 package com.admin.service.system;
+
 import com.admin.entity.system.UserRole;
 import com.haier.common.ServiceResult;
 
@@ -8,7 +9,7 @@ import com.haier.common.ServiceResult;
 
 public interface UserRoleService {
     /**
-     * 根据手机号获取用户信息
+     * 创建
      * */
-    public ServiceResult<UserRole> getByMobile(String mobile);
+    public ServiceResult<Boolean> createUserRole(UserRole userRole);
 }

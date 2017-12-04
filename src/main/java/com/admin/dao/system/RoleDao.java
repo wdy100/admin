@@ -1,9 +1,8 @@
 package com.admin.dao.system;
 
+import com.admin.dao.BaseDao;
 import com.admin.entity.system.Role;
 import org.springframework.stereotype.Repository;
-
-import com.admin.dao.BaseDao;
 
 import java.util.List;
 import java.util.Map;
@@ -28,5 +27,13 @@ public class RoleDao   extends BaseDao{
 
     public Integer insert(Role role){
         return this.getSqlSession().insert(namespace + "insert", role);
+    }
+
+    /**
+     * 获取所有
+     *
+     */
+    public List<Role> getAll(){
+        return this.getSqlSession().selectList(namespace+"getAll");
     }
 }

@@ -21,8 +21,6 @@
                     <td class="cxlabel">
                         <a id="searchPt" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
                     </td>
-                    <td class="cxlabel"></td>
-                    <td class="cxinput"></td>
                 </tr>
             </table>
         </form>
@@ -46,6 +44,7 @@
                 <th data-options="field:'corporate',width:100,halign:'center',align:'left'">公司法人</th>
                 <th data-options="field:'manager',width:100,halign:'center',align:'left'">总经理</th>
                 <th data-options="field:'responsiblePerson',width:100,halign:'center',align:'left'">业务人员</th>
+                <th data-options="field:'helpPerson',width:100,halign:'center',align:'left'">协助人</th>
             </tr>
             </thead>
         </table>

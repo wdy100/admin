@@ -1,8 +1,11 @@
 package com.admin.controller.system;
 
-import com.admin.entity.system.Department;
+import com.admin.entity.system.UserDepartment;
 import com.admin.entity.system.UserInfo;
+import com.admin.entity.system.UserRole;
+import com.admin.service.system.UserDepartmentService;
 import com.admin.service.system.UserInfoService;
+import com.admin.service.system.UserRoleService;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.PasswordUtil;
 import com.admin.web.util.WebUtil;
@@ -36,6 +39,10 @@ import java.util.Map;
 public class UserInfoController {
     @Resource
     private UserInfoService userInfoService;
+    @Resource
+    private UserDepartmentService userDepartmentService;
+    @Resource
+    private UserRoleService userRoleService;
 
     @RequestMapping(value = "user.html", method = { RequestMethod.GET, RequestMethod.POST })
     public String index(HttpServletRequest request, Model model) throws Exception {
@@ -47,8 +54,12 @@ public class UserInfoController {
         Map <String, Object> criteria = Maps.newHashMap();
         try {
             String nickName = request.getParameter("nickName");
+            String departmentId = request.getParameter("departmentId");
             if(nickName != null && !"".equals(nickName)){
                 criteria.put("nickName", nickName);
+            }
+            if(departmentId != null && !"0".equals(departmentId)){
+                criteria.put("departmentId", departmentId);
             }
             PagerInfo pager = WebUtil.handlerPagerInfo(request, dataMap);
             ServiceResult<Map<String, Object>> serviceResult = userInfoService.searchUserInfos(criteria, pager);
@@ -115,6 +126,8 @@ public class UserInfoController {
     public Object updateUser(HttpServletRequest request) {
         HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
         String userId = request.getParameter("userId");
+        String departmentId = request.getParameter("departmentId");
+        String roleId = request.getParameter("roleId");
         UserInfo userInfo = new UserInfo();
         userInfo.setId(Long.parseLong(userId));
         userInfo.setStatus(1);
@@ -124,6 +137,16 @@ public class UserInfoController {
             jsonResult.setMessage("审核通过失败！");
             return jsonResult;
         }
+        //保存用户部门信息
+        UserDepartment userDepartment = new UserDepartment();
+        userDepartment.setUserId(Long.parseLong(userId));
+        userDepartment.setDepartmentId(Long.parseLong(departmentId));
+        userDepartmentService.createUserDepartment(userDepartment);
+        //保存用户角色信息
+        UserRole userRole = new UserRole();
+        userRole.setUserId(Long.parseLong(userId));
+        userRole.setRoleId(Long.parseLong(roleId));
+        userRoleService.createUserRole(userRole);
         jsonResult.setData(result.getSuccess());
         return jsonResult;
     }

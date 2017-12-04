@@ -18,8 +18,8 @@ public class UserDepartment  extends BaseEntity{
 	 */
 	private static final long serialVersionUID = 4854415618775587512L;
 
-	private Integer userId;
+	private Long userId;
 
-    private Integer departmentId;
+    private Long departmentId;
 
 }

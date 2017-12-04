@@ -112,6 +112,9 @@
       <if test="nickName!=null">
         AND nick_name = #{nickName}
       </if>
+      <if test="departmentId!=null">
+        AND id in(select ud.user_id from user_department ud where ud.department_id=#{departmentId})
+      </if>
     </where>
   </sql>
 

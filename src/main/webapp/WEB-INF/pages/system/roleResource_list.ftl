@@ -5,11 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>权限列表</title>
     <#include "../common/easyui_core.ftl"/>
+    <link type="text/css" rel="stylesheet" href="${domainUrlUtil.staticURL}/style/loadMast.css" />
 </head>
 <body>
 <div class="easyui-layout" data-options="fit : true,border : false">
     <div data-options="region:'north',title:'查询条件',border:false" style="height: 60px;" class="zoc">
-        <form id="roleForm" action="/uploadReportFile.html" method="post">
+        <form onsubmit="return false;" id="searchForm">
             <table class="fixedTb">
                 <tr>
                     <td class="cxlabel">角色名称:</td>
@@ -18,7 +19,6 @@
                     </td>
                     <td class="cxlabel">
                         <a href="#"  id = "searchPt"  class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
-                        <a id="update" href="#" class="easyui-linkbutton" iconCls="icon-edit"  plain="false"  >设置权限</a>
                     </td>
 
                 </tr>
@@ -26,17 +26,31 @@
 
         </form>
     </div>
-    <div data-options="region:'center',title:'查询结果',border:false" style="left: 0px; top: 240px; width: 1920px;">
-        <table id="dataGrid"></table>
+
+    <div id="tb" >
+        <a id="update" href="#" class="easyui-linkbutton" iconCls="icon-edit"  plain="false"  >设置权限</a>
+
     </div>
+    <div region="center" border="false">
+        <table id="dg">
+            <thead>
+            <tr>
+                <th data-options="field:'ck',checkbox:true,formatter : function(value, row, index) {return row.id;}"></th>
+                <th data-options="field:'name',width:150,halign:'center',align:'center'">角色名称</th>
+                <th data-options="field:'description',width:200,halign:'center',align:'center'">角色描述</th>
+                <th data-options="field:'createdBy',width:150,halign:'center',align:'center'">创建者</th>
+                <th data-options="field:'createdAt',width:150,halign:'center',align:'center'">创建时间</th>
+                <th data-options="field:'updatedBy',width:150,halign:'center',align:'center'">最后修改人</th>
+                <th data-options="field:'updatedAt',width:150,halign:'center',align:'center'">最后更新时间</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
 </div>
 
 <div id="roleInputInfo" style="padding:10px;display:none;" title="设置角色权限">
     <table>
-        <tr>
-            <td>角色编码</td>
-            <td><input id="code_edit" type="text"/></td>
-        </tr>
         <tr>
             <td>角色名称</td>
             <td><input id="name_edit" type="text"/></td>
@@ -63,101 +77,42 @@
 </div>
 
 <script type="text/javascript">
-    var datagrid;
-    var queryParameters;
+    function loaddata(){
+        $('#dg').datagrid('load',sy.serializeObject($("#searchForm").form()));
+    }
 
-    // 判断是否为空
-    $.isNotBlank = function(value) {
-        if (value != undefined && value != "undefined" && value != null && value != "null" && value != "") {
-            return true;
-        }
-        return false;
-    };
-
-    //角色查询
-    $('#searchPt').click(function () {
-        queryParameters = {
-            name:$("#name").val(),
-            description:$("#description").val()
-        };
-        if(datagrid){
-            //grid加载
-            $('#dataGrid').datagrid('load',queryParameters);
-        }else{
-            datagrid = $('#dataGrid').datagrid({
+    $(document).ready(function(){
+        $(function(){
+            $('#dg').datagrid({
                 title:'角色列表',
                 toolbar:'#tb',
-                singleSelect:true,
-                fitColumns:true,
-                fit:true,
-                collapsible: true,
+                border:false,
+                singleSelect:true,//单选模式，只能选择一条记录
+                fit:true,//自适应父容器下
+                fitColumns:true,//列长度自适应，不出现横向动作条
+                collapsible: true,//可折叠
                 rownumbers: true, //显示行数 1，2，3，4...
                 pagination: true, //显示最下端的分页工具栏
                 pageList: [5,10,15,20], //可以调整每页显示的数据，即调整pageSize每次向后台请求数据时的数据
-                pageSize: 20, //读取分页条数，即向后台读取数据时传过去的值
-                url:'/system/findRoleList.html',
-                queryParams:queryParameters,
-                columns: [
-                    [
-                        {
-                            field: 'id',
-                            title: '编号',
-                            width: 10,
-                            align: 'center',
-                            hidden:true
-                        },
-                        {
-                            field: 'checked',
-                            width: 10,
-                            align: 'center',
-                            checkbox:true
-                        },
-                        {
-                            field: 'name',
-                            title: '角色名称',
-                            width: 150,
-                            align: 'center'
-                        },
-                        {
-                            field: 'description',
-                            title: '角色描述',
-                            width: 200,
-                            align: 'center'
-                        },
-                        {
-                            field: 'createdBy',
-                            title: '创建者',
-                            width: 150,
-                            align: 'center'
-                        },
-                        {
-                            field: 'createdAt',
-                            title: '创建时间',
-                            width: 150,
-                            align: 'center'
-                        },
-                        {
-                            field: 'updatedBy',
-                            title: '最后修改人',
-                            width: 150,
-                            align: 'center'
-                        },
-                        {
-                            field: 'updatedAt',
-                            title: '最后更新时间',
-                            width: 150,
-                            align: 'center'
-                        }
-                    ]
-                ]
+                pageSize: 15, //读取分页条数，即向后台读取数据时传过去的值
+                url:'/system/roleList'
+
             });
-        }
+
+        });
+
     });
 
     //设置角色权限
     $("#update").click(function(){
-        $("#name_edit").val("");
-        $("#description_edit").val("");
+        var rows = $('#dg').datagrid('getSelections');
+        if(rows.length == 1) {
+            $("#name_edit").val(rows[0].name);
+            $("#description_edit").val(rows[0].description);
+        }else{
+            $.messager.alert('操作提示', '请选择要分配权限的角色！', 'info');
+            return;
+        }
 
         $("#roleInputInfo").show();
         $("#roleInputInfo").dialog({
@@ -207,67 +162,5 @@
         });
     });
 
-    $(function(){
-        datagrid = $('#dataGrid').datagrid({
-            title:'角色列表',
-            toolbar:'#tb',
-            singleSelect:true,
-            fitColumns:true,
-            fit:true,
-            collapsible: true,
-            rownumbers: true, //显示行数 1，2，3，4...
-            pagination: true, //显示最下端的分页工具栏
-            pageList: [5,10,15,20], //可以调整每页显示的数据，即调整pageSize每次向后台请求数据时的数据
-            pageSize: 20, //读取分页条数，即向后台读取数据时传过去的值
-            url:'/system/roleList',
-            queryParams:queryParameters,
-            columns: [
-                [
-                    {
-                        field: 'checked',
-                        width: 10,
-                        align: 'center',
-                        checkbox:true
-                    },
-                    {
-                        field: 'name',
-                        title: '角色名称',
-                        width: 150,
-                        align: 'center'
-                    },
-                    {
-                        field: 'description',
-                        title: '角色描述',
-                        width: 200,
-                        align: 'center'
-                    },
-                    {
-                        field: 'createdBy',
-                        title: '创建者',
-                        width: 150,
-                        align: 'center'
-                    },
-                    {
-                        field: 'createdAt',
-                        title: '创建时间',
-                        width: 150,
-                        align: 'center'
-                    },
-                    {
-                        field: 'updatedBy',
-                        title: '最后修改人',
-                        width: 150,
-                        align: 'center'
-                    },
-                    {
-                        field: 'updatedAt',
-                        title: '最后更新时间',
-                        width: 150,
-                        align: 'center'
-                    }
-                ]
-            ]
-        });
-    })
 </script>
 </body>

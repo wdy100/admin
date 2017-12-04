@@ -5,27 +5,21 @@
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="department_id" property="departmentId" jdbcType="INTEGER" />
   </resultMap>
+
+  <sql id="Base_Column_List">
+    user_id, department_id
+  </sql>
+
+  <sql id="table">user_department</sql>
+
   <insert id="insert" parameterType="UserDepartment" >
-    insert into user_department (user_id, department_id)
+    insert into <include refid="table"/> (user_id, department_id)
     values (#{userId,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="UserDepartment" >
-    insert into user_department
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="departmentId != null" >
-        department_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="departmentId != null" >
-        #{departmentId,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+
+  <delete id="deleteByUserId" parameterType="java.lang.Integer">
+    delete from <include refid="table"/>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+
 </mapper>

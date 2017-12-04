@@ -62,4 +62,9 @@ public class RoleServiceImpl implements RoleService {
 
         return result;
     }
+
+    @Override
+    public List<Role> getAll() {
+        return roleDao.getAll();
+    }
 }
