@@ -183,9 +183,18 @@ public class AgreementServiceImpl implements AgreementService {
 		try{
     		agreementApprovalDao.insert(agreementApproval);
     		
+    		Long agreeId = agreementApproval.getAgreeId();
+    		AgreementInfo agreementInfo1 = agreementInfoDao.selectById( agreeId );
+    		//0已保存待提交 1待内勤初审 2总监审核 3合同上传 4签订完成 7已退回待修改
+    		int approvalStatus = agreementInfo1.getApprovalStatus();
+    		if(agreementApproval.getStatus() == AgreementApproval.statusEnum.PASS.value() ){
+    			approvalStatus += 1;
+    		}else{
+    			approvalStatus = 7;
+    		}
     		AgreementInfo agreementInfo = new AgreementInfo();
-    		agreementInfo.setId(agreementApproval.getAgreeId());
-    		agreementInfo.setApprovalStatus(agreementApproval.getStatus());//审核状态需要修改
+    		agreementInfo.setId( agreeId );
+    		agreementInfo.setApprovalStatus(approvalStatus);
     		agreementInfo.setRefuseInfo( agreementApproval.getApprovalInfo() );
     		agreementInfoDao.updateById(agreementInfo);
     		result.setResult(true);

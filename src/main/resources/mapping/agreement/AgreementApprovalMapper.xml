@@ -4,8 +4,10 @@
   <resultMap id="agreementApprovalMap" type="com.admin.entity.agreement.AgreementApproval">
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="agree_id" property="agreeId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="approval_info" property="approvalInfo" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="BIT" />
+    <result column="status" property="status" />
     <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
     <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
     <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
@@ -16,7 +18,7 @@
   <sql id="table_name"> agreement_approval </sql>
   
   <sql id="Base_Column_List">
-    agree_id, approval_info, status, 
+    agree_id,user_id,user_name, approval_info, status, 
     created_by, created_at, updated_by, updated_at,  remark
   </sql>
   
@@ -39,6 +41,9 @@
 	      <if test="agreeId != null and agreeId != ''">
 	          AND agree_id = #{agreeId}
 	      </if>
+	      <if test="userId != null and userId != ''">
+	          AND user_id = #{userId}
+	      </if>
 	  </where>
   </sql>
   
@@ -52,7 +57,7 @@
   <insert id="insert" parameterType="com.admin.entity.agreement.AgreementApproval" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
     insert into <include refid="table_name" /> 
     ( <include refid="Base_Column_List" /> )
-    values ( #{agreeId,jdbcType=BIGINT}, #{approvalInfo,jdbcType=VARCHAR}, 
+    values ( #{agreeId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{approvalInfo,jdbcType=VARCHAR}, 
       #{status,jdbcType=BIT}, #{createdBy,jdbcType=VARCHAR}, now(), 
       #{updatedBy,jdbcType=VARCHAR}, #{updatedAt,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
       )
