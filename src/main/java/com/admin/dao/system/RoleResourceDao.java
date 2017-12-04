@@ -16,19 +16,15 @@ import com.admin.entity.system.RoleResource;
 public class RoleResourceDao   extends BaseDao{
 	
 
-	public List<RoleResource> selectAllByRoleId(RoleResource roleResource){
-		return this.getSqlSession().selectList(namespace + "selectAllByRoleId", roleResource);
-	}
-	
-	public List<RoleResource> selectAll(){
-		return this.getSqlSession().selectList(namespace + "selectAll");
+	public List<RoleResource> selectAllByRoleId(Integer roleId){
+		return this.getSqlSession().selectList(namespace + "selectAllByRoleId", roleId);
 	}
 	
     public Integer insert(RoleResource roleResource){
         return this.getSqlSession().insert(namespace + "insert", roleResource);
     }
     
-    public Integer deleteByRoleId(RoleResource roleResource){
-    	return this.getSqlSession().delete(namespace + "deleteByRoleId", roleResource);
+    public Integer deleteByRoleId(Integer roleId){
+    	return this.getSqlSession().delete(namespace + "deleteByRoleId", roleId);
     }
 }

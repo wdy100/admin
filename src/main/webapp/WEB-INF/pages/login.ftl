@@ -6,6 +6,17 @@
 <link href="assets/css/login_index.css"  rel="stylesheet" />
 <#include "./common/easyui_core.ftl"/>
 <script type="text/javascript">
+    //回车登录提交
+    function keyLogin() {
+        document.onkeydown=function mykeyDown(e){
+            e = e||event;
+            if(e.keyCode == 13) {//回车键的键值为13
+                loginCommit(); //调用登录按钮的登录事件
+            }
+            return;
+        }
+    }
+
         function loginCommit() {
         	var userName = $("#userName").val();
         	var password = $("#password").val();
@@ -110,7 +121,7 @@
 
     </script>
 </head>
-<body>   
+<body onkeydown="keyLogin();">
     <div class="login-all">   	    
 	    <div class="login">
 	     	<img src="assets/images/loginlong.png" width="342" height="95" alt="" />
@@ -124,7 +135,7 @@
 		    <div class="loginbtn">
 		    	<input ID="ImageButton1"  type="image" 
 		    		src="assets/images/login.png" width="275" height="33" 
-		    		onclick="loginCommit()" 
+		    		onclick="loginCommit();"
 		    	/>               
 	       </div>	        
 	    </div> 

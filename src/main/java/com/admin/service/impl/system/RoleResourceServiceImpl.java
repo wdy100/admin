@@ -25,10 +25,10 @@ public class RoleResourceServiceImpl implements RoleResourceService {
    
 	@Override
 	public ServiceResult<List<RoleResource>> selectAllByRoleId(
-			RoleResource roleResource) {
+			Integer roleId) {
 		ServiceResult<List<RoleResource>> result = new ServiceResult<List<RoleResource>>();
         try{
-        	List<RoleResource> list = roleResourceDao.selectAllByRoleId(roleResource);
+        	List<RoleResource> list = roleResourceDao.selectAllByRoleId(roleId);
         	result.setResult(list);
         }catch(Exception e){
         	result.setError("error","信息查询失败");
@@ -36,18 +36,7 @@ public class RoleResourceServiceImpl implements RoleResourceService {
         }
         return result;
 	}
-	@Override
-	public ServiceResult<List<RoleResource>> selectAll() {
-		ServiceResult<List<RoleResource>> result = new ServiceResult<List<RoleResource>>();
-        try{
-        	List<RoleResource> list = roleResourceDao.selectAll();
-        	result.setResult(list);
-        }catch(Exception e){
-        	result.setError("error","信息查询失败");
-        	log.error("信息查询失败:" + Throwables.getStackTraceAsString(e) );
-        }
-        return result;
-	}
+
 	@Override
 	public ServiceResult<Integer> insert(RoleResource roleResource) {
 		ServiceResult<Integer> result = new ServiceResult<Integer>();
@@ -60,10 +49,10 @@ public class RoleResourceServiceImpl implements RoleResourceService {
         return result;
 	}
 	@Override
-	public ServiceResult<Integer> deleteByRoleId(RoleResource roleResource) {
+	public ServiceResult<Integer> deleteByRoleId(Integer roleId) {
 		ServiceResult<Integer> result = new ServiceResult<Integer>();
         try{
-            int id = roleResourceDao.deleteByRoleId(roleResource);
+            int id = roleResourceDao.deleteByRoleId(roleId);
         }catch(Exception e){
         	result.setError("error","信息删除失败");
         	log.error("信息删除失败:" + Throwables.getStackTraceAsString(e) );

@@ -58,7 +58,8 @@
 		<div id="functions" style="width:150px;">
 			<div data-options="iconCls:'icon-redo'" onclick="resetUserPassword()">重置密码</div>
 		</div>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit"  onclick="updateUser()">审核通过</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit"  onclick="updateUser()">修改</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit"  onclick="auditUser()">审核通过</a>
 	</div>
 
 	<div id="dlg" class="easyui-dialog" style="width:370px;height:200px;padding-top: 10px;"
@@ -192,15 +193,15 @@
 		<#--});-->
 	<#--}-->
 
-	//审核通过-打开审核窗口
+	//修改-打开修改窗口
 	function updateUser(){
 		var selectedRow = $('#dg').datagrid('getSelected');
 		if(!selectedRow || selectedRow == null){
-			$.messager.alert('操作提示','请选择要审核的用户！','info');
+			$.messager.alert('操作提示','请选择要修改的用户！','info');
 			return;
 		}
         $("#aduitUserDiv").dialog({
-            title: '用户审核',
+            title: '用户修改',
             width: 340,
             height: 250,
             top: 50,
@@ -228,8 +229,80 @@
 
 	}
 
-    //审核通过-提交
+    //修改-提交
     function updateUserCommit() {
+        var selectedRow = $('#dg').datagrid('getSelected');
+        if (!selectedRow || selectedRow == null) {
+            $.messager.alert('操作提示', '请选择要修改的用户！', 'info');
+            return;
+        }
+        var userId = selectedRow.id;
+        var departmentId = $('#aduit_departmentId').combotree("getValue");
+        var roleId = $('#aduit_roleId').combotree("getValue");
+        $.ajax({
+            type:'post',
+            url:'/system/updateUser',
+            dataType : "json",
+            data:{userId:userId, departmentId:departmentId, roleId:roleId},
+            cache:false,
+            async:false,
+            success:function(data){
+                $.messager.progress('close');
+                if(!data.success){
+                    $.messager.alert('提示',data.message);
+                }
+                $('#aduitUserDiv').dialog('close');
+                $('#dg').datagrid('reload');//重新加载数据
+                $.messager.alert('提示',"操作成功");
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
+            }
+        });
+    }
+
+    //审核通过-打开审核窗口
+    function auditUser(){
+        var selectedRow = $('#dg').datagrid('getSelected');
+        if(!selectedRow || selectedRow == null){
+            $.messager.alert('操作提示','请选择要审核的用户！','info');
+            return;
+        }
+        if(selectedRow.status == '1'){
+            $.messager.alert('操作提示','该用户已通过审核！','info');
+            return;
+        }
+        $("#aduitUserDiv").dialog({
+            title: '用户审核',
+            width: 340,
+            height: 250,
+            top: 50,
+            closed: true,
+            cache: false,
+            modal: true,
+            buttons:[{
+                text:'提交',
+                iconCls:'icon-ok',
+                handler:function(){
+                    auditUserCommit();
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    $('#aduitUserDiv').dialog('close');
+                }
+            }]
+        });
+        $('#aduit_nickName').textbox("setValue",selectedRow.nickName);
+        $('#aduit_departmentId').combotree("setValue","");
+        $('#aduit_roleId').combotree("setValue","");
+        $("#aduitUserDiv").dialog("open");
+
+    }
+
+    //审核通过-提交
+    function auditUserCommit() {
         var selectedRow = $('#dg').datagrid('getSelected');
         if (!selectedRow || selectedRow == null) {
             $.messager.alert('操作提示', '请选择要审核的用户！', 'info');
@@ -240,7 +313,7 @@
         var roleId = $('#aduit_roleId').combotree("getValue");
         $.ajax({
             type:'post',
-            url:'/system/updateUser',
+            url:'/system/auditUser',
             dataType : "json",
             data:{userId:userId, departmentId:departmentId, roleId:roleId},
             cache:false,

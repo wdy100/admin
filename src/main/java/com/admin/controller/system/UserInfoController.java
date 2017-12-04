@@ -108,8 +108,8 @@ public class UserInfoController {
         userInfo.setUpdatedBy("system");
         ServiceResult<UserInfo> result = userInfoService.createUserInfo(userInfo);
         if (!result.getSuccess()) {
-            log.error("新增部门失败！");
-            jsonResult.setMessage("新增部门失败！");
+            log.error("新增用户失败！");
+            jsonResult.setMessage("新增用户失败！");
             return jsonResult;
         }
         jsonResult.setData(result.getSuccess());
@@ -124,6 +124,40 @@ public class UserInfoController {
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     @ResponseBody
     public Object updateUser(HttpServletRequest request) {
+        HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
+        String userId = request.getParameter("userId");
+        String departmentId = request.getParameter("departmentId");
+        String roleId = request.getParameter("roleId");
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(Long.parseLong(userId));
+        ServiceResult<UserInfo> result = userInfoService.updateUserInfo(userInfo);
+        if (!result.getSuccess()) {
+            log.error("审核通过失败！");
+            jsonResult.setMessage("审核通过失败！");
+            return jsonResult;
+        }
+        //保存用户部门信息
+        UserDepartment userDepartment = new UserDepartment();
+        userDepartment.setUserId(Long.parseLong(userId));
+        userDepartment.setDepartmentId(Long.parseLong(departmentId));
+        userDepartmentService.createUserDepartment(userDepartment);
+        //保存用户角色信息
+        UserRole userRole = new UserRole();
+        userRole.setUserId(Long.parseLong(userId));
+        userRole.setRoleId(Long.parseLong(roleId));
+        userRoleService.createUserRole(userRole);
+        jsonResult.setData(result.getSuccess());
+        return jsonResult;
+    }
+
+    /**
+     * 审核
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/auditUser", method = RequestMethod.POST)
+    @ResponseBody
+    public Object auditUser(HttpServletRequest request) {
         HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
         String userId = request.getParameter("userId");
         String departmentId = request.getParameter("departmentId");

@@ -51,18 +51,19 @@
 
 <div id="roleInputInfo" style="padding:10px;display:none;" title="设置角色权限">
     <table>
+        <input name="roleId_edit" id="roleId_edit" type="hidden"/>
         <tr>
             <td>角色名称</td>
-            <td><input id="name_edit" type="text"/></td>
+            <td><input id="name_edit" type="text" readonly="readonly" style="width:374px;"/></td>
         </tr>
         <tr>
             <td>角色描述</td>
-            <td><input id="description_edit" type="text"/></td>
+            <td><input id="description_edit" type="text" readonly="readonly" style="width:374px;"/></td>
         </tr>
         <tr>
             <td>角色权限</td>
             <td>
-                <select style="width:174px;" name="resourceIds" id="resourceIds" multiple  class="easyui-combotree"
+                <select style="width:378px;" name="resourceIds" id="resourceIds" multiple  class="easyui-combotree"
                         data-options="
 							url: '/system/allModuleResourceTree',
 							animate: true,
@@ -107,8 +108,10 @@
     $("#update").click(function(){
         var rows = $('#dg').datagrid('getSelections');
         if(rows.length == 1) {
+            $("#roleId_edit").val(rows[0].id);
             $("#name_edit").val(rows[0].name);
             $("#description_edit").val(rows[0].description);
+            initTree();
         }else{
             $.messager.alert('操作提示', '请选择要分配权限的角色！', 'info');
             return;
@@ -120,31 +123,18 @@
             minimizable: false,
             maximizable: false,
             height:230,
-            width:300
+            width:500
         });
     });
 
     //设置角色权限提交
     $("#saveBtn").click(function(){
-        if(!$.isNotBlank($("#code_edit").val())){
-            $.messager.alert("提示","请填写角色编码","info")
-            return false;
-        }
-        if(!$.isNotBlank($("#name_edit").val())){
-            $.messager.alert("提示","请填写角色名称","info")
-            return false;
-        }
-        if(!$.isNotBlank($("#description_edit").val())){
-            $.messager.alert("提示","请填写角色描述","info")
-            return false;
-        }
         $.messager.progress({text:"提交中..."});
         jQuery.ajax({
-            url: "/system/saveRole",
+            url: "/system/saveRoleResource",
             data:{
-                "code": $("#code_edit").val(),
-                "name": $("#name_edit").val(),
-                "description": $("#description_edit").val()
+                "roleId": $("#roleId_edit").val(),
+                "resourceIds": $('#resourceIds').combotree("getValues")
             },
             type: "POST",
             success: function(result) {
@@ -152,6 +142,7 @@
                 if(result.success == true){
                     $('#dataGrid').datagrid('reload');
                     $("#roleInputInfo").dialog("close");
+                    $.messager.alert('提示',"操作成功");
                 }else
                     $.messager.alert('错误', result.message, 'error');
             },
@@ -161,6 +152,28 @@
             }
         });
     });
+
+    function initTree(){
+        var roleId = $("#roleId_edit").val();
+        $.ajax({
+            type:'post',
+            url:'/system/getResourcesByRoleId',
+            dataType : "json",
+            data:{roleId:roleId},
+            cache:false,
+            async:false,
+            success:function(data){
+                var resourceIds = data;
+                if(resourceIds != ''){
+                    $('#resourceIds').combotree('setValues', resourceIds);
+                }
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
+            }
+        });
+
+    }
 
 </script>
 </body>
