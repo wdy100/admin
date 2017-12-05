@@ -45,7 +45,7 @@
                     </td>
                     <td class="cxlabel">
                         <a id="search" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
-                        <a href="#"  class="easyui-linkbutton" iconCls="icon-edit" plain="false">勘查模板下载</a>
+                        <a href="${domainUrlUtil.dynamicURL}/template/prospectTemplate.docx" class="easyui-linkbutton" iconCls="icon-edit" plain="false">勘查模板下载</a>
                     </td>
                 </tr>
             </table>
@@ -55,7 +55,7 @@
         <form action="/prospect/uploadReportFile.html" id="uploadForm" enctype="multipart/form-data" method="post">
             <a href="javascript:void(0)"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="uploadData()">勘查数据上传</a>
             <input type="file" name="file" id="file"/>
-            <input type="hidden" nam="id" id="id"/>
+            <input type="hidden" name="id" id="id"/>
         </form>
     </div>
     <div region="center" border="false">

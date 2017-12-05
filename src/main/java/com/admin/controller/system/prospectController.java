@@ -87,28 +87,8 @@ public class prospectController {
     @RequestMapping(value = { "/uploadReportFile.html" }, method = { RequestMethod.POST })
     public String upload(@RequestParam(value = "file", required = false) MultipartFile file,
                         HttpServletRequest request, ModelMap model) {
-        String id = null;
-        DiskFileItemFactory dff = new DiskFileItemFactory();
-        ServletFileUpload fu = new ServletFileUpload(dff);
-        try{
-            List li = fu.parseRequest(request);
-            Iterator iter = li.iterator();
-            while(iter.hasNext()){
-                FileItem item = (FileItem)iter.next();
-                if(item.isFormField()){  //此处是判断非文件域，即不是<inputtype="file"/>的标签
-                    String name=item.getFieldName(); //获取form表单中name的id
-                    if("id".equals(name)){
-                        id = item.getString("utf-8"); //item是指定id的value值，此处用      item.getString("utf-8")是把item用utf-8解析，根据你的需要可以用其他的，如：gbk；
-                    }
-                }
-            }
-        } catch(FileUploadException e1) {
-            e1.printStackTrace();
-        } catch (UnsupportedEncodingException e2) {
-            e2.printStackTrace();
-        }
-        String id2 = id;
-        ServiceResult<Prospect> result = prospectService.getById(1);
+        String id = request.getParameter("id");
+        ServiceResult<Prospect> result = prospectService.getById(Integer.parseInt(id));
 
         if(result == null || !result.getSuccess()) {
             logger.error("根据id查询勘察确认单信息，发生异常");
@@ -116,7 +96,7 @@ public class prospectController {
         }
         Prospect prospect = result.getResult();
 
-        String path = request.getSession().getServletContext().getRealPath("upload");
+        String path = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
         String fileName = file.getOriginalFilename();
         File targetFile = new File(path, fileName);
         if(!targetFile.exists()){
@@ -129,7 +109,6 @@ public class prospectController {
             e.printStackTrace();
         }
         String fileUrl = path + "\\" + fileName;
-//        model.addAttribute("fileUrl", fileUrl);
 
         prospect.setProspectFileAddress(fileUrl);
         prospectService.update(prospect);
