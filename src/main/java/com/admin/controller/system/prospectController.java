@@ -6,6 +6,12 @@ import com.haier.common.BusinessException;
 import com.haier.common.ServiceResult;
 import com.haier.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.ProgressListener;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.LogManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,13 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 @Controller
 @RequestMapping("/prospect")
@@ -82,9 +86,29 @@ public class prospectController {
 
     @RequestMapping(value = { "/uploadReportFile.html" }, method = { RequestMethod.POST })
     public String upload(@RequestParam(value = "file", required = false) MultipartFile file,
-                         @RequestParam(value = "id", required = false) Integer id,
-                         HttpServletRequest request, ModelMap model) {
-        ServiceResult<Prospect> result = prospectService.getById(id);
+                        HttpServletRequest request, ModelMap model) {
+        String id = null;
+        DiskFileItemFactory dff = new DiskFileItemFactory();
+        ServletFileUpload fu = new ServletFileUpload(dff);
+        try{
+            List li = fu.parseRequest(request);
+            Iterator iter = li.iterator();
+            while(iter.hasNext()){
+                FileItem item = (FileItem)iter.next();
+                if(item.isFormField()){  //此处是判断非文件域，即不是<inputtype="file"/>的标签
+                    String name=item.getFieldName(); //获取form表单中name的id
+                    if("id".equals(name)){
+                        id = item.getString("utf-8"); //item是指定id的value值，此处用      item.getString("utf-8")是把item用utf-8解析，根据你的需要可以用其他的，如：gbk；
+                    }
+                }
+            }
+        } catch(FileUploadException e1) {
+            e1.printStackTrace();
+        } catch (UnsupportedEncodingException e2) {
+            e2.printStackTrace();
+        }
+        String id2 = id;
+        ServiceResult<Prospect> result = prospectService.getById(1);
 
         if(result == null || !result.getSuccess()) {
             logger.error("根据id查询勘察确认单信息，发生异常");
@@ -98,15 +122,14 @@ public class prospectController {
         if(!targetFile.exists()){
             targetFile.mkdirs();
         }
-
         //保存
         try {
             file.transferTo(targetFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String fileUrl = request.getContextPath() + "/upload/" + fileName;
-        model.addAttribute("fileUrl", fileUrl);
+        String fileUrl = path + "\\" + fileName;
+//        model.addAttribute("fileUrl", fileUrl);
 
         prospect.setProspectFileAddress(fileUrl);
         prospectService.update(prospect);

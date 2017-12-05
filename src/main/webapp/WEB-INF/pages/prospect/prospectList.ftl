@@ -13,7 +13,7 @@
 <div id="layout" class="easyui-layout" fit="true">
     <div region="north" border="false" collapsible="true" collapsed="false"
          class="zoc" title="查询条件" style="height: 60px; overflow: inherit;">
-        <form onsubmit="return false;" action="/uploadReportFile.html" id="searchForm" enctype="multipart/form-data">
+        <form onsubmit="return false;" action="" id="searchForm" enctype="multipart/form-data" method="post">
             <table class="fixedTb">
                 <tr>
                     <td class="cxlabel">客户名称:</td>
@@ -45,16 +45,18 @@
                     </td>
                     <td class="cxlabel">
                         <a id="search" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
-                        <input type="hidden" id="id"/>
+                        <a href="#"  class="easyui-linkbutton" iconCls="icon-edit" plain="false">勘查模板下载</a>
                     </td>
                 </tr>
             </table>
         </form>
     </div>
     <div id="tb" >
-        <a href="#"  class="easyui-linkbutton" iconCls="icon-edit" plain="false">勘查模板下载</a>
-        <a href="javascript:void(0)"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="uploadData()">勘查数据上传</a>
-        <input type="file" name="file"/>
+        <form action="/prospect/uploadReportFile.html" id="uploadForm" enctype="multipart/form-data" method="post">
+            <a href="javascript:void(0)"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="uploadData()">勘查数据上传</a>
+            <input type="file" name="file" id="file"/>
+            <input type="hidden" nam="id" id="id"/>
+        </form>
     </div>
     <div region="center" border="false">
         <table id="dg">
@@ -65,9 +67,9 @@
                 <th data-options="field:'customerAddress',width:300,halign:'center',align:'left'">客户地址</th>
                 <th data-options="field:'name',width:150,halign:'center',align:'left'">联系人</th>
                 <th data-options="field:'mobile',width:150,halign:'center',align:'left'">联系电话</th>
-                <th data-options="field:'prospectTime',width:150,halign:'center',align:'left'">勘查时间</th>
-                <th data-options="field:'prospectContent',width:250,halign:'center',align:'left'">勘查内容</th>
-                <th data-options="field:'prospectRequire',width:200,halign:'center',align:'left'">勘查要求</th>
+                <th data-options="field:'prospectTime',width:250,halign:'center',align:'left'">勘查时间</th>
+                <th data-options="field:'prospectContent',width:300,halign:'center',align:'left'">勘查内容</th>
+                <th data-options="field:'prospectRequire',width:300,halign:'center',align:'left'">勘查要求</th>
                 <th data-options="field:'prospectName',width:150,halign:'center',align:'left'">勘查人员</th>
                 <th data-options="field:'prospectStatus',width:150,halign:'center',align:'left',
 						formatter:function(value,row,index){
@@ -89,7 +91,7 @@
                             return '';
                         }">客户状态</th>
                 <th data-options="field:'submitName',width:100,halign:'center',align:'left'">下单人员</th>
-                <th data-options="field:'submitTime',width:150,halign:'center',align:'left'">下单日期</th>
+                <th data-options="field:'submitTime',width:250,halign:'center',align:'left'">下单日期</th>
             </tr>
             </thead>
         </table>
@@ -110,14 +112,18 @@
 
     //勘查数据上传
     function uploadData() {
-        var rows = $('#dg').datagrid('getSelections');
-        if(rows.length == 1) {
-            if(item.prospectStatus != 1){
+        var rows = $('#dg').datagrid('getSelected');
+        if(rows) {
+            if(rows.prospectStatus != 1){
                 $.messager.alert('错误','请先选择一条状态为勘察中的勘查记录！','error');
                 return;
             }
-            var id = rows.ck;
-            $("#searchForm").submit();
+            if(!$("#file").val()) {
+                $.messager.alert('错误','请先选择上传文件！','error');
+                return;
+            }
+            $("#id").val(rows.id);
+            $("#uploadForm").submit();
         }else{
             $.messager.alert('操作提示', '请先选择一条状态为勘察中的勘查记录！', 'info');
             return;
