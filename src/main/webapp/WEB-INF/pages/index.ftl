@@ -64,6 +64,7 @@
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;订单管理" >
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单查询</ul>
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单执行</ul>
+                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/prospect/prospect.html')">勘查报告</ul>
             </div>
             <div title="&nbsp;&nbsp;&nbsp;&nbsp;合同管理" >
                 <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/agreementInfo/agreement.html')">合同管理</ul>
