@@ -6,6 +6,8 @@ import lombok.ToString;
 
 import com.admin.entity.BaseEntity;
 
+import java.util.List;
+
 /**
  * 资源实体类
  * Created by GaoJingFei on 2017/11/13.
@@ -28,10 +30,24 @@ public class ResourceInfo  extends BaseEntity{
 
     private String url;
 
-    private Boolean type;//类别 0:模块 1:页面  2:按钮
+    private Integer type;//类别 0:模块 1:页面  2:按钮
 
     private Integer order;
 
     private Long parentId;
+
+    private List<ResourceInfo> children;
+
+    public static enum TypeEnum{
+        /**
+         * 类别 0:模块 1:页面  2:按钮
+         */
+        MODULE(0),PAGE(1),BUTTON(2);
+        @Getter
+        private Integer type;
+        private TypeEnum(Integer type) {
+            this.type = type;
+        }
+    }
 
 }

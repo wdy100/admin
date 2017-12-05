@@ -16,7 +16,7 @@ import com.admin.entity.system.RoleResource;
 public class RoleResourceDao   extends BaseDao{
 	
 
-	public List<RoleResource> selectAllByRoleId(Integer roleId){
+	public List<RoleResource> selectAllByRoleId(Long roleId){
 		return this.getSqlSession().selectList(namespace + "selectAllByRoleId", roleId);
 	}
 	
@@ -24,7 +24,7 @@ public class RoleResourceDao   extends BaseDao{
         return this.getSqlSession().insert(namespace + "insert", roleResource);
     }
     
-    public Integer deleteByRoleId(Integer roleId){
+    public Integer deleteByRoleId(Long roleId){
     	return this.getSqlSession().delete(namespace + "deleteByRoleId", roleId);
     }
 }
