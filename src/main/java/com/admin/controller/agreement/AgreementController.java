@@ -45,6 +45,7 @@ import com.admin.entity.agreement.AgreementGoods;
 import com.admin.entity.agreement.AgreementInfo;
 import com.admin.service.agreement.AgreementService;
 import com.admin.web.util.HttpJsonResult;
+import com.admin.web.util.Util;
 import com.admin.web.util.WebUtil;
 import com.google.common.collect.Maps;
 import com.haier.common.BusinessException;
@@ -134,8 +135,9 @@ public class AgreementController {
     public String add(HttpServletRequest request,AgreementInfo agreementInfo,
     				Map<String, Object> stack){  
     	
-    	List<AgreementGoods> goodsList = new ArrayList<AgreementGoods>();
+    	agreementInfo.setAgreeSn( Util.getOrderSn(null,"1") ); //生成合同编号
     	
+    	List<AgreementGoods> goodsList = new ArrayList<AgreementGoods>();
     	String[] systemNames = request.getParameterValues("systemName");
     	String[] hardwareNames = request.getParameterValues("hardwareName");
     	String[] goodsNums = request.getParameterValues("goodsNum");

@@ -178,7 +178,9 @@
             </table>    
             <input type="hidden" id="agreementId" name="agreementId" value="${(agreementId)!''}"/>
             <input type="hidden" id="approvalStatus" name="approvalStatus" value=""/>
-            
+            <input type="hidden" id="firstRatio" name="firstRatio" value=""/>
+            <input type="hidden" id="lastRatio" name="lastRatio" value=""/>
+
             </@form.form>
             <div class="naebtn">
 			    <input id="Button1" type="submit" text="暂存" value="暂存" onclick="javascript:saveAgreement('0');" /> 
@@ -251,6 +253,8 @@
 			$("#agreementAmount").focus();
 			$.messager.alert('提示',"合同金额只能为保留两位小数的数字！");
 			return;
+		}else{
+            calculatePayRatio(agreementAmount);
 		}
 		
         var hardwareAll = $("#hardwareAll").val();
@@ -423,6 +427,28 @@
         $("#addForm").attr("action", "/agreementInfo/add")
                 .attr("method", "POST")
                 .submit();
+	}
+
+	function calculatePayRatio(payAmount){
+        //合同金额 <10万 10-10.999万 20-50万 >50万
+        //首付比例 100%  60%         50% 30%
+        //尾款比例 0     40%         50% 70%
+		if(payAmount<100000){
+            $("#firstRatio").val('100');
+            $("#lastRatio").val('0');
+		}else if(100000<=payAmount<200000){
+            $("#firstRatio").val('60');
+            $("#lastRatio").val('40');
+        }else if(200000<=payAmount<500000){
+            $("#firstRatio").val('50');
+            $("#lastRatio").val('50');
+        }else if(500000<=payAmoun){
+            $("#firstRatio").val('30');
+            $("#lastRatio").val('70');
+        }else{
+            $("#firstRatio").val('100');
+            $("#lastRatio").val('0');
+		}
 	}
 </script>
 

@@ -252,8 +252,25 @@ $(function(){
                     title: '合同签订时间',
                     width: 120,
                     align: 'center'
-                },
-                {
+                },{
+                    field: 'firstRatio',
+                    title: '首付款比例',
+                    width: 120,
+                    align: 'center',
+                    formatter: function(value, row, index){
+                        var result = value+'%';
+                        return result;
+                    }
+                },{
+                    field: 'lastRatio',
+                    title: '尾款比例',
+                    width: 120,
+                    align: 'center',
+                    formatter: function(value, row, index){
+                        var result = value+'%';
+                        return result;
+                    }
+                }{
                     field: 'createdBy',
                     title: '合同详情',
                     width: 70,

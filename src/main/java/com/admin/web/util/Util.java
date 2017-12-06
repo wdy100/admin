@@ -6,10 +6,13 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -83,11 +86,33 @@ public class Util {
         return request.getRemoteAddr();
     }
 
+    public static String getOrderSn(String referId, String type) {
+
+        StringBuffer orderSn = new StringBuffer();
+        if ("1".equals(type)) {
+            orderSn.append("SN");
+        } else {
+        	orderSn.append("SN");
+        }
+        orderSn.append(new SimpleDateFormat("yyMMddHHmmssSSS").format(new Date()));
+        if (referId != null && String.valueOf(referId).length() >= 2) {
+            String id = String.valueOf(referId);
+            orderSn.append(id.substring(id.length() - 2));
+        } else {
+            orderSn.append(new Random().nextInt(10));
+            orderSn.append(new Random().nextInt(10));
+        }
+
+        return orderSn.toString();
+    }
+
+    
     public static void main(String[] a) {
         List<String> lstAttrOptionId = Arrays.asList("2024".split(","));
         System.out.println(lstAttrOptionId.contains("2024"));
         for (String item : lstAttrOptionId) {
             System.out.println(item);
         }
+        System.out.println(Util.getOrderSn(null,"1"));
     }
 }
