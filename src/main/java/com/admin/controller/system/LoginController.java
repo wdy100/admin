@@ -1,6 +1,12 @@
 package com.admin.controller.system;
+import com.admin.entity.system.ResourceInfo;
+import com.admin.entity.system.RoleResource;
 import com.admin.entity.system.UserInfo;
+import com.admin.entity.system.UserRole;
+import com.admin.service.system.ResourceInfoService;
+import com.admin.service.system.RoleResourceService;
 import com.admin.service.system.UserInfoService;
+import com.admin.service.system.UserRoleService;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.SessionSecurityConstants;
 import com.haier.common.ServiceResult;
@@ -13,6 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
   
 @Controller
@@ -20,6 +29,9 @@ import java.util.Map;
 public class LoginController {  
     @Resource  
     private UserInfoService userInfoService;
+
+    @Resource
+    private ResourceInfoService resourceInfoService;
     
     @RequestMapping(value = "/loginCommit", method = { RequestMethod.POST })
 	@ResponseBody
@@ -57,7 +69,38 @@ public class LoginController {
             return "redirect:/login.html";
         }
         UserInfo user = result.getResult();
+        List<ResourceInfo> moduleList = getResourceInfoByUserId(user.getId());
         stack.put("user", user);
+        stack.put("moduleList", moduleList);
         return "index";
-    }  
+    }
+
+    /**
+     * 根据userId获取左侧菜单资源
+     * */
+    private List<ResourceInfo> getResourceInfoByUserId(Long userId){
+        List<ResourceInfo> moduleList = new ArrayList<ResourceInfo>();
+        ServiceResult<List<ResourceInfo>> resourceInfoResult = resourceInfoService.getByUserId(userId);
+        if(resourceInfoResult.getSuccess() && resourceInfoResult.getResult() != null && resourceInfoResult.getResult().size() > 0){
+            List<ResourceInfo> resourceInfoList = resourceInfoResult.getResult();
+            Map<Long, List<ResourceInfo>> pageMap = new HashMap<Long, List<ResourceInfo>>();
+            for(ResourceInfo resourceInfo : resourceInfoList){
+                if(ResourceInfo.TypeEnum.MODULE.getType().equals(resourceInfo.getType())){
+                    moduleList.add(resourceInfo);
+                }else if(ResourceInfo.TypeEnum.PAGE.getType().equals(resourceInfo.getType())){
+                    if(pageMap.containsKey(resourceInfo.getParentId())){
+                        pageMap.get(resourceInfo.getParentId()).add(resourceInfo);
+                    }else{
+                        List<ResourceInfo> pageList = new ArrayList<ResourceInfo>();
+                        pageList.add(resourceInfo);
+                        pageMap.put(resourceInfo.getParentId(), pageList);
+                    }
+                }
+            }
+            for(ResourceInfo resourceInfo : moduleList){
+                resourceInfo.setChildren(pageMap.get(resourceInfo.getId()));
+            }
+        }
+        return moduleList;
+    }
 }  

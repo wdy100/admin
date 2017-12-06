@@ -18,8 +18,8 @@ public class RoleResource  extends BaseEntity{
 	 */
 	private static final long serialVersionUID = 7338000316774087035L;
 
-	private Integer roleId;
+	private Long roleId;
 
-    private Integer resourceId;
+    private Long resourceId;
 
 }

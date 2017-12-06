@@ -48,29 +48,19 @@
         <div class="easyui-accordion"
              data-options="border:false,fit:true" animate="false">
             <!-- 可用c标签的foreach来读取后台的菜单树 -->
-            <div title="&nbsp;&nbsp;&nbsp;&nbsp;系统管理">
-                <!--ul的id可以设置成,这样就能出发点击事件或者别的事件 -->
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/department.html')">部门管理</ul>
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/role.html')">角色管理</ul>
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/roleResource.html')">权限管理</ul>
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/system/user.html')">用户管理</ul>
-            </div>
-            <div title="&nbsp;&nbsp;&nbsp;&nbsp;客户管理"  >
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customer.html')">客户接入</ul>
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customerFeedback.html')">客户反馈</ul>
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customer.html')">协助客户</ul>
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/customer/customer.html')">客户公海</ul>
-            </div>
-            <div title="&nbsp;&nbsp;&nbsp;&nbsp;订单管理" >
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单查询</ul>
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">订单执行</ul>
-            </div>
-            <div title="&nbsp;&nbsp;&nbsp;&nbsp;合同管理" >
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'/agreementInfo/agreement.html')">合同管理</ul>
-            </div>
-            <div title="&nbsp;&nbsp;&nbsp;&nbsp;财务管理" >
-                <ul style="text-align: center;" onclick="addTab(this.innerHTML,'http://localhost:8082/TestEasyUi/tab1.jsp')">财务管理</ul>
-            </div>
+            <#if moduleList?? && moduleList?size &gt; 0>
+            <#list moduleList as module>
+                <div title="&nbsp;&nbsp;&nbsp;&nbsp;${(module.name)!""}">
+                    <!--ul的id可以设置成,这样就能出发点击事件或者别的事件 -->
+                    <#if module.children?? && module.children?size &gt; 0>
+                    <#list module.children as resource>
+                        <ul style="text-align: center;" onclick="addTab(this.innerHTML,'${(resource.url)!""}')">${(resource.name)!""}</ul>
+                    </#list>
+                    </#if>
+                </div>
+            </#list>
+            </#if>
+
         </div>
     </div>
     <!---left END--->

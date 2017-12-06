@@ -1,5 +1,7 @@
 package com.admin.service.system;
 import com.admin.entity.system.ResourceInfo;
+import com.admin.entity.system.UserRole;
+import com.haier.common.ServiceResult;
 
 import java.util.List;
 
@@ -13,4 +15,9 @@ public interface ResourceInfoService {
      * @return
      */
     public List<ResourceInfo> getAll();
+
+    /**
+     * 根据userId获取
+     * */
+    public ServiceResult<List<ResourceInfo>> getByUserId(Long userId);
 }

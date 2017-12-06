@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by GaoJingFei on 2017/11/13.
  */
@@ -16,6 +18,14 @@ import org.springframework.stereotype.Service;
 public class UserRoleServiceImpl implements UserRoleService {
     @Autowired
     private UserRoleDao userRoleDao;
+
+    @Override
+    public ServiceResult<List<UserRole>> getByUserId(Long userId){
+        ServiceResult<List<UserRole>> result = new ServiceResult<List<UserRole>>();
+        result.setResult(userRoleDao.getByUserId(userId));
+        return result;
+    }
+
     @Override
     public ServiceResult<Boolean> createUserRole(UserRole userRole){
         ServiceResult<Boolean> result = new ServiceResult<Boolean>();

@@ -2,7 +2,7 @@
 --2017-11-16
 
 -- system begin--
-DROP TABLE IF EXISTS `department`; 
+-- DROP TABLE IF EXISTS `department`;
 CREATE TABLE `department`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -19,7 +19,7 @@ CREATE TABLE `department`
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='部门表';
 
-DROP TABLE IF EXISTS `resource_info`;
+-- DROP TABLE IF EXISTS `resource_info`;
 CREATE TABLE `resource_info`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -39,7 +39,7 @@ CREATE TABLE `resource_info`
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='资源表';
 
-DROP TABLE IF EXISTS `role`;
+-- DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -55,21 +55,21 @@ CREATE TABLE `role`
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='角色表';
 
-DROP TABLE IF EXISTS `role_resource`;
+-- DROP TABLE IF EXISTS `role_resource`;
 CREATE TABLE `role_resource`
 (
   role_id   int(11) NOT NULL,
   resource_id  int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色资源表';
 
-DROP TABLE IF EXISTS `user_department`;
+-- DROP TABLE IF EXISTS `user_department`;
 CREATE TABLE `user_department`
 (
   user_id   int(11) NOT NULL,
   department_id int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户部门表';
 
-DROP TABLE IF EXISTS `user_info`;
+-- DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -89,14 +89,14 @@ CREATE TABLE `user_info`
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
-DROP TABLE IF EXISTS `user_role`;
+-- DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role`
 (
   user_id int(11) NOT NULL,
   role_id int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色表';
 
-DROP TABLE IF EXISTS `sys_log`;
+-- DROP TABLE IF EXISTS `sys_log`;
 CREATE TABLE `sys_log`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -113,7 +113,7 @@ CREATE TABLE `sys_log`
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='系统日志表';
 
-DROP TABLE IF EXISTS `attachment`;
+-- DROP TABLE IF EXISTS `attachment`;
 CREATE TABLE `attachment`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -130,7 +130,7 @@ CREATE TABLE `attachment`
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='系统附件表';
 
-DROP TABLE IF EXISTS `notice`;
+-- DROP TABLE IF EXISTS `notice`;
 CREATE TABLE `notice`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -150,7 +150,7 @@ PRIMARY KEY (`id`)
 
 --admin系统业务表 begin--
 --客户主数据
-DROP TABLE IF EXISTS `customer`;
+-- DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -182,7 +182,7 @@ PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='客户表';
 
 --客户反馈
-DROP TABLE IF EXISTS `customer_feedback`;
+-- DROP TABLE IF EXISTS `customer_feedback`;
 CREATE TABLE `customer_feedback`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT,

@@ -1,6 +1,7 @@
 package com.admin.dao.system;
 
 import com.admin.entity.system.ResourceInfo;
+import com.admin.entity.system.UserRole;
 import org.springframework.stereotype.Repository;
 
 import com.admin.dao.BaseDao;
@@ -18,5 +19,9 @@ public class ResourceInfoDao   extends BaseDao{
      */
     public List<ResourceInfo> getAll(){
         return this.getSqlSession().selectList(namespace+"getAll");
+    }
+
+    public List<ResourceInfo> getByUserId(Long userId){
+        return this.getSqlSession().selectList(namespace + "getByUserId", userId);
     }
 }

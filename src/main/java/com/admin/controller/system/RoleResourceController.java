@@ -58,10 +58,10 @@ public class RoleResourceController {
     @RequestMapping(value = "/getResourcesByRoleId", method = RequestMethod.POST)
     @ResponseBody
     public Object getResourcesByRoleId(HttpServletRequest request) {
-        List<Integer> resourceIdList = new ArrayList<Integer>();
+        List<Long> resourceIdList = new ArrayList<Long>();
         String roleId = request.getParameter("roleId");
         if(roleId != null && !"".equals(roleId)){
-            ServiceResult<List<RoleResource>> result = roleResourceService.selectAllByRoleId(Integer.parseInt(roleId));
+            ServiceResult<List<RoleResource>> result = roleResourceService.selectAllByRoleId(Long.parseLong(roleId));
             if(result.getSuccess() && result.getResult() != null){
                 List<RoleResource> roleResourceList = result.getResult();
                 for(RoleResource rr : roleResourceList){
@@ -84,7 +84,7 @@ public class RoleResourceController {
             jsonResult.setMessage("设置权限失败：参数不能为空！");
             return jsonResult;
         }
-        Integer rid = Integer.parseInt(roleId);
+        Long rid = Long.parseLong(roleId);
         roleResourceService.deleteByRoleId(rid);
         for(String resourceId : resourceIds){
             if(resourceId == null || "".equals(resourceId)){
@@ -92,7 +92,7 @@ public class RoleResourceController {
             }
             RoleResource roleResource = new RoleResource();
             roleResource.setRoleId(rid);
-            roleResource.setResourceId(Integer.parseInt(resourceId));
+            roleResource.setResourceId(Long.parseLong(resourceId));
             roleResourceService.insert(roleResource);
         }
 

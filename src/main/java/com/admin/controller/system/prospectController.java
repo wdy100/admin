@@ -6,6 +6,12 @@ import com.haier.common.BusinessException;
 import com.haier.common.ServiceResult;
 import com.haier.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.ProgressListener;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.LogManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,13 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 @Controller
 @RequestMapping("/prospect")
@@ -82,9 +86,9 @@ public class prospectController {
 
     @RequestMapping(value = { "/uploadReportFile.html" }, method = { RequestMethod.POST })
     public String upload(@RequestParam(value = "file", required = false) MultipartFile file,
-                         @RequestParam(value = "id", required = false) Integer id,
-                         HttpServletRequest request, ModelMap model) {
-        ServiceResult<Prospect> result = prospectService.getById(id);
+                        HttpServletRequest request, ModelMap model) {
+        String id = request.getParameter("id");
+        ServiceResult<Prospect> result = prospectService.getById(Integer.parseInt(id));
 
         if(result == null || !result.getSuccess()) {
             logger.error("根据id查询勘察确认单信息，发生异常");
@@ -92,21 +96,19 @@ public class prospectController {
         }
         Prospect prospect = result.getResult();
 
-        String path = request.getSession().getServletContext().getRealPath("upload");
+        String path = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
         String fileName = file.getOriginalFilename();
         File targetFile = new File(path, fileName);
         if(!targetFile.exists()){
             targetFile.mkdirs();
         }
-
         //保存
         try {
             file.transferTo(targetFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String fileUrl = request.getContextPath() + "/upload/" + fileName;
-        model.addAttribute("fileUrl", fileUrl);
+        String fileUrl = path + "\\" + fileName;
 
         prospect.setProspectFileAddress(fileUrl);
         prospectService.update(prospect);

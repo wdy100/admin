@@ -11,9 +11,9 @@ import com.haier.common.ServiceResult;
 public interface RoleResourceService {
 
 
-	public ServiceResult<List<RoleResource>> selectAllByRoleId(Integer roleId);
+	public ServiceResult<List<RoleResource>> selectAllByRoleId(Long roleId);
 	
 	public ServiceResult<Integer> insert(RoleResource roleResource);
 	
-	public ServiceResult<Integer> deleteByRoleId(Integer roleId);
+	public ServiceResult<Integer> deleteByRoleId(Long roleId);
 }

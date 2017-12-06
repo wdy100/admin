@@ -3,11 +3,17 @@ package com.admin.service.system;
 import com.admin.entity.system.UserRole;
 import com.haier.common.ServiceResult;
 
+import java.util.List;
+
 /**
  * Created by GaoJingFei on 2017/11/13.
  */
 
 public interface UserRoleService {
+    /**
+     * 根据userId获取
+     * */
+    public ServiceResult<List<UserRole>> getByUserId(Long userId);
     /**
      * 创建
      * */

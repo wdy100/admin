@@ -25,7 +25,7 @@ public class RoleResourceServiceImpl implements RoleResourceService {
    
 	@Override
 	public ServiceResult<List<RoleResource>> selectAllByRoleId(
-			Integer roleId) {
+			Long roleId) {
 		ServiceResult<List<RoleResource>> result = new ServiceResult<List<RoleResource>>();
         try{
         	List<RoleResource> list = roleResourceDao.selectAllByRoleId(roleId);
@@ -49,7 +49,7 @@ public class RoleResourceServiceImpl implements RoleResourceService {
         return result;
 	}
 	@Override
-	public ServiceResult<Integer> deleteByRoleId(Integer roleId) {
+	public ServiceResult<Integer> deleteByRoleId(Long roleId) {
 		ServiceResult<Integer> result = new ServiceResult<Integer>();
         try{
             int id = roleResourceDao.deleteByRoleId(roleId);

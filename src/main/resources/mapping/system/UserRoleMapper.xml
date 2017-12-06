@@ -12,6 +12,11 @@
 
   <sql id="table">user_role</sql>
 
+  <select id="getByUserId" parameterType="Integer" resultMap="userRoleMap">
+    select *  from <include refid="table"/>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
   <insert id="insert" parameterType="UserRole" >
     insert into <include refid="table"/> (user_id, role_id)
     values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
