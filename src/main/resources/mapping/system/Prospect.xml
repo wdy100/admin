@@ -6,28 +6,27 @@
     <resultMap id="prospectMap" type="com.admin.entity.system.Prospect">
         <id property="id" column="id"/>
         <result property="customerName" column="customer_name"/>
-        <result property="customerAddress" column="customer_address"/>
+        <result property="prospectAddress" column="prospect_address"/>
         <result property="name" column="name"/>
         <result property="mobile" column="mobile"/>
-        <result property="prospectTime" column="prospect_time"/>
-        <result property="prospectContent" column="prospect_content"/>
-        <result property="prospectArea" column="prospect_area"/>
-        <result property="prospectRequire" column="prospect_require"/>
+        <result property="prospectConfirmTime" column="prospect_confirm_time"/>
+        <result property="prospectStartTime" column="prospect_start_time"/>
+        <result property="prospectEndTime" column="prospect_end_time"/>
         <result property="prospectName" column="prospect_name"/>
-        <result property="prospectStatus" column="prospect_status"/>
+        <result property="prospectContent" column="prospect_content"/>
+        <result property="prospectRequire" column="prospect_require"/>
+        <result property="status" column="status"/>
         <result property="prospectFileAddress" column="prospect_file_address"/>
-        <result property="customerStatus" column="customer_status"/>
-        <result property="submitName" column="submit_name"/>
-        <result property="submitTime" column="submit_time"/>
         <result property="createdBy" column="created_by"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedBy" column="updated_by"/>
         <result property="updatedAt" column="updated_at"/>
+        <result property="ramark" column="ramark"/>
     </resultMap>
 
     <sql id="columns">
-        customer_name,customer_address,name,mobile,prospect_time,prospect_content,prospect_area,prospect_require,prospect_name,prospect_status,
-        prospect_file_address,customer_status,submit_name,submit_time,created_by,created_at,updated_by,updated_at
+        customer_name,prospect_address,name,mobile,prospect_confirm_time,prospect_start_time,prospect_end_time,prospect_name,prospect_content,prospect_require,status,
+        prospect_file_address,created_by,created_at,updated_by,updated_at,remark
     </sql>
     <sql id="table">prospect</sql>
 
@@ -52,11 +51,8 @@
         <if test="customerName != null and customerName != ''">
             AND customer_name = #{customerName}
         </if>
-        <if test="customerStatus != null">
-            AND customer_status = #{customerStatus}
-        </if>
-        <if test="prospectStatus != null">
-            AND prospect_status = #{prospectStatus}
+        <if test="status != null">
+            AND status = #{status}
         </if>
     </sql>
 
@@ -64,23 +60,22 @@
         INSERT INTO <include refid="table"/>(<include refid="columns"/>)
         VALUES(
         #{customerName},
-        #{customerAddress},
+        #{prospectAddress},
         #{name},
         #{mobile},
-        #{prospectTime},
-        #{prospectContent},
-        #{prospectArea},
-        #{prospectRequire},
+        #{prospectConfirmTime},
+        #{prospectStartTime},
+        #{prospectEndTime},
         #{prospectName},
-        #{prospectStatus},
+        #{prospectContent},
+        #{prospectRequire},
+        #{status},
         #{prospectFileAddress},
-        #{customerStatus},
-        #{submitName},
-        #{submitTime},
         #{createdBy},
         now(),
         #{updatedBy},
-        now()
+        now(),
+        #{remark}
         )
     </insert>
 
@@ -90,8 +85,8 @@
             <if test="customerName != null">
                 customer_name = #{customerName},
             </if>
-            <if test="customerAddress != null">
-                customer_address = #{customerAddress},
+            <if test="prospectAddress != null">
+                prospect_address = #{prospectAddress},
             </if>
             <if test="name != null">
                 name = #{name},
@@ -99,29 +94,29 @@
             <if test="mobile != null">
                 mobile = #{mobile},
             </if>
-            <if test="prospectTime != null">
-                prospect_time = #{prospectTime},
+            <if test="prospectConfirmTime != null">
+                prospect_confirm_time = #{prospectConfirmTime},
             </if>
-            <if test="prospectContent != null">
-                prospect_content = #{prospectContent},
+            <if test="prospectStartTime != null">
+                prospect_start_time = #{prospectStartTime},
             </if>
-            <if test="prospectArea != null">
-                prospect_area = #{prospectArea},
-            </if>
-            <if test="prospectRequire != null">
-                prospect_require = #{prospectRequire},
+            <if test="prospectEndTime != null">
+                prospect_end_time = #{prospectEndTime},
             </if>
             <if test="prospectName != null">
                 prospect_name = #{prospectName},
             </if>
-            <if test="prospectStatus != null">
-                prospect_status = #{prospectStatus},
+            <if test="prospectContent != null">
+                prospect_content = #{prospectContent},
+            </if>
+            <if test="prospectRequire != null">
+                prospect_require = #{prospectRequire},
+            </if>
+            <if test="status != null">
+                status = #{status},
             </if>
             <if test="prospectFileAddress != null">
                 prospect_file_address = #{prospectFileAddress},
-            </if>
-            <if test="customerStatus != null">
-                customer_status = #{customerStatus},
             </if>
             <if test="updatedBy != null">
                 updated_by = #{updatedBy},

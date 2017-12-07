@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Date;
+
 /**
  * 勘察数据表
  * Created by lx on 17-11-17.
@@ -16,31 +18,27 @@ public class Prospect extends BaseEntity {
 
     private String customerName;
 
-    private String customerAddress;
+    private String prospectAddress;
 
     private String name;
 
     private String mobile;
 
-    private String prospectTime;
+    private Date prospectConfirmTime;
 
-    private String prospectContent;
+    private Date prospectStartTime;
 
-    private String prospectArea;
-
-    private String prospectRequire;
+    private Date prospectEndTime;
 
     private String prospectName;
 
-    private String prospectStatus;
+    private String prospectContent;
+
+    private String prospectRequire;
+
+    private Integer status;
 
     private String prospectFileAddress;
-
-    private String customerStatus;
-
-    private String submitName;
-
-    private String submitTime;
 
     public String getCustomerName() {
         return customerName;
@@ -50,12 +48,12 @@ public class Prospect extends BaseEntity {
         this.customerName = customerName;
     }
 
-    public String getCustomerAddress() {
-        return customerAddress;
+    public String getProspectAddress() {
+        return prospectAddress;
     }
 
-    public void setCustomerAddress(String customerAddress) {
-        this.customerAddress = customerAddress;
+    public void setProspectAddress(String prospectAddress) {
+        this.prospectAddress = prospectAddress;
     }
 
     public String getName() {
@@ -74,36 +72,28 @@ public class Prospect extends BaseEntity {
         this.mobile = mobile;
     }
 
-    public String getProspectTime() {
-        return prospectTime;
+    public Date getProspectConfirmTime() {
+        return prospectConfirmTime;
     }
 
-    public void setProspectTime(String prospectTime) {
-        this.prospectTime = prospectTime;
+    public void setProspectConfirmTime(Date prospectConfirmTime) {
+        this.prospectConfirmTime = prospectConfirmTime;
     }
 
-    public String getProspectContent() {
-        return prospectContent;
+    public Date getProspectStartTime() {
+        return prospectStartTime;
     }
 
-    public void setProspectContent(String prospectContent) {
-        this.prospectContent = prospectContent;
+    public void setProspectStartTime(Date prospectStartTime) {
+        this.prospectStartTime = prospectStartTime;
     }
 
-    public String getProspectArea() {
-        return prospectArea;
+    public Date getProspectEndTime() {
+        return prospectEndTime;
     }
 
-    public void setProspectArea(String prospectArea) {
-        this.prospectArea = prospectArea;
-    }
-
-    public String getProspectRequire() {
-        return prospectRequire;
-    }
-
-    public void setProspectRequire(String prospectRequire) {
-        this.prospectRequire = prospectRequire;
+    public void setProspectEndTime(Date prospectEndTime) {
+        this.prospectEndTime = prospectEndTime;
     }
 
     public String getProspectName() {
@@ -114,12 +104,28 @@ public class Prospect extends BaseEntity {
         this.prospectName = prospectName;
     }
 
-    public String getProspectStatus() {
-        return prospectStatus;
+    public String getProspectContent() {
+        return prospectContent;
     }
 
-    public void setProspectStatus(String prospectStatus) {
-        this.prospectStatus = prospectStatus;
+    public void setProspectContent(String prospectContent) {
+        this.prospectContent = prospectContent;
+    }
+
+    public String getProspectRequire() {
+        return prospectRequire;
+    }
+
+    public void setProspectRequire(String prospectRequire) {
+        this.prospectRequire = prospectRequire;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getProspectFileAddress() {
@@ -128,29 +134,5 @@ public class Prospect extends BaseEntity {
 
     public void setProspectFileAddress(String prospectFileAddress) {
         this.prospectFileAddress = prospectFileAddress;
-    }
-
-    public String getCustomerStatus() {
-        return customerStatus;
-    }
-
-    public void setCustomerStatus(String customerStatus) {
-        this.customerStatus = customerStatus;
-    }
-
-    public String getSubmitName() {
-        return submitName;
-    }
-
-    public void setSubmitName(String submitName) {
-        this.submitName = submitName;
-    }
-
-    public String getSubmitTime() {
-        return submitTime;
-    }
-
-    public void setSubmitTime(String submitTime) {
-        this.submitTime = submitTime;
     }
 }
