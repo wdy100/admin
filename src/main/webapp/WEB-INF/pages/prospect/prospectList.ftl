@@ -18,29 +18,13 @@
                 <tr>
                     <td class="cxlabel">客户名称:</td>
                     <td class="cxinput"><input name="customerName" type="text" class="easyui-textbox" style="width:100px;"/></td>
-                    <td class="cxlabel">客户状态:</td>
-                    <td class="cxinput">
-                        <input class="easyui-combobox" name="customerStatus" style="width:100px;" data-options="
-	       								valueField: 'value',textField: 'text',panelHeight:'auto',editable:false,value:'',
-										data: [{value: '',text: '所有'},
-												{value: '0',text: '待接收'},
-										       {value: '1',text: '勘查中'},
-												{value: '2',text: '已勘查'},
-												{value: '3',text: '待安装'},
-												{value: '4',text: '待验收'},
-												{value: '5',text: '已验收'}
-												]" />
-                    </td>
                     <td class="cxlabel">勘查状态</td>
                     <td class="cxinput">
-                        <input class="easyui-combobox" name="prospectStatus" style="width:100px;" data-options="
+                        <input class="easyui-combobox" name="status" style="width:100px;" data-options="
 	       								valueField: 'value',textField: 'text',panelHeight:'auto',editable:false,value:'',
 										data: [{value: '',text: '所有'},
-												{value: '0',text: '未派单'},
-										       {value: '1',text: '勘查中'},
-												{value: '2',text: '勘查完成'},
-												{value: '3',text: '勘查数据待上传'},
-												{value: '4',text: '勘查报告待生成'}
+												{value: '0',text: '已派单，待勘查'},
+										       {value: '1',text: '勘查完成'}
 												]" />
                     </td>
                     <td class="cxlabel">
@@ -52,6 +36,7 @@
         </form>
     </div>
     <div id="tb" >
+        <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="createCustomer()">新增</a>
         <form action="/prospect/uploadReportFile.html" id="uploadForm" enctype="multipart/form-data" method="post">
             <a href="javascript:void(0)"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="uploadData()">勘查数据上传</a>
             <input type="file" name="file" id="file"/>
@@ -64,12 +49,14 @@
             <tr>
                 <th data-options="field:'ck',checkbox:true,formatter : function(value, row, index) {return row.id;}"></th>
                 <th data-options="field:'customerName',width:150,halign:'center',align:'left'">客户名称</th>
-                <th data-options="field:'customerAddress',width:300,halign:'center',align:'left'">客户地址</th>
+                <th data-options="field:'prospectAddress',width:300,halign:'center',align:'left'">勘查地址</th>
                 <th data-options="field:'name',width:150,halign:'center',align:'left'">联系人</th>
                 <th data-options="field:'mobile',width:150,halign:'center',align:'left'">联系电话</th>
-                <th data-options="field:'prospectTime',width:250,halign:'center',align:'left'">勘查时间</th>
+                <th data-options="field:'prospectConfirmTime',width:250,halign:'center',align:'left'">确定勘查时间</th>
                 <th data-options="field:'prospectContent',width:300,halign:'center',align:'left'">勘查内容</th>
                 <th data-options="field:'prospectRequire',width:300,halign:'center',align:'left'">勘查要求</th>
+                <th data-options="field:'prospectStartTime',width:250,halign:'center',align:'left'">实际勘查时间</th>
+                <th data-options="field:'prospectEndTime',width:250,halign:'center',align:'left'">勘查结束时间</th>
                 <th data-options="field:'prospectName',width:150,halign:'center',align:'left'">勘查人员</th>
                 <th data-options="field:'prospectStatus',width:150,halign:'center',align:'left',
 						formatter:function(value,row,index){
@@ -81,17 +68,8 @@
                             if(value == '5') return '已验收';
                             return '';
                         }">勘查状态</th>
-                <th data-options="field:'customerStatus',width:150,halign:'center',align:'left',
-                        formatter:function(value,rowData,rowIndex){
-                            if(value == '0') return '未派单';
-                            if(value == '1') return '勘查中';
-                            if(value == '2') return '勘查完成';
-                            if(value == '3') return '勘查数据待上传';
-                            if(value == '4') return '勘查报告待生成';
-                            return '';
-                        }">客户状态</th>
-                <th data-options="field:'submitName',width:100,halign:'center',align:'left'">下单人员</th>
-                <th data-options="field:'submitTime',width:250,halign:'center',align:'left'">下单日期</th>
+                <th data-options="field:'createdBy',width:100,halign:'center',align:'left'">下单人员</th>
+                <th data-options="field:'createdAt',width:250,halign:'center',align:'left'">下单日期</th>
             </tr>
             </thead>
         </table>
@@ -99,6 +77,8 @@
 </div>
 
 <script type="text/javascript">
+    var addCustomerDialog;
+
     function loaddata(){
         $('#dg').datagrid('load',sy.serializeObject($("#searchForm").form()));
     }
@@ -130,6 +110,11 @@
         }
     }
 
+    //新增数据
+    function createCustomer() {
+        addCustomerDialog.dialog('open');
+    }
+
     $(function(){
         $('#dg').datagrid({
             title:'勘查反馈列表',
@@ -147,7 +132,78 @@
             nowrap : true,
             border : false
         });
+
+        //增加网点
+        addCustomerDialog = $("#addCustomerDiv").dialog({
+            title: '新增',
+            width: 400,
+            height: 450,
+            top: 30,
+            closed: true,
+            cache: false,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                iconCls:'icon-ok',
+                handler:function(){
+                    submitForm();
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    addCustomerDialog.dialog('close');
+                }
+            }]
+        });
     });
+
+    function submitForm(){
+        var customerCode = $('#customerCode').val();
+        var customerName = $('#customerName').val();
+        var typeCode = $('#typeCode').val();
+        var typeName = $('#typeName').val();
+        var phone = $('#phone').val();
+        var fax = $('#fax').val();
+        var address = $('#address').val();
+        var url = $('#url').val();
+        var corporate = $('#corporate').val();
+        var manager = $('#manager').val();
+        var contact = $('#contact').val();
+        var dockDepartment = $('#dockDepartment').val();
+        var dockPerson = $('#dockPerson').val();
+        var dockContact = $('#dockContact').val();
+        var relateDepartment = $('#relateDepartment').val();
+        var relatePerson = $('#relatePerson').val();
+        var relateContact = $('#relateContact').val();
+        $.ajax({
+            type:'post',
+            url:'/customer/createCustomer',
+            dataType : "json",
+            data:{customerCode:customerCode, customerName:customerName, typeCode:typeCode,
+                typeName:typeName, phone:phone, fax:fax, address:address,
+                url:url, corporate:corporate, manager:manager,
+                contact:contact, dockDepartment:dockDepartment, dockPerson:dockPerson,
+                dockContact:dockContact, relateDepartment:relateDepartment, relatePerson:relatePerson,
+                relateContact:relateContact},
+            cache:false,
+            async:false,
+            success:function(data){
+                $.messager.progress('close');
+                if(!data.success){
+                    $.messager.alert('提示',data.message);
+                }
+                $('#dg').datagrid('reload');
+                $('#createCustomerForm').form('clear');
+                addCustomerDialog.dialog('close');
+                $.messager.alert('提示',"新增客户成功");
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
+            }
+        });
+
+    }
 </script>
 </body>
 </html>

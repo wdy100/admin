@@ -43,8 +43,7 @@ public class prospectController {
 
     @RequestMapping("/findProspectList.html")
     public void findWaterVatInvoiceList(@RequestParam(required = false) String customerName,
-                                 @RequestParam(required = false) Integer customerStatus,
-                                 @RequestParam(required = false) Integer prospectStatus,
+                                 @RequestParam(required = false) Integer status,
                                  @RequestParam(required = false) Integer rows,
                                  @RequestParam(required = false) Integer page,
                                  HttpServletRequest request, HttpServletResponse response) {
@@ -58,8 +57,7 @@ public class prospectController {
             params.put("n", rows);
             //参数加入params里
             params.put("customerName", customerName);
-            params.put("customerStatus", customerStatus);
-            params.put("prospectStatus", prospectStatus);
+            params.put("status", status);
 
             ServiceResult<List<Prospect>> result = prospectService.getProspectList(params);
             if(result == null || !result.getSuccess()) {
