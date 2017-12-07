@@ -49,9 +49,9 @@
         function apply(){
             $("#applyDiv").dialog({
                 title: '注册账号',
-                width: 340,
-                height: 250,
-                top: 100,
+                width: 400,
+                height: 350,
+                top: 60,
                 closed: true,
                 cache: false,
                 modal: true,
@@ -74,6 +74,10 @@
             $('#dmobile').textbox("setValue","");
             $('#demail').textbox("setValue","");
             $('#dnickName').textbox("setValue","");
+            $("input[name='dsex'][value='1']").attr("checked",true);
+            $('#didentityNo').textbox("setValue","");
+            $('#dbirthday').textbox("setValue","");
+            $('#daddress').textbox("setValue","");
             $("#applyDiv").dialog("open");
         }
 
@@ -83,6 +87,10 @@
             var mobile = $('#dmobile').val();
             var email = $('#demail').val();
             var nickName = $('#dnickName').val();
+            var sex = $("input[name='dsex'][checked]").val();
+            var identityNo = $('#didentityNo').val();
+            var birthday = $('#dbirthday').val();
+            var address = $('#daddress').val();
             if (userName == "") {
                 $("#userName").duserName();
                 alert("用户名不能为空");
@@ -102,7 +110,7 @@
                 type:'post',
                 url:'/system/createUser',
                 dataType : "json",
-                data:{userName:userName, password:password, mobile:mobile, email:email, nickName:nickName},
+                data:{userName:userName, password:password, mobile:mobile, email:email, nickName:nickName, sex:sex, identityNo:identityNo, birthday:birthday, address:address},
                 cache:false,
                 async:false,
                 success:function(data){
@@ -171,6 +179,34 @@
             <tr>
                 <td style="text-align: right;">真实姓名<span class="star">*</span>:</td>
                 <td><input id="dnickName" name="dnickName" size="54" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width: 200px;"/></td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">性别<span class="star">*</span>:</td>
+                <td>
+                    <input id="dsex1" type="radio" name="dsex"
+                           class="easyui-validatebox" checked="checked" value="1"><label>男</label></input>
+                    <input id="dsex2" type="radio" name="dsex"
+                           class="easyui-validatebox" value="2"><label>女</label></input>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">身份证号:</td>
+                <td><input id="didentityNo" name="didentityNo" size="54" class="easyui-textbox" style="width: 200px;"/></td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">生日:</td>
+                <td>
+                    <input id="dbirthday" name="dbirthday" size="54" type="text" class="easyui-datebox"  data-options="sharedCalendar:'#sc',editable:false" style="width:200px;" />
+                    <div id="sc" class="easyui-calendar"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">家庭住址:</td>
+                <td><input id="daddress" name="daddress" size="54" class="easyui-textbox" style="width: 200px;"/></td>
             </tr>
 
         </table>

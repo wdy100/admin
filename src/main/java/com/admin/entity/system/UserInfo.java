@@ -6,6 +6,8 @@ import lombok.ToString;
 
 import com.admin.entity.BaseEntity;
 
+import java.util.Date;
+
 /**
  * 用户实体类
  * Created by GaoJingFei on 2017/11/13.
@@ -26,13 +28,22 @@ public class UserInfo  extends BaseEntity{
 
     private Integer status;
 
-    private Boolean sex;
+    private Integer sex;
 
     private String mobile;
 
     private String email;
 
     private String nickName;
+
+    /**
+     * 生日
+     */
+    private Date birthday;
+
+    private String identityNo;
+
+    private String address;
 
     public static enum StatusEnum{
         INIT(0),ENABLE(1),DISABLE(-1),LOCKED(-2);

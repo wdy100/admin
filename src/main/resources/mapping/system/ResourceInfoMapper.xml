@@ -8,7 +8,7 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="order" jdbcType="INTEGER" property="order" />
+    <result column="order_index" jdbcType="INTEGER" property="orderIndex" />
     <result column="parent_id" jdbcType="INTEGER" property="parentId" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
@@ -18,7 +18,7 @@
     <result column="is_delete" jdbcType="BIT" property="isDelete" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, name, description, url, type, `order`, parent_id, created_at, updated_at, created_by,updated_by, remark, is_delete
+    id, code, name, description, url, type, `order_index`, parent_id, created_at, updated_at, created_by,updated_by, remark, is_delete
   </sql>
 
   <sql id="table">resource_info</sql>
@@ -61,12 +61,12 @@
   <insert id="insert" parameterType="ResourceInfo">
     insert into <include refid="table"/> (id, code, name,
       description, url, type, 
-      order, parent_id, created_at, updated_at,
+      order_index, parent_id, created_at, updated_at,
       created_by, updated_by, remark, 
       is_delete)
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
-      #{order,jdbcType=INTEGER},#{parentId,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},
+      #{orderIndex,jdbcType=INTEGER},#{parentId,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},
       #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{isDelete,jdbcType=BIT})
   </insert>
@@ -89,8 +89,8 @@
       <if test="type != null">
         type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="order != null">
-        order = #{order,jdbcType=INTEGER},
+      <if test="orderIndex != null">
+        order_index = #{orderIndex,jdbcType=INTEGER},
       </if>
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=INTEGER},
@@ -118,12 +118,12 @@
   </update>
 
   <select id="getByUserId" parameterType="java.lang.Integer" resultMap="resourceInfoMap">
-    select r.id, r.code, r.name, r.description, r.url, r.type, r.`order`, r.parent_id
+    select r.id, r.code, r.name, r.description, r.url, r.type, r.`order_index`, r.parent_id
     from resource_info r
     INNER JOIN role_resource rr on rr.resource_id = r.id
     INNER JOIN user_role ur on ur.role_id = rr.role_id
     where r.id != r.parent_id and r.is_delete = 0 and ur.user_id = #{userId,jdbcType=INTEGER}
-    ORDER BY r.type, r.`order`
+    ORDER BY r.type, r.`order_index`
   </select>
   
 </mapper>

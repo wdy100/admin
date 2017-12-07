@@ -27,7 +27,7 @@ public class ModuleResourceInfoTreeNodeFactory extends TreeNodeFactory<ResourceI
 		node.getAttributes().put("description", element.getDescription());
 		node.getAttributes().put("url", element.getUrl());
 		node.getAttributes().put("type", String.valueOf(element.getType()));
-		node.getAttributes().put("orderIndex", String.valueOf(element.getOrder()));
+		node.getAttributes().put("orderIndex", String.valueOf(element.getOrderIndex()));
 		return node;
 	}
 

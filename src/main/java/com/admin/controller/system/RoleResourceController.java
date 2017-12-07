@@ -1,17 +1,9 @@
 package com.admin.controller.system;
 
-import com.admin.entity.system.Role;
 import com.admin.entity.system.RoleResource;
-import com.admin.entity.util.TreeNode;
 import com.admin.service.system.RoleResourceService;
-import com.admin.service.system.RoleService;
 import com.admin.web.util.HttpJsonResult;
-import com.admin.web.util.SessionSecurityConstants;
-import com.google.common.base.Throwables;
-import com.haier.common.BusinessException;
-import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
-import com.haier.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import org.springframework.stereotype.Controller;
@@ -23,9 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

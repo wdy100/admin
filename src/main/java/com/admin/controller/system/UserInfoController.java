@@ -6,6 +6,7 @@ import com.admin.entity.system.UserRole;
 import com.admin.service.system.UserDepartmentService;
 import com.admin.service.system.UserInfoService;
 import com.admin.service.system.UserRoleService;
+import com.admin.web.util.DateUtil;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.PasswordUtil;
 import com.admin.web.util.WebUtil;
@@ -96,6 +97,10 @@ public class UserInfoController {
         String mobile = request.getParameter("mobile");
         String email = request.getParameter("email");
         String nickName = request.getParameter("nickName");
+        String sex = request.getParameter("sex");
+        String birthday = request.getParameter("birthday");
+        String identityNo = request.getParameter("identityNo");
+        String address = request.getParameter("address");
         UserInfo userInfo = new UserInfo();
         userInfo.setUserName(userName);
         userInfo.setPassword(PasswordUtil.encrypt(password));
@@ -104,6 +109,12 @@ public class UserInfoController {
         userInfo.setMobile(mobile);
         userInfo.setEmail(email);
         userInfo.setNickName(nickName);
+        userInfo.setSex(Integer.parseInt(sex));
+        if(birthday != null && !"".equals(birthday)){
+            userInfo.setBirthday(DateUtil.parse(DateUtil.format5, birthday));
+        }
+        userInfo.setIdentityNo(identityNo);
+        userInfo.setAddress(address);
         userInfo.setCreatedBy("system");
         userInfo.setUpdatedBy("system");
         ServiceResult<UserInfo> result = userInfoService.createUserInfo(userInfo);

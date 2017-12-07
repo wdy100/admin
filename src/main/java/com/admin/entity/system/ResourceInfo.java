@@ -32,7 +32,7 @@ public class ResourceInfo  extends BaseEntity{
 
     private Integer type;//类别 0:模块 1:页面  2:按钮
 
-    private Integer order;
+    private Integer orderIndex;
 
     private Long parentId;
 
