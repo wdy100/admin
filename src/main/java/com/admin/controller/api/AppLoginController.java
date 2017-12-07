@@ -2,6 +2,7 @@ package com.admin.controller.api;
 
 import com.admin.entity.system.UserInfo;
 import com.admin.service.system.UserInfoService;
+import com.admin.web.util.PasswordUtil;
 import com.admin.web.util.SessionSecurityConstants;
 import com.admin.web.util.Signatures;
 import com.alibaba.fastjson.JSONObject;
@@ -58,6 +59,7 @@ public class AppLoginController {
                     json.put("msg", "账号密码不正确");
                 }else{
                     UserInfo user = result.getResult();
+                    json.put("user", user);
                     request.getSession().setAttribute(SessionSecurityConstants.KEY_USER_ID, user.getId());
                     request.getSession().setAttribute(SessionSecurityConstants.KEY_USER_NAME, user.getUserName());
                     request.getSession().setAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME, user.getNickName());
@@ -70,6 +72,54 @@ public class AppLoginController {
             json.put("error", "105");
             json.put("msg", "调用服务出错");
         }
+        response.setContentType("application/json;charset=UTF-8");
+        out.write(json.toString());
+        out.flush();
+        out.close();
+    }
+
+    @RequestMapping(value = "/resetPasswordByApp", method = { RequestMethod.POST }, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public void resetPasswordByApp(
+            @RequestParam(value="token",required = true) String token,
+            @RequestParam(value="id",required = true) String id,
+            @RequestParam(value="newPassword",required = true) String newPassword,
+            HttpServletRequest request,
+            HttpServletResponse response)throws IOException {
+        log.info("[AppLoginController][resetPasswordByApp] /resetPasswordByApp accepted token:{}, id:{}, newPassword:{}",
+                token, id, newPassword);
+        JSONObject json = new JSONObject();
+        json.put("success", true);
+        PrintWriter out = response.getWriter();
+        try {
+            String key = "CRM";
+            Boolean signFlag = Signatures.verify(request, key);
+            if (!signFlag) {
+                log.error("token未通过验证");
+                json.put("success", false);
+                json.put("error", "103");
+                json.put("msg", "token错误");
+            }else{
+                UserInfo userInfo = new UserInfo();
+                userInfo.setId(Long.parseLong(id));
+                userInfo.setPassword(PasswordUtil.encrypt(newPassword));
+                //userInfo.setPassword(newPassword);
+                ServiceResult<UserInfo> result = userInfoService.updateUserInfo(userInfo);
+                if (!result.getSuccess()) {
+                    log.error("重置密码失败！");
+                    json.put("success", false);
+                    json.put("error", "201");
+                    json.put("msg", "重置密码失败，" + result.getMessage());
+                }
+            }
+        }catch (Exception e) {
+            log.error("[AppLoginController][resetPasswordByApp] /resetPasswordByApp accepted token:{}, id:{}, newPassword:{}, error:{}",
+                    token, id, newPassword, Throwables.getStackTraceAsString(e));
+            json.put("success", false);
+            json.put("error", "105");
+            json.put("msg", "调用服务出错");
+        }
+        response.setContentType("application/json;charset=UTF-8");
         out.write(json.toString());
         out.flush();
         out.close();
