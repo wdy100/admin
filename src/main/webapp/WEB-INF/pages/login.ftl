@@ -74,7 +74,7 @@
             $('#dmobile').textbox("setValue","");
             $('#demail').textbox("setValue","");
             $('#dnickName').textbox("setValue","");
-            $("input[name='dsex'][value='1']").attr("checked",true);
+            $("input[name='dsex'][value='男']").attr("checked",true);
             $('#didentityNo').textbox("setValue","");
             $('#dbirthday').textbox("setValue","");
             $('#daddress').textbox("setValue","");
@@ -89,7 +89,7 @@
             var nickName = $('#dnickName').val();
             var sex = $("input[name='dsex'][checked]").val();
             var identityNo = $('#didentityNo').val();
-            var birthday = $('#dbirthday').val();
+            var birthday = $('#dbirthday').datebox("getValue");
             var address = $('#daddress').val();
             if (userName == "") {
                 $("#userName").duserName();
@@ -185,9 +185,9 @@
                 <td style="text-align: right;">性别<span class="star">*</span>:</td>
                 <td>
                     <input id="dsex1" type="radio" name="dsex"
-                           class="easyui-validatebox" checked="checked" value="1"><label>男</label></input>
+                           class="easyui-validatebox" checked="checked" value="男"><label>男</label></input>
                     <input id="dsex2" type="radio" name="dsex"
-                           class="easyui-validatebox" value="2"><label>女</label></input>
+                           class="easyui-validatebox" value="女"><label>女</label></input>
                 </td>
             </tr>
 

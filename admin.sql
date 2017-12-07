@@ -76,7 +76,7 @@ CREATE TABLE `user_info`
   `user_name`	varchar(50) NOT NULL COMMENT '用户名',
   `password`	varchar(50) NOT NULL COMMENT '密码',
   `status` tinyint(1) DEFAULT '0' COMMENT '状态 0:申请中  1:正常  -1:冻结',
-  `sex` tinyint(1) DEFAULT '1' COMMENT '性别 1:男  2:女  3:其他',
+  `sex` varchar(4) DEFAULT '男' COMMENT '性别 男  女  其他',
   `mobile`	varchar(20) DEFAULT NULL COMMENT '手机',
   `email`	varchar(50) DEFAULT NULL COMMENT '邮箱',
   `nick_name`	varchar(50) DEFAULT NULL COMMENT '昵称',

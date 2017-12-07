@@ -120,6 +120,65 @@
 
 </div>
 
+<!-- 双击弹出框-查看明细 -->
+<div id="showDetailWin" class="easyui-window" title="查看明细" style="width:800px;height:240px"
+     data-options="closed:true,iconCls:'icon-search',modal:true,collapsible:false,minimizable:false,maximizable:false">
+    <div class="easyui-panel" title="用户信息">
+        <table id="rounded-corner" style="width: 100%;">
+            <tr style="height: 25px;">
+                <td width="10%">&nbsp;&nbsp;用户名:</td>
+                <td width="23%" style="padding-right: 20px;">
+                    <input id="show_userName" name="show_userName"  class="easyui-textbox" style="width:100%"
+                           data-options="editable:false,iconCls:'icon-lock'" />
+                </td>
+                <td width="10%">&nbsp;&nbsp;真实姓名:</td>
+                <td width="24%" style="padding-right: 20px;">
+                    <input id="show_nickName"  name="show_nickName" class="easyui-textbox" style="width:100%"
+                           data-options="editable:false,iconCls:'icon-lock'" />
+                </td>
+                <td width="10%">&nbsp;&nbsp;性别:</td>
+                <td width="23%" style="padding-right: 20px;">
+                    <input id="show_sex" name="show_sex"  class="easyui-textbox" style="width:100%"
+                           data-options="editable:false,iconCls:'icon-lock'" />
+                </td>
+            </tr>
+            <tr style="height: 25px;">
+                <td width="10%">&nbsp;&nbsp;手机号:</td>
+                <td width="23%" style="padding-right: 20px;">
+                    <input id="show_mobile" name="show_mobile"  class="easyui-textbox" style="width:100%"
+                           data-options="editable:false,iconCls:'icon-lock'" />
+                </td>
+                <td width="10%">&nbsp;&nbsp;邮箱:</td>
+                <td width="24%" style="padding-right: 20px;">
+                    <input id="show_email"  name="show_email" class="easyui-textbox" style="width:100%"
+                           data-options="editable:false,iconCls:'icon-lock'" />
+                </td>
+                <td width="10%">&nbsp;&nbsp;生日:</td>
+                <td width="23%" style="padding-right: 20px;">
+                    <input id="show_birthday" name="show_birthday"  class="easyui-textbox" style="width:100%"
+                           data-options="editable:false,iconCls:'icon-lock'" />
+                </td>
+            </tr>
+            <tr style="height: 25px;">
+                <td width="10%">&nbsp;&nbsp;身份证号:</td>
+                <td width="23%" style="padding-right: 20px;">
+                    <input id="show_identityNo" name="show_identityNo"  class="easyui-textbox" style="width:100%"
+                           data-options="editable:false,iconCls:'icon-lock'" />
+                </td>
+                <td width="10%">&nbsp;&nbsp;家庭住址:</td>
+                <td width="24%" style="padding-right: 20px;">
+                    <input id="show_address"  name="show_address" class="easyui-textbox" style="width:100%"
+                           data-options="editable:false,iconCls:'icon-lock'" />
+                </td>
+                <td width="10%"></td>
+                <td width="23%" style="padding-right: 20px;">
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
 <script type="text/javascript">
 
 	function loaddata(){
@@ -164,8 +223,11 @@
 			},
 			url:'/system/userInfoList',
 			nowrap : true,
-			border : false
-		});
+			border : false,
+            onDblClickRow : function(rowIndex,rowData){
+                showFormWin(rowIndex,rowData);
+            }
+        });
 	});
 	//部门树点击事件
 	function treeOnClick(treeNode) {
@@ -179,19 +241,18 @@
          	});
 	}
 	//双击看明细
-	<#--function showFormWin(rowIndex,rowData){-->
-		<#--var selectedRow = $('#dg').datagrid('getSelected');-->
-		<#--parent.window.HROS.window.createTemp({-->
-			<#--title : "查看明细",-->
-			<#--url : '${dynamicURL}/security/viewUser.action?user.id='+selectedRow.id,-->
-			<#--width : 800,-->
-			<#--height : 400,-->
-			<#--isresize : false,-->
-			<#--isopenmax : true,-->
-			<#--isflash : false,-->
-			<#--customWindow : window-->
-		<#--});-->
-	<#--}-->
+	function showFormWin(rowIndex,rowData){
+		var selectedRow = $('#dg').datagrid('getSelected');
+        $('#show_userName').textbox("setValue",selectedRow.userName);
+        $('#show_mobile').textbox("setValue",selectedRow.mobile);
+        $('#show_email').textbox("setValue",selectedRow.email);
+        $('#show_nickName').textbox("setValue",selectedRow.nickName);
+        $('#show_sex').textbox("setValue",selectedRow.sex);
+        $('#show_identityNo').textbox("setValue",selectedRow.identityNo);
+        $('#show_birthday').textbox("setValue",selectedRow.birthday);
+        $('#show_address').textbox("setValue",selectedRow.address);
+        $("#showDetailWin").window("open");
+	}
 
 	//修改-打开修改窗口
 	function updateUser(){

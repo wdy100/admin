@@ -6,7 +6,7 @@
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="status"  property="status" />
-    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
@@ -21,7 +21,7 @@
     <result column="is_delete" jdbcType="BIT" property="isDelete" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_name, password, status, sex, mobile, email, nick_name, birthday, identity_no, address
+    id, user_name, password, status, sex, mobile, email, nick_name, birthday, identity_no, address,
     created_at, updated_at,
     created_by, updated_by, remark, is_delete
   </sql>
@@ -54,11 +54,11 @@
       created_by, updated_by, remark, 
       is_delete)
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{status}, #{sex,jdbcType=BIT}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+      #{status}, #{sex,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
       #{nickName,jdbcType=VARCHAR}, #{birthday},  #{identityNo}, #{address},
        #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},
       #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{isDelete,jdbcType=BIT})
+      0)
   </insert>
 
   <update id="update" parameterType="UserInfo">
@@ -74,7 +74,7 @@
         status = #{status,jdbcType=BIT},
       </if>
       <if test="sex != null">
-        sex = #{sex,jdbcType=BIT},
+        sex = #{sex,jdbcType=VARCHAR},
       </if>
       <if test="mobile != null">
         mobile = #{mobile,jdbcType=VARCHAR},

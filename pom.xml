@@ -307,6 +307,10 @@
                 <pom.jdbc.url>jdbc:mysql://47.100.31.217:3306/crm</pom.jdbc.url>
 				<pom.jdbc.username>root</pom.jdbc.username>
 				<pom.jdbc.password>wdlinux.cn</pom.jdbc.password>
+
+                <!--<pom.jdbc.url>jdbc:mysql://localhost:3306/crm</pom.jdbc.url>-->
+                <!--<pom.jdbc.username>dev</pom.jdbc.username>-->
+                <!--<pom.jdbc.password>dev123</pom.jdbc.password>-->
 			</properties>
 		</profile>
 

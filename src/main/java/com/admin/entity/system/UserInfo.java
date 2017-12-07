@@ -28,7 +28,7 @@ public class UserInfo  extends BaseEntity{
 
     private Integer status;
 
-    private Integer sex;
+    private String sex;
 
     private String mobile;
 

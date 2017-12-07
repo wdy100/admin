@@ -109,7 +109,7 @@ public class UserInfoController {
         userInfo.setMobile(mobile);
         userInfo.setEmail(email);
         userInfo.setNickName(nickName);
-        userInfo.setSex(Integer.parseInt(sex));
+        userInfo.setSex(sex);
         if(birthday != null && !"".equals(birthday)){
             userInfo.setBirthday(DateUtil.parse(DateUtil.format5, birthday));
         }
