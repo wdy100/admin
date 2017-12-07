@@ -65,6 +65,31 @@ public class prospectController {
                 throw new BusinessException("勘察确认单列表查询失败");
             }
             List<Prospect> prospectList = result.getResult();
+            for(Prospect prospect: prospectList) {
+                String content = "";
+                String[] contentNo = prospect.getProspectContent().split(",");
+                for(String no: contentNo) {
+                    if("1".equals(no)) {
+                        content = content.concat("电气火灾监测系统，");
+                    }
+                    if("2".equals(no)) {
+                        content = content.concat("安全隐患巡查系统，");
+                    }
+                    if("3".equals(no)) {
+                        content = content.concat("建筑消防用水监测系统，");
+                    }
+                    if("4".equals(no)) {
+                        content = content.concat("重点部位可视化监管系统，");
+                    }
+                    if("5".equals(no)) {
+                        content = content.concat("火灾在线联网报警系统，");
+                    }
+                }
+                if(!"".equals(content)) {
+                    content = content.substring(0, content.length()-1);
+                }
+                prospect.setProspectContent(content);
+            }
 
             //获得条数
             int resultcount = prospectList.size();
@@ -80,6 +105,117 @@ public class prospectController {
             logger.error("勘察确认单列表查询失败", e);
             throw new BusinessException("勘察确认单列表查询失败" + e.getMessage());
         }
+    }
+
+    /**
+     * 新增
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/createProspect", method = RequestMethod.POST)
+    @ResponseBody
+    public Object createProspect(HttpServletRequest request) {
+        HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
+        String customerCode = request.getParameter("customerCode");
+        String customerName = request.getParameter("customerName");
+        String typeCode = request.getParameter("typeCode");
+        String typeName = request.getParameter("typeName");
+        String phone = request.getParameter("phone");
+        String fax = request.getParameter("fax");
+        String address = request.getParameter("address");
+        String url = request.getParameter("url");
+        String corporate = request.getParameter("corporate");
+        String manager = request.getParameter("manager");
+        String contact = request.getParameter("contact");
+        String dockDepartment = request.getParameter("dockDepartment");
+        String dockPerson = request.getParameter("dockPerson");
+        String dockContact = request.getParameter("dockContact");
+        String relateDepartment = request.getParameter("relateDepartment");
+        String relatePerson = request.getParameter("relatePerson");
+        String relateContact = request.getParameter("relateContact");
+        Customer customer = new Customer();
+        customer.setCustomerCode(customerCode);
+        customer.setCustomerName(customerName);
+        customer.setTypeCode(typeCode);
+        customer.setTypeName(typeName);
+        customer.setPhone(phone);
+        customer.setFax(fax);
+        customer.setAddress(address);
+        customer.setUrl(url);
+        customer.setCorporate(corporate);
+        customer.setManager(manager);
+        customer.setContact(contact);
+        customer.setDockDepartment(dockDepartment);
+        customer.setDockPerson(dockPerson);
+        customer.setDockContact(dockContact);
+        customer.setRelateDepartment(relateDepartment);
+        customer.setRelatePerson(relatePerson);
+        customer.setRelateContact(relateContact);
+        customer.setCreatedBy("system");
+        customer.setUpdatedBy("system");
+        ServiceResult<Customer> result = customerService.createCustomer(customer);
+        if (!result.getSuccess()) {
+            log.error("新增客户失败！");
+            jsonResult.setMessage("新增客户失败！");
+            return jsonResult;
+        }
+        jsonResult.setData(result.getSuccess());
+        return jsonResult;
+    }
+
+    /**
+     * 勘查反馈
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/uploadReportFile", method = RequestMethod.POST)
+    @ResponseBody
+    public Object createCustomerFeedback(@RequestParam(value = "file", required = false) MultipartFile file,
+                                         HttpServletRequest request) {
+        HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
+
+        String id = request.getParameter("id");
+        String prospectName = request.getParameter("prospectName");
+        String prospectStartName = request.getParameter("prospectStartName");
+        String prospectEndName = request.getParameter("prospectEndName");
+        String remark = request.getParameter("remark");
+
+        ServiceResult<Prospect> result = prospectService.getById(Integer.parseInt(id));
+
+        if(result == null || !result.getSuccess()) {
+            logger.error("根据id查询勘察确认单信息，发生异常");
+            throw new BusinessException("根据id查询勘察确认单信息，发生异常");
+        }
+        Prospect prospect = result.getResult();
+
+        String path = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+        String fileName = file.getOriginalFilename();
+        File targetFile = new File(path, fileName);
+        if(!targetFile.exists()){
+            targetFile.mkdirs();
+        }
+        //保存
+        try {
+            file.transferTo(targetFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String fileUrl = path + "\\" + fileName;
+
+        prospect.setProspectFileAddress(fileUrl);
+        ServiceResult<Integer> upResult = prospectService.update(prospect);
+        
+        if (!upResult.getSuccess()) {
+            logger.error("新增勘查反馈失败！");
+            jsonResult.setMessage("新增勘查反馈失败！");
+            return jsonResult;
+        }
+        Boolean flag = false;
+        if(upResult.getResult() == 1) {
+            flag = true;
+        }
+        jsonResult.setData(flag);
+        return jsonResult;
     }
 
     @RequestMapping(value = { "/uploadReportFile.html" }, method = { RequestMethod.POST })

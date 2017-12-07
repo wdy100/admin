@@ -29,45 +29,42 @@
                     </td>
                     <td class="cxlabel">
                         <a id="search" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
-                        <a href="${domainUrlUtil.dynamicURL}/template/prospectTemplate.docx" class="easyui-linkbutton" iconCls="icon-edit" plain="false">勘查模板下载</a>
                     </td>
                 </tr>
             </table>
         </form>
     </div>
     <div id="tb" >
-        <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="createCustomer()">新增</a>
-        <form action="/prospect/uploadReportFile.html" id="uploadForm" enctype="multipart/form-data" method="post">
-            <a href="javascript:void(0)"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="uploadData()">勘查数据上传</a>
-            <input type="file" name="file" id="file"/>
-            <input type="hidden" name="id" id="id"/>
-        </form>
+        <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="createProspect()">新增</a>
+        <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="feedback()">勘查反馈</a>
+        <a href="${domainUrlUtil.dynamicURL}/template/prospectTemplate.docx" class="easyui-linkbutton" iconCls="icon-edit" plain="false">勘查模板下载</a>
     </div>
     <div region="center" border="false">
         <table id="dg">
             <thead>
             <tr>
                 <th data-options="field:'ck',checkbox:true,formatter : function(value, row, index) {return row.id;}"></th>
+                <th data-options="field:'ck',checkbox:true,
+                        formatter : function(value, row, index) {
+                            if(row.prospectFileAddress != null && row.prospectFileAddress != '')
+                                return '<a href=\''+row.prospectFileAddress+'\' class=\'easyui-linkbutton\'>下载</a>';
+                        }">勘查报告</th>
                 <th data-options="field:'customerName',width:150,halign:'center',align:'left'">客户名称</th>
                 <th data-options="field:'prospectAddress',width:300,halign:'center',align:'left'">勘查地址</th>
                 <th data-options="field:'name',width:150,halign:'center',align:'left'">联系人</th>
                 <th data-options="field:'mobile',width:150,halign:'center',align:'left'">联系电话</th>
+                <th data-options="field:'status',width:150,halign:'center',align:'left',
+						formatter:function(value,row,index){
+                            if(value == '0') return '已派工，待勘查';
+                            if(value == '1') return '勘查完成';
+                            return '';
+                        }">勘查状态</th>
                 <th data-options="field:'prospectConfirmTime',width:250,halign:'center',align:'left'">确定勘查时间</th>
                 <th data-options="field:'prospectContent',width:300,halign:'center',align:'left'">勘查内容</th>
                 <th data-options="field:'prospectRequire',width:300,halign:'center',align:'left'">勘查要求</th>
                 <th data-options="field:'prospectStartTime',width:250,halign:'center',align:'left'">实际勘查时间</th>
                 <th data-options="field:'prospectEndTime',width:250,halign:'center',align:'left'">勘查结束时间</th>
                 <th data-options="field:'prospectName',width:150,halign:'center',align:'left'">勘查人员</th>
-                <th data-options="field:'prospectStatus',width:150,halign:'center',align:'left',
-						formatter:function(value,row,index){
-                            if(value == '0') return '待接收';
-                            if(value == '1') return '勘查中';
-                            if(value == '2') return '已勘查';
-                            if(value == '3') return '待安装';
-                            if(value == '4') return '待验收';
-                            if(value == '5') return '已验收';
-                            return '';
-                        }">勘查状态</th>
                 <th data-options="field:'createdBy',width:100,halign:'center',align:'left'">下单人员</th>
                 <th data-options="field:'createdAt',width:250,halign:'center',align:'left'">下单日期</th>
             </tr>
@@ -76,8 +73,98 @@
     </div>
 </div>
 
+<div class="easyui-dialog" id="addProspectDiv" style="width:320px;height:380px;"
+     data-options="modal:true,closed:true,resizable:false" >
+    <table>
+        <tr>
+            <td style="text-align: right;">客户名称<span style="color:red;">*</span>:</td>
+            <td>
+                <input id="customerName" name="customerName" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">勘查地址:</td>
+            <td>
+                <input id="prospectAddress" name="prospectAddress" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">联系人:</td>
+            <td>
+                <input id="name" name="name" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">联系电话:</td>
+            <td>
+                <input id="mobile" name="mobile" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">勘查时间:</td>
+            <td>
+                <input id="prospectConfirmTime" name="prospectConfirmTime" class="Wdate {required:true}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm:ss'})" style="width:200px;" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">勘查内容:</td>
+            <td>
+                <input id="prospectContent" name="prospectContent" type="text" class="easyui-textbox" style="width:200px;" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">勘查要求:</td>
+            <td>
+                <input id="prospectRequire" name="prospectRequire" type="text" class="easyui-textbox" style="width:200px;" />
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- 勘查反馈  -->
+<div class="easyui-dialog" id="addProspectFeedbackDiv" style="width:320px;height:380px;"
+     data-options="modal:true,closed:true,resizable:false" >
+    <form action="/prospect/uploadReportFile.html" id="uploadForm" enctype="multipart/form-data" method="post">
+        <table>
+            <tr>
+                <td style="text-align: right;">勘查人员:</td>
+                <td>
+                    <input id="prospectName" name="prospectName" type="text" class="easyui-textbox" style="width:200px;" />
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">实际勘查时间:</td>
+                <td>
+                    <input id="prospectStartTime" name="prospectStartTime" class="Wdate {required:true}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm:ss'})" style="width:200px;" />
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">勘查结束时间:</td>
+                <td>
+                    <input id="prospectEndTime" name="prospectEndTime" class="Wdate {required:true}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm:ss'})" style="width:200px;" />
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">勘查报告</td>
+                <td>
+                    <#--<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="uploadData()">勘查数据上传</a>-->
+                    <input type="file" name="file" id="file"/>
+                    <input type="hidden" name="id" id="id"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">备注:</td>
+                <td>
+                    <input id="remark" name="remark" type="text" class="easyui-textbox" style="width:200px;" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
 <script type="text/javascript">
-    var addCustomerDialog;
+    var addProspectDialog;
+    var prospectFeedbackDialog;
 
     function loaddata(){
         $('#dg').datagrid('load',sy.serializeObject($("#searchForm").form()));
@@ -90,29 +177,25 @@
         return simpleDateTimeFormatter(date);
     }
 
-    //勘查数据上传
-    function uploadData() {
+    //新增勘查派工单
+    function createProspect() {
+        addProspectDialog.dialog('open');
+    }
+
+    //勘查反馈
+    function feedback() {
         var rows = $('#dg').datagrid('getSelected');
         if(rows) {
-            if(rows.prospectStatus != 1){
-                $.messager.alert('错误','请先选择一条状态为勘察中的勘查记录！','error');
-                return;
-            }
-            if(!$("#file").val()) {
-                $.messager.alert('错误','请先选择上传文件！','error');
+            if(rows.status != 0){
+                $.messager.alert('错误','请先选择一条状态为待勘查的记录！','error');
                 return;
             }
             $("#id").val(rows.id);
-            $("#uploadForm").submit();
+            prospectFeedbackDialog.dialog('open');
         }else{
-            $.messager.alert('操作提示', '请先选择一条状态为勘察中的勘查记录！', 'info');
+            $.messager.alert('操作提示', '请先选择一条状态为待勘查的记录！', 'info');
             return;
         }
-    }
-
-    //新增数据
-    function createCustomer() {
-        addCustomerDialog.dialog('open');
     }
 
     $(function(){
@@ -133,8 +216,8 @@
             border : false
         });
 
-        //增加网点
-        addCustomerDialog = $("#addCustomerDiv").dialog({
+        //新增派工单
+        addProspectDialog = $("#addProspectDiv").dialog({
             title: '新增',
             width: 400,
             height: 450,
@@ -152,58 +235,102 @@
                 text:'取消',
                 iconCls:'icon-cancel',
                 handler:function(){
-                    addCustomerDialog.dialog('close');
+                    addProspectDialog.dialog('close');
+                }
+            }]
+        });
+
+        //勘查反馈
+        prospectFeedbackDialog = $("#addProspectFeedbackDiv").dialog({
+            title: '反馈',
+            width: 400,
+            height: 250,
+            top: 30,
+            closed: true,
+            cache: false,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                iconCls:'icon-ok',
+                handler:function(){
+                    submitFeedback();
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    prospectFeedbackDialog.dialog('close');
                 }
             }]
         });
     });
 
     function submitForm(){
-        var customerCode = $('#customerCode').val();
         var customerName = $('#customerName').val();
-        var typeCode = $('#typeCode').val();
-        var typeName = $('#typeName').val();
-        var phone = $('#phone').val();
-        var fax = $('#fax').val();
-        var address = $('#address').val();
-        var url = $('#url').val();
-        var corporate = $('#corporate').val();
-        var manager = $('#manager').val();
-        var contact = $('#contact').val();
-        var dockDepartment = $('#dockDepartment').val();
-        var dockPerson = $('#dockPerson').val();
-        var dockContact = $('#dockContact').val();
-        var relateDepartment = $('#relateDepartment').val();
-        var relatePerson = $('#relatePerson').val();
-        var relateContact = $('#relateContact').val();
+        var prospectAddress = $('#prospectAddress').val();
+        var name = $('#name').val();
+        var mobile = $('#mobile').val();
+        var prospectConfirmTime = $('#prospectConfirmTime').val();
+        var prospectContent = $('#prospectContent').val();
+        var prospectRequire = $('#prospectRequire').val();
+
         $.ajax({
             type:'post',
-            url:'/customer/createCustomer',
+            url:'/prospect/createProspect',
             dataType : "json",
-            data:{customerCode:customerCode, customerName:customerName, typeCode:typeCode,
-                typeName:typeName, phone:phone, fax:fax, address:address,
-                url:url, corporate:corporate, manager:manager,
-                contact:contact, dockDepartment:dockDepartment, dockPerson:dockPerson,
-                dockContact:dockContact, relateDepartment:relateDepartment, relatePerson:relatePerson,
-                relateContact:relateContact},
+            data:{customerName:customerName, prospectAddress:prospectAddress,
+                name:name, mobile:mobile, prospectConfirmTime:prospectConfirmTime,
+                prospectContent:prospectContent, prospectRequire:prospectRequire,},
             cache:false,
             async:false,
             success:function(data){
                 $.messager.progress('close');
                 if(!data.success){
                     $.messager.alert('提示',data.message);
+                    return false;
                 }
                 $('#dg').datagrid('reload');
-                $('#createCustomerForm').form('clear');
-                addCustomerDialog.dialog('close');
-                $.messager.alert('提示',"新增客户成功");
+                addProspectDialog.dialog('close');
+                $.messager.alert('提示',"保存成功");
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
+            }
+        });
+    }
+
+    function submitFeedback(){
+        var id = $("#id").val();
+        var prospectName = $("#prospectName").val();
+        var prospectStartName = $("#prospectStartName").val();
+        var prospectEndName = $("#prospectEndName").val();
+        var remark = $("remark").val();
+
+        $.ajax({
+            type:'post',
+            url:'/customer/createCustomerFeedback',
+            dataType : "json",
+            data:{id:id, prospectName:prospectName, prospectStartName:prospectStartName, prospectEndName:prospectEndName, remark:remark},
+            cache:false,
+            async:false,
+            success:function(data){
+                $.messager.progress('close');
+                if(!data.success){
+                    $.messager.alert('提示',data.message);
+                    return false;
+                }
+                $('#dg').datagrid('reload');
+                customerFeedbackDialog.dialog('close');
+                $.messager.alert('提示',"保存成功");
             },
             error:function(d){
                 $.messager.alert('提示',"请刷新重试");
             }
         });
 
+//        $("#uploadForm").submit();
     }
+
 </script>
 </body>
 </html>
