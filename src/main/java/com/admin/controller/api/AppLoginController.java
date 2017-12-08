@@ -8,6 +8,7 @@ import com.admin.web.util.Signatures;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Throwables;
 import com.haier.common.ServiceResult;
+import com.haier.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -73,9 +74,9 @@ public class AppLoginController {
             json.put("msg", "调用服务出错");
         }
         response.setContentType("application/json;charset=UTF-8");
-        out.write(json.toString());
-        out.flush();
-        out.close();
+        response.getWriter().write(json.toString());
+        response.getWriter().flush();
+        response.getWriter().close();
     }
 
     @RequestMapping(value = "/resetPasswordByApp", method = { RequestMethod.POST }, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -120,9 +121,9 @@ public class AppLoginController {
             json.put("msg", "调用服务出错");
         }
         response.setContentType("application/json;charset=UTF-8");
-        out.write(json.toString());
-        out.flush();
-        out.close();
+        response.getWriter().write(json.toString());
+        response.getWriter().flush();
+        response.getWriter().close();
     }
 
 }  
