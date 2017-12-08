@@ -37,14 +37,14 @@
     <div id="tb" >
         <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="createProspect()">新增</a>
         <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="feedback()">勘查反馈</a>
-        <a href="${domainUrlUtil.dynamicURL}/template/prospectTemplate.docx" class="easyui-linkbutton" iconCls="icon-edit" plain="false">勘查模板下载</a>
+        <a href="<#--${domainUrlUtil.dynamicURL}/template/prospectTemplate.docx-->" class="easyui-linkbutton" iconCls="icon-edit" plain="false">勘查模板下载</a>
     </div>
     <div region="center" border="false">
         <table id="dg">
             <thead>
             <tr>
                 <th data-options="field:'ck',checkbox:true,formatter : function(value, row, index) {return row.id;}"></th>
-                <th data-options="field:'ck',checkbox:true,
+                <th data-options="field:'prospectFileAddress',width:150,halign:'center',align:'left',
                         formatter : function(value, row, index) {
                             if(row.prospectFileAddress != null && row.prospectFileAddress != '')
                                 return '<a href=\''+row.prospectFileAddress+'\' class=\'easyui-linkbutton\'>下载</a>';
@@ -59,14 +59,14 @@
                             if(value == '1') return '勘查完成';
                             return '';
                         }">勘查状态</th>
-                <th data-options="field:'prospectConfirmTime',width:250,halign:'center',align:'left'">确定勘查时间</th>
-                <th data-options="field:'prospectContent',width:300,halign:'center',align:'left'">勘查内容</th>
+                <th data-options="field:'prospectConfirmTime',width:200,halign:'center',align:'left'">确定勘查时间</th>
+                <th data-options="field:'prospectContent',width:500,halign:'center',align:'left'">勘查内容</th>
                 <th data-options="field:'prospectRequire',width:300,halign:'center',align:'left'">勘查要求</th>
-                <th data-options="field:'prospectStartTime',width:250,halign:'center',align:'left'">实际勘查时间</th>
-                <th data-options="field:'prospectEndTime',width:250,halign:'center',align:'left'">勘查结束时间</th>
+                <th data-options="field:'prospectStartTime',width:200,halign:'center',align:'left'">实际勘查时间</th>
+                <th data-options="field:'prospectEndTime',width:200,halign:'center',align:'left'">勘查结束时间</th>
                 <th data-options="field:'prospectName',width:150,halign:'center',align:'left'">勘查人员</th>
-                <th data-options="field:'createdBy',width:100,halign:'center',align:'left'">下单人员</th>
-                <th data-options="field:'createdAt',width:250,halign:'center',align:'left'">下单日期</th>
+                <th data-options="field:'createdBy',width:150,halign:'center',align:'left'">下单人员</th>
+                <th data-options="field:'createdAt',width:200,halign:'center',align:'left'">下单日期</th>
             </tr>
             </thead>
         </table>
@@ -83,33 +83,42 @@
             </td>
         </tr>
         <tr>
-            <td style="text-align: right;">勘查地址:</td>
+            <td style="text-align: right;">勘查地址<span style="color:red;">*</span>:</td>
             <td>
                 <input id="prospectAddress" name="prospectAddress" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;" />
             </td>
         </tr>
         <tr>
-            <td style="text-align: right;">联系人:</td>
+            <td style="text-align: right;">联系人<span style="color:red;">*</span>:</td>
             <td>
                 <input id="name" name="name" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;" />
             </td>
         </tr>
         <tr>
-            <td style="text-align: right;">联系电话:</td>
+            <td style="text-align: right;">联系电话<span style="color:red;">*</span>:</td>
             <td>
                 <input id="mobile" name="mobile" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;" />
             </td>
         </tr>
         <tr>
-            <td style="text-align: right;">勘查时间:</td>
+            <td style="text-align: right;">勘查时间<span style="color:red;">*</span>:</td>
             <td>
-                <input id="prospectConfirmTime" name="prospectConfirmTime" class="Wdate {required:true}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm:ss'})" style="width:200px;" />
+                <input id="prospectConfirmTime" name="prospectConfirmTime" class="Wdate {required:true}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd  HH:mm:ss'})" data-options="required:true,missingMessage:'该输入项为必输项'" />
             </td>
         </tr>
         <tr>
-            <td style="text-align: right;">勘查内容:</td>
+            <td style="text-align: right;">勘查内容<span style="color:red;">*</span>:</td>
             <td>
-                <input id="prospectContent" name="prospectContent" type="text" class="easyui-textbox" style="width:200px;" />
+                <input id="contentOne" name="prospectContent" type="checkbox" value="1" />
+                <label for="contentOne">电气火灾监测系统</label><br/>
+                <input id="contentTwo" name="prospectContent" type="checkbox" value="2" />
+                <label for="contentTwo">安全隐患巡查系统</label><br/>
+                <input id="contentThree" name="prospectContent" type="checkbox" value="3" />
+                <label for="contentThree">建筑消防用水监测系统</label><br/>
+                <input id="contentFour" name="prospectContent" type="checkbox" value="4" />
+                <label for="contentFour">重点部位可视化监管系统</label><br/>
+                <input id="contentFive" name="prospectContent" type="checkbox" value="5" />
+                <label for="contentFive">火灾在线联网报警系统</label>
             </td>
         </tr>
         <tr>
@@ -145,17 +154,17 @@
                 </td>
             </tr>
             <tr>
-                <td style="text-align: right;">勘查报告</td>
+                <td style="text-align: right;">备注:</td>
+                <td>
+                    <input id="remark" name="remark" type="text" class="easyui-textbox" style="width:200px;" />
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">勘查报告:</td>
                 <td>
                     <#--<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="uploadData()">勘查数据上传</a>-->
                     <input type="file" name="file" id="file"/>
                     <input type="hidden" name="id" id="id"/>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: right;">备注:</td>
-                <td>
-                    <input id="remark" name="remark" type="text" class="easyui-textbox" style="width:200px;" />
                 </td>
             </tr>
         </table>
@@ -271,7 +280,8 @@
         var name = $('#name').val();
         var mobile = $('#mobile').val();
         var prospectConfirmTime = $('#prospectConfirmTime').val();
-        var prospectContent = $('#prospectContent').val();
+        var prospectContent = $("input[type='checkbox']:checked").val();
+        console.log("prospectContent:"+prospectContent);
         var prospectRequire = $('#prospectRequire').val();
 
         $.ajax({
@@ -280,7 +290,7 @@
             dataType : "json",
             data:{customerName:customerName, prospectAddress:prospectAddress,
                 name:name, mobile:mobile, prospectConfirmTime:prospectConfirmTime,
-                prospectContent:prospectContent, prospectRequire:prospectRequire,},
+                prospectContent:prospectContent, prospectRequire:prospectRequire},
             cache:false,
             async:false,
             success:function(data){
@@ -300,17 +310,17 @@
     }
 
     function submitFeedback(){
-        var id = $("#id").val();
+        /*var id = $("#id").val();
         var prospectName = $("#prospectName").val();
-        var prospectStartName = $("#prospectStartName").val();
-        var prospectEndName = $("#prospectEndName").val();
-        var remark = $("remark").val();
+        var prospectStartTime = $("#prospectStartTime").val();
+        var prospectEndTime = $("#prospectEndTime").val();
+        var remark = $("#remark").val();
 
         $.ajax({
             type:'post',
-            url:'/customer/createCustomerFeedback',
+            url:'/prospect/createProspectFeedback',
             dataType : "json",
-            data:{id:id, prospectName:prospectName, prospectStartName:prospectStartName, prospectEndName:prospectEndName, remark:remark},
+            data:{id:id, prospectName:prospectName, prospectStartTime:prospectStartTime, prospectEndTime:prospectEndTime, remark:remark},
             cache:false,
             async:false,
             success:function(data){
@@ -326,9 +336,9 @@
             error:function(d){
                 $.messager.alert('提示',"请刷新重试");
             }
-        });
+        });*/
 
-//        $("#uploadForm").submit();
+        $("#uploadForm").submit();
     }
 
 </script>

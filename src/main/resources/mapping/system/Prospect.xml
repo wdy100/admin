@@ -21,7 +21,7 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedBy" column="updated_by"/>
         <result property="updatedAt" column="updated_at"/>
-        <result property="ramark" column="ramark"/>
+        <result property="remark" column="remark"/>
     </resultMap>
 
     <sql id="columns">
@@ -120,6 +120,9 @@
             </if>
             <if test="updatedBy != null">
                 updated_by = #{updatedBy},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
             </if>
             updated_at = now()
         </set>

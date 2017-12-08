@@ -2,6 +2,10 @@ package com.admin.controller.system;
 
 import com.admin.entity.system.Prospect;
 import com.admin.service.system.ProspectService;
+import com.admin.web.util.HttpJsonResult;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Strings;
 import com.haier.common.BusinessException;
 import com.haier.common.ServiceResult;
 import com.haier.common.util.JsonUtil;
@@ -18,6 +22,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -25,6 +30,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -116,47 +123,53 @@ public class prospectController {
     @ResponseBody
     public Object createProspect(HttpServletRequest request) {
         HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
-        String customerCode = request.getParameter("customerCode");
+
         String customerName = request.getParameter("customerName");
-        String typeCode = request.getParameter("typeCode");
-        String typeName = request.getParameter("typeName");
-        String phone = request.getParameter("phone");
-        String fax = request.getParameter("fax");
-        String address = request.getParameter("address");
-        String url = request.getParameter("url");
-        String corporate = request.getParameter("corporate");
-        String manager = request.getParameter("manager");
-        String contact = request.getParameter("contact");
-        String dockDepartment = request.getParameter("dockDepartment");
-        String dockPerson = request.getParameter("dockPerson");
-        String dockContact = request.getParameter("dockContact");
-        String relateDepartment = request.getParameter("relateDepartment");
-        String relatePerson = request.getParameter("relatePerson");
-        String relateContact = request.getParameter("relateContact");
-        Customer customer = new Customer();
-        customer.setCustomerCode(customerCode);
-        customer.setCustomerName(customerName);
-        customer.setTypeCode(typeCode);
-        customer.setTypeName(typeName);
-        customer.setPhone(phone);
-        customer.setFax(fax);
-        customer.setAddress(address);
-        customer.setUrl(url);
-        customer.setCorporate(corporate);
-        customer.setManager(manager);
-        customer.setContact(contact);
-        customer.setDockDepartment(dockDepartment);
-        customer.setDockPerson(dockPerson);
-        customer.setDockContact(dockContact);
-        customer.setRelateDepartment(relateDepartment);
-        customer.setRelatePerson(relatePerson);
-        customer.setRelateContact(relateContact);
-        customer.setCreatedBy("system");
-        customer.setUpdatedBy("system");
-        ServiceResult<Customer> result = customerService.createCustomer(customer);
-        if (!result.getSuccess()) {
-            log.error("新增客户失败！");
-            jsonResult.setMessage("新增客户失败！");
+        String prospectAddress = request.getParameter("prospectAddress");
+        String name = request.getParameter("name");
+        String mobile = request.getParameter("mobile");
+        String prospectConfirmTime = request.getParameter("prospectConfirmTime");
+        String prospectRequire = request.getParameter("prospectRequire");
+
+        String prospectContent = "";
+        String[] checkbox= request.getParameterValues("prospectContent");
+        if(checkbox != null) {
+            for(int i = 0; i < checkbox.length; i++) {
+                prospectContent += checkbox[i] + ",";
+            }
+        }
+        if(!"".equals(prospectContent)) {
+            prospectContent = prospectContent.substring(0, prospectContent.length() - 1);
+        }
+
+        Date confirmDate = null;
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
+            confirmDate = sdf.parse(prospectConfirmTime);
+        }
+        catch (ParseException e) {
+            log.error("新增勘查派工单失败！");
+            jsonResult.setMessage("保存失败！");
+            return jsonResult;
+        }
+
+        Prospect prospect = new Prospect();
+        prospect.setCustomerName(customerName);
+        prospect.setProspectAddress(prospectAddress);
+        prospect.setName(name);
+        prospect.setMobile(mobile);
+        prospect.setProspectConfirmTime(confirmDate);
+        prospect.setProspectContent(prospectContent);
+        prospect.setProspectRequire(prospectRequire);
+        prospect.setStatus(0);
+        prospect.setCreatedBy("admin");
+        prospect.setUpdatedBy("admin");
+        ServiceResult<Integer> result = prospectService.insert(prospect);
+
+        if (!result.getSuccess() || result.getResult() == 0) {
+            log.error("新增勘查派工单失败！");
+            jsonResult.setMessage("保存失败！");
             return jsonResult;
         }
         jsonResult.setData(result.getSuccess());
@@ -168,7 +181,7 @@ public class prospectController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/uploadReportFile", method = RequestMethod.POST)
+    @RequestMapping(value = "/createProspectFeedback", method = RequestMethod.POST)
     @ResponseBody
     public Object createCustomerFeedback(@RequestParam(value = "file", required = false) MultipartFile file,
                                          HttpServletRequest request) {
@@ -176,9 +189,23 @@ public class prospectController {
 
         String id = request.getParameter("id");
         String prospectName = request.getParameter("prospectName");
-        String prospectStartName = request.getParameter("prospectStartName");
-        String prospectEndName = request.getParameter("prospectEndName");
+        String prospectStartTime = request.getParameter("prospectStartTime");
+        String prospectEndTime = request.getParameter("prospectEndTime");
         String remark = request.getParameter("remark");
+
+        Date startDate = null;
+        Date endDate = null;
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
+            startDate = sdf.parse(prospectStartTime);
+            endDate = sdf.parse(prospectEndTime);
+        }
+        catch (ParseException e) {
+            log.error("新增勘查派工单失败！");
+            jsonResult.setMessage("保存失败！");
+            return jsonResult;
+        }
 
         ServiceResult<Prospect> result = prospectService.getById(Integer.parseInt(id));
 
@@ -203,18 +230,19 @@ public class prospectController {
         String fileUrl = path + "\\" + fileName;
 
         prospect.setProspectFileAddress(fileUrl);
+        prospect.setProspectName(prospectName);
+        prospect.setProspectStartTime(startDate);
+        prospect.setProspectEndTime(endDate);
+        prospect.setRemark(remark);
+        prospect.setStatus(1);
         ServiceResult<Integer> upResult = prospectService.update(prospect);
         
-        if (!upResult.getSuccess()) {
+        if (!upResult.getSuccess() || upResult.getResult() == 0) {
             logger.error("新增勘查反馈失败！");
             jsonResult.setMessage("新增勘查反馈失败！");
             return jsonResult;
         }
-        Boolean flag = false;
-        if(upResult.getResult() == 1) {
-            flag = true;
-        }
-        jsonResult.setData(flag);
+        jsonResult.setData(upResult.getSuccess());
         return jsonResult;
     }
 
@@ -222,11 +250,28 @@ public class prospectController {
     public String upload(@RequestParam(value = "file", required = false) MultipartFile file,
                         HttpServletRequest request, ModelMap model) {
         String id = request.getParameter("id");
+        String prospectName = request.getParameter("prospectName");
+        String prospectStartTime = request.getParameter("prospectStartTime");
+        String prospectEndTime = request.getParameter("prospectEndTime");
+        String remark = request.getParameter("remark");
+
+        Date startDate = null;
+        Date endDate = null;
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
+            startDate = sdf.parse(prospectStartTime);
+            endDate = sdf.parse(prospectEndTime);
+        }
+        catch (ParseException e) {
+            log.error("新增勘查派工单失败！");
+            throw new BusinessException("请稍后重试！");
+        }
         ServiceResult<Prospect> result = prospectService.getById(Integer.parseInt(id));
 
         if(result == null || !result.getSuccess()) {
-            logger.error("根据id查询勘察确认单信息，发生异常");
-            throw new BusinessException("根据id查询勘察确认单信息，发生异常");
+            logger.error("根据id查询勘察确认单信息，发生异常！");
+            throw new BusinessException("根据id查询勘察确认单信息，发生异常！");
         }
         Prospect prospect = result.getResult();
 
@@ -245,6 +290,11 @@ public class prospectController {
         String fileUrl = path + "\\" + fileName;
 
         prospect.setProspectFileAddress(fileUrl);
+        prospect.setProspectName(prospectName);
+        prospect.setProspectStartTime(startDate);
+        prospect.setProspectEndTime(endDate);
+        prospect.setRemark(remark);
+        prospect.setStatus(1);
         prospectService.update(prospect);
 
         return "/prospect/prospectList";
