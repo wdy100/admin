@@ -287,11 +287,10 @@
             $.messager.alert('提示', '请勾选勘查内容！');
             return;
         }
-        var checked = check_box.val();
         var prospectContent = "";
-        for(var i = 0; i < checked.length; i++){
-            prospectContent += checked[i].value +",";
-        }
+        $("input[type='checkbox']:checked").each(function(){
+            prospectContent += this.value +",";
+        })
 
         $.ajax({
             type:'post',
