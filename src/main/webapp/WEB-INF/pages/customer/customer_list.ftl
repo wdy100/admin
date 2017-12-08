@@ -53,6 +53,7 @@
 
 
 <!-- create  -->
+<!--
 <div class="easyui-dialog" id="addCustomerDiv" style="width:320px;height:380px;"
      data-options="modal:true,closed:true,resizable:false" >
     <table>
@@ -147,6 +148,189 @@
             </td>
         </tr>
     </table>
+</div>
+-->
+
+<!-- add -->
+
+<div id="addCustomerWin" class="easyui-window" title="客户接入" style="width:800px;height:440px"
+     data-options="closed:true,iconCls:'icon-add',modal:true,collapsible:false,minimizable:false,maximizable:false">
+    <fieldset>
+        <legend style="color: #0e2d5f;font-size: 12px;font-weight: bold;margin-left: 20px;">客户基本信息</legend>
+        <table style="border-collapse:collapse; border-spacing:0;width: 100%">
+            <tr style="height: 25px;">
+                <td width="10%">客户名称<font color="red">*</font>:</td>
+                <td width="23%">
+                    <input id="customerName" class="easyui-textbox" name="customerName" style="width:90%" data-options="required:true,missingMessage:'该输入项为必输项',validType:'maxLength[100]'"/>
+                </td>
+                <td width="10%">所属行业:</td>
+                <td width="23%">
+                    <input id="typeName" class="easyui-textbox" name="typeName" style="width:90%" data-options="validType:'maxLength[100]'" />
+                </td>
+                <td width="10%">电话:</td>
+                <td width="23%">
+                    <input id="phone" class="easyui-textbox" name="phone" style="width:90%" data-options="validType:'maxLength[25]'" />
+                </td>
+            </tr>
+            <tr style="height: 25px;">
+                <td width="10%">传真:</td>
+                <td width="23%">
+                    <input id="fax" class="easyui-textbox" name="fax" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="10%">地址:</td>
+                <td width="23%">
+                    <input id="address" class="easyui-textbox" name="address" style="width:90%" data-options="validType:'maxLength[100]'" />
+                </td>
+                <td width="10%">网址:</td>
+                <td width="23%">
+                    <input id="url" class="easyui-textbox" name="url" style="width:90%" data-options="validType:'maxLength[100]'" />
+                </td>
+            </tr>
+            <tr style="height: 25px;">
+                <td width="10%">总经理/董事长:</td>
+                <td width="23%">
+                    <input id="manager" class="easyui-textbox" name="manager" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="10%">联系方式:</td>
+                <td width="23%">
+                    <input id="contact" class="easyui-textbox" name="contact" style="width:90%" data-options="validType:'maxLength[100]'" />
+                </td>
+                <td width="10%"></td>
+                <td width="23%">
+                </td>
+            </tr>
+        </table>
+    </fieldset >
+
+    <fieldset>
+        <legend style="color: #0e2d5f;font-size: 12px;font-weight: bold;margin-left: 20px;">业务对接信息</legend>
+        <table style="border-collapse:collapse; border-spacing:0;width: 100%">
+            <tr style="height: 25px;">
+                <td width="10%">对接部门:</td>
+                <td width="23%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="10%">联系人:</td>
+                <td width="23%">
+                    <input id="dockPerson" class="easyui-textbox" name="dockPerson" style="width:90%" data-options="validType:'maxLength[100]'" />
+                </td>
+                <td width="10%">联系方式:</td>
+                <td width="23%">
+                    <input id="dockContact" class="easyui-textbox" name="dockContact" style="width:90%" data-options="validType:'maxLength[25]'" />
+                </td>
+            </tr>
+            <tr style="height: 25px;">
+                <td width="10%">关联部门:</td>
+                <td width="23%">
+                    <input id="relateDepartment" class="easyui-textbox" name="relateDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="10%">联系人:</td>
+                <td width="23%">
+                    <input id="relatePerson" class="easyui-textbox" name="relatePerson" style="width:90%" data-options="validType:'maxLength[100]'" />
+                </td>
+                <td width="10%">联系方式:</td>
+                <td width="23%">
+                    <input id="relateContact" class="easyui-textbox" name="relateContact" style="width:90%" data-options="validType:'maxLength[25]'" />
+                </td>
+            </tr>
+        </table>
+    </fieldset >
+
+    <fieldset>
+        <legend style="color: #0e2d5f;font-size: 12px;font-weight: bold;margin-left: 20px;">售后服务信息</legend>
+        <table style="border-collapse:collapse; border-spacing:0;width: 100%">
+            <tr>
+                <th></th>
+                <th>姓名</th>
+                <th>职务</th>
+                <th>手机</th>
+                <th>电话</th>
+            </tr>
+            <tr style="height: 25px;">
+                <td width="20%">设备用电管理人:</td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+            </tr>
+            <tr style="height: 25px;">
+                <td width="20%">建筑消防用水:</td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+            </tr>
+            <tr style="height: 25px;">
+                <td width="20%">安全巡检:</td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+            </tr>
+            <tr style="height: 25px;">
+                <td width="20%">可视化监管:</td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+            </tr>
+            <tr style="height: 25px;">
+                <td width="20%"><font color="red">紧急联系人:</font></td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+                <td width="20%">
+                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                </td>
+            </tr>
+
+            <tr style="height: 25px;">
+                <td width="50%" colspan="5" align="center">
+                    <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-ok" plain="false" onclick="submitForm(1)">保存提交</a>
+                    <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="submitForm(0)">保存草稿</a>
+                </td>
+            </tr>
+
+        </table>
+    </fieldset >
 </div>
 
 
@@ -302,7 +486,8 @@
 
     //新增数据
     function createCustomer() {
-        addCustomerDialog.dialog('open');
+        //addCustomerDialog.dialog('open');
+        $("#addCustomerWin").window("open");
     }
 
     //分配
@@ -458,8 +643,8 @@
                     $.messager.alert('提示',data.message);
                 }
                 $('#dg').datagrid('reload');
-                $('#createCustomerForm').form('clear');
-                addCustomerDialog.dialog('close');
+                $("#addCustomerWin").window("close");
+                //addCustomerDialog.dialog('close');
                 $.messager.alert('提示',"新增客户成功");
             },
             error:function(d){
