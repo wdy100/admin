@@ -44,7 +44,7 @@
                         <a id="searchPt" href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
                         <a id="addAgreement" href="#" class="easyui-linkbutton" iconCls="icon-add"  plain="false" >新增</a>
                         <a id="delAgreement" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" >删除</a>
-                        <a id="approval" href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="approval()">审核</a>
+                        <a id="editRatio" href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="false" >付款比例修改</a>
                     </td>
 
         </form>
@@ -54,31 +54,26 @@
     </div>
 </div>
 
-<div id="roleInputInfo" style="padding:10px;display:none;" title="新增角色">
-    ##    <div id="w" class="easyui-dialog" title="" data-options="modal:true,closed:true,iconCls:'icon-save'" style="padding:10px;">
+<!-- create  -->
+<div class="easyui-dialog" id="editRatioDiv" style="width:320px;height:380px;"
+     data-options="modal:true,closed:true,resizable:false" >
     <table>
         <tr>
-            <td>客户名称</td>
-            <td><input id="code_edit" type="text"/></td>
+            <td style="text-align: right;">首付款比例<span style="color:red;">*</span>:</td>
+            <td>
+                <input id="firstRatio_input" name="firstRatio_input" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:80px;"></input>%
+            </td>
         </tr>
         <tr>
-            <td>合同状态</td>
-            <td><input id="name_edit" type="text"/></td>
-        </tr>
-        <tr>
-            <td>合同签订日期</td>
-            <td><input id="description_edit" type="text"/></td>
-        </tr>
-        <tr>
-            <td>创建者</td>
-            <td><input id="createdBy_edit" type="text"/></td>
+            <td style="text-align: right;">尾款比例<span style="color:red;">*</span>:</td>
+            <td>
+                <input id="lastRatio_input" name="lastRatio_input" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:80px;"></input>%
+            </td>
+            <input id="Ratio_id" name="Ratio_id" type="text"  style="width:80px;" hidden='true' />
         </tr>
     </table>
-    </br>
-    <div style="text-align:center"><input id="saveBtn" type="button" value="保存" class="l-btn" style=" font-size: 12px;line-height: 24px; width: 52px; font-family: 微软雅黑"/>
-    </div>
-    ##    </div>
 </div>
+
 
 <script type="text/javascript">
 var datagrid;
@@ -139,49 +134,56 @@ $("#addAgreement").click(function(){
 });
 
 
-//新增提交
-$("#saveBtn").click(function(){
-    if(!$.isNotBlank($("#code_edit").val())){
-        $.messager.alert("提示","请填写角色编码","info")
-        return false;
+function toApproval(id){
+	window.location.href="/agreementInfo/toApproval?id="+id;
+};
+
+function toAgreementUpload(id){
+	window.location.href="/agreementInfo/toAgreementUpload?id="+id;
+};
+
+var editRatioDivDialog;
+//修改比率
+$('#editRatio').click(function () {
+    //grid加载
+    var row = $('#dataGrid').datagrid('getSelected');
+    if(row){
+    	$('#firstRatio_input').textbox('setValue',row.firstRatio);
+    	$('#lastRatio_input').textbox('setValue',row.lastRatio);
+    	$('#Ratio_id').val(row.id);
+    	editRatioDivDialog.dialog('open');
+    }else{
+        $.messager.alert('提示', '请选择一条记录！', 'warning');
     }
-    if(!$.isNotBlank($("#name_edit").val())){
-        $.messager.alert("提示","请填写角色名称","info")
-        return false;
-    }
-    if(!$.isNotBlank($("#description_edit").val())){
-        $.messager.alert("提示","请填写角色描述","info")
-        return false;
-    }
-    if(!$.isNotBlank($("#createdBy_edit").val())){
-        $.messager.alert("提示","请填写创建人","info")
-        return false;
-    }
-    $.messager.progress({text:"提交中..."});
-    jQuery.ajax({
-        url: "/system/saveRole.html",
-        data:{
-            "code": $("#code_edit").val(),
-            "name": $("#name_edit").val(),
-            "description": $("#description_edit").val(),
-            "createdBy": $("#createdBy_edit").val()
-        },
-        type: "GET",
-        success: function(result) {
-            $.messager.progress('close');
-            if(result.success == true){
-                $('#dataGrid').datagrid('reload');
-                $("#roleInputInfo").dialog("close");
-            }else
-                $.messager.alert('错误', result.message, 'error');
-        },
-        fail: function(data) {
-            $.messager.progress('close');
-            $.messager.alert('错误',"保存信息出错,请联系管理员！");
-        }
-    });
 });
 
+function submitForm(){
+        var firstRatio = $('#firstRatio_input').val();
+        var lastRatio = $('#lastRatio_input').val();
+        var Ratio_id = $('#Ratio_id').val();
+        $.ajax({
+            type:'post',
+            url:'/agreementInfo/saveEdit',
+            dataType : "json",
+            data:{id:Ratio_id,firstRatio:firstRatio, lastRatio:lastRatio},
+            cache:false,
+            async:false,
+            success:function(data){
+                $.messager.progress('close');
+                if(!data.success){
+                    $.messager.alert('提示',data.message);
+                }
+                $('#dataGrid').datagrid('load',queryParamsHandler());
+                editRatioDivDialog.dialog('close');
+                $.messager.alert('提示',"修改成功");
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
+            }
+        });
+
+    }
+    
 function approvalStatusFormatter(value, row, index){
 	//审批状态。0已保存待提交 1待内勤初审 2总监审核 3合同上传 4签订完成
 	var result = "";
@@ -258,7 +260,10 @@ $(function(){
                     width: 120,
                     align: 'center',
                     formatter: function(value, row, index){
-                        var result = value+'%';
+                        var result = '';
+                        if(value != undefined){
+                         result = value+'%';
+                        }
                         return result;
                     }
                 },{
@@ -267,10 +272,13 @@ $(function(){
                     width: 120,
                     align: 'center',
                     formatter: function(value, row, index){
-                        var result = value+'%';
+                        var result = '';
+                        if(value != undefined){
+                         result = value+'%';
+                        }
                         return result;
                     }
-                }{
+                },{
                     field: 'createdBy',
                     title: '合同详情',
                     width: 70,
@@ -288,8 +296,15 @@ $(function(){
                     	var result='';
                     	if(row.approvalStatus==0){
                     		result = '<a href="#" onclick="doEdit(\'' + row.id + '\' )">编辑</a> ';
-                    	}else {
-                    		
+                    	}
+                    	else if(row.approvalStatus==1){
+                    		result = '<a href="#" onclick="toApproval(\'' + row.id + '\' )">审核</a> ';
+                    	}
+                    	else if(row.approvalStatus==2){
+                    		result = '<a href="#" onclick="toApproval(\'' + row.id + '\' )">审核</a> ';
+                    	}
+                    	else if(row.approvalStatus==3){
+                    		result = '<a href="#" onclick="toAgreementUpload(\'' + row.id + '\' )">合同上传</a> ';
                     	}
                     	return result;
                     }
@@ -297,6 +312,29 @@ $(function(){
             ]
         ]
     });
+    
+    editRatioDivDialog = $("#editRatioDiv").dialog({
+            title: '修改合同付款比例',
+            width: 250,
+            height: 150,
+            top: 30,
+            closed: true,
+            cache: false,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                iconCls:'icon-ok',
+                handler:function(){
+                    submitForm();
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    editRatioDivDialog.dialog('close');
+                }
+            }]
+        });
 })
 </script>
 </body>

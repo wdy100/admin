@@ -188,6 +188,25 @@ public class AgreementController {
     	return "agreement/agreementEdit";
     }  
     
+    @RequestMapping("/saveEdit") 
+    @ResponseBody
+    public HttpJsonResult<Map<String,Object>> saveEdit(HttpServletRequest request,
+    		AgreementInfo agreementInfo,Map<String, Object> stack){  
+	HttpJsonResult<Map<String,Object>> result=new HttpJsonResult<Map<String, Object>>();
+	Map<String,Object> resultMap=new HashMap<String, Object>();
+	
+	List<AgreementGoods> agreementGoodsList = null;
+	ServiceResult<Boolean>  ServiceResult = agreementService.updateAgreementInfo(agreementInfo, agreementGoodsList);
+	if(ServiceResult != null && ServiceResult.getResult() ){
+		resultMap.put("result",true);
+	}else{
+		result.setMessage("修改失败！");
+	}
+	result.setData(resultMap);
+	
+    return result;  
+}  
+    
     @RequestMapping("/toApproval")  
     public String toApproval(HttpServletRequest request,AgreementInfo agreementInfo,Map<String, Object> stack){  
     	ServiceResult<AgreementInfo> result = agreementService.selectAgreementInfoById(agreementInfo);
@@ -212,6 +231,13 @@ public class AgreementController {
     	result.setData(resultMap);
     	
         return result;  
+    }  
+    
+    @RequestMapping("/toAgreementUpload")  
+    public String toAgreementUpload(HttpServletRequest request,AgreementInfo agreementInfo,Map<String, Object> stack){  
+    	ServiceResult<AgreementInfo> result = agreementService.selectAgreementInfoById(agreementInfo);
+    	stack.put("agreementInfo", result.getResult());
+    	return "agreement/agreementUpload";
     }  
     
     @RequestMapping("/delete")  

@@ -17,6 +17,8 @@
 <div class="bigwrapper">
 	<div class="wrapper clearfix container-40">
 		<!--位置导航-->
+		<input id="printbtn" type="button" value="打印" style="margin:20px 0 0 200px;">
+		<!--startprint1-->
 		 <div class="newedit">
 					<strong style="color: #1361a6;line-height:30px">合同详情:</strong>
 					<div class="details">
@@ -30,13 +32,13 @@
                                 <p style="font-size: 20px;">二0一七年<span style="width:70px;display: inline-block"></span>月</p>
                             </div>
                             <p style="text-align: right">编号：2017010 </p>
-                            <p class="patop20px">甲方：<span class="spanborbm" style="width:300px;">${agreementInfo.firstParty!}</span>（以下简称甲方）</p>
+                            <p class="patop20px">甲方：<span class="spanborbm" style="width:300px;">${(agreementInfo.firstParty)!''}</span>（以下简称甲方）</p>
                             <p class="patop20px">乙方：<span class="spanborbm" style="width:300px;"> 青岛淼盾八哥网络科技有限公司 </span>（以下简称乙方）</p>
 
                             <table class="contract-table" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td width="10%">合同编号</td>
-                                    <td width="40%"></td>
+                                    <td width="40%">${(agreementInfo.agreeSn)!''}</td>
                                     <td width="10%">业务类型</td>
                                     <td width="40%">产品销售</td>
                                 </tr>
@@ -305,8 +307,8 @@
                         </div>
 
 					</div>
-				</div>    
-         
+				</div>
+        <!--endprint1-->
 	<!--主要内容-->
 </div>
 </div>
@@ -326,6 +328,17 @@
 	
 	var regex = /^\d+\.?\d{0,2}$/;
 	var regex2= /^[1-9]\d*$/;
+	
+	$("#printbtn").click(function(){
+		var bdhtml=window.document.body.innerHTML;//获取当前页的html代码
+		var sprnstr="<!--startprint1-->";//设置打印开始区域
+		var eprnstr="<!--endprint1-->";//设置打印结束区域
+		var prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html
+		var prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
+		window.document.body.innerHTML=prnhtml;
+		window.print();
+		window.document.body.innerHTML=bdhtml;
+	});
 	
 </script>
 

@@ -709,3 +709,28 @@ h3{
 	width:14px;
 	height:14px
 }
+
+.Progress-bar{
+	border: 1px solid #c5ddec;
+    /*border-radius:3px;*/
+	background:#f1f8fd;
+    margin:15px;
+    font-size: 16px;
+    font-family: 微软雅黑 ;
+}
+.Progress-bar li{
+    display: inline-block;
+    padding:5px 10px;
+}
+.Progress-bar img{
+    margin:0 10px;
+    vertical-align:middle ;
+}
+.review{
+	font-size: 14px;
+	font-family: 微软雅黑 ;
+	padding: 30px;
+	background-color: #f1f8fd;
+	border: 1px solid #c5ddec;
+	margin:15px;
+}
