@@ -129,15 +129,9 @@ public class prospectController {
         String name = request.getParameter("name");
         String mobile = request.getParameter("mobile");
         String prospectConfirmTime = request.getParameter("prospectConfirmTime");
+        String prospectContent = request.getParameter("prospectContent");
         String prospectRequire = request.getParameter("prospectRequire");
 
-        String prospectContent = "";
-        String[] checkbox= request.getParameterValues("prospectContent");
-        if(checkbox != null) {
-            for(int i = 0; i < checkbox.length; i++) {
-                prospectContent += checkbox[i] + ",";
-            }
-        }
         if(!"".equals(prospectContent)) {
             prospectContent = prospectContent.substring(0, prospectContent.length() - 1);
         }
@@ -149,7 +143,7 @@ public class prospectController {
             confirmDate = sdf.parse(prospectConfirmTime);
         }
         catch (ParseException e) {
-            log.error("新增勘查派工单失败！");
+            logger.error("新增勘查派工单失败！");
             jsonResult.setMessage("保存失败！");
             return jsonResult;
         }
@@ -168,7 +162,7 @@ public class prospectController {
         ServiceResult<Integer> result = prospectService.insert(prospect);
 
         if (!result.getSuccess() || result.getResult() == 0) {
-            log.error("新增勘查派工单失败！");
+            logger.error("新增勘查派工单失败！");
             jsonResult.setMessage("保存失败！");
             return jsonResult;
         }
@@ -202,7 +196,7 @@ public class prospectController {
             endDate = sdf.parse(prospectEndTime);
         }
         catch (ParseException e) {
-            log.error("新增勘查派工单失败！");
+            logger.error("新增勘查派工单失败！");
             jsonResult.setMessage("保存失败！");
             return jsonResult;
         }
@@ -264,7 +258,7 @@ public class prospectController {
             endDate = sdf.parse(prospectEndTime);
         }
         catch (ParseException e) {
-            log.error("新增勘查派工单失败！");
+            logger.error("新增勘查派工单失败！");
             throw new BusinessException("请稍后重试！");
         }
         ServiceResult<Prospect> result = prospectService.getById(Integer.parseInt(id));

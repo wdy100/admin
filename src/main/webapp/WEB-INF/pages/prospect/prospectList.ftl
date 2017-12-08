@@ -280,9 +280,18 @@
         var name = $('#name').val();
         var mobile = $('#mobile').val();
         var prospectConfirmTime = $('#prospectConfirmTime').val();
-        var prospectContent = $("input[type='checkbox']:checked").val();
-        console.log("prospectContent:"+prospectContent);
         var prospectRequire = $('#prospectRequire').val();
+
+        var check_box = $("input[type='checkbox']:checked");
+        if(check_box.length <= 0) {
+            $.messager.alert('提示', '请勾选勘查内容！');
+            return;
+        }
+        var checked = check_box.val();
+        var prospectContent = "";
+        for(var i = 0; i < checked.length; i++){
+            prospectContent += checked[i].value +",";
+        }
 
         $.ajax({
             type:'post',
@@ -297,7 +306,7 @@
                 $.messager.progress('close');
                 if(!data.success){
                     $.messager.alert('提示',data.message);
-                    return false;
+                    return;
                 }
                 $('#dg').datagrid('reload');
                 addProspectDialog.dialog('close');
