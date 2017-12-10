@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>合同列表</title>
+    <title>财务收款确认</title>
 <#include "../common/easyui_core.ftl"/>
 </head>
 <body>
@@ -17,33 +17,19 @@
                         <input id="q_firstParty" name="q_firstParty" class="easyui-textbox" style="width:100px;">
                     </td>
                     
-                    <td class="cxlabel">合同状态:</td>
-                    <td class="cxinput">
-                        <select id="q_approvalStatus" name="q_approvalStatus" class="" style="width:100px" panelHeight="auto" >
-	                        <option value="">--全部--</option>
-	                        <option value="0" >待提交</option>
-	                        <option value="1" >待内勤初审</option>
-	                        <option value="2" >待总监审核</option>
-	                        <option value="3" >待合同上传</option>
-	                        <option value="4" >签订完成</option>
-	                    </select>
-                    </td>
                     
-                    </tr>
-                    <tr>
-                    
+                </tr>
+                <tr>
                     <td class="cxlabel">签订日期:</td>
                     <td class="cxinput">
                     	<input type="text" id="q_agreeDate" name="q_agreeDate" class="Wdate {required:true}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width:100px;"/>
                     </td>
                     
-                    </tr>
-                  </table>
+                </tr>
+              </table>
                      
                     <td class="cxlabel">
                         <a id="searchPt" href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
-                        <a id="addAgreement" href="#" class="easyui-linkbutton" iconCls="icon-add"  plain="false" >新增</a>
-                        <a id="delAgreement" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" >删除</a>
                         <a id="editRatio" href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="false" >付款比例修改</a>
                     </td>
 
@@ -92,47 +78,6 @@ $('#searchPt').click(function () {
     //grid加载
     $('#dataGrid').datagrid('load',queryParamsHandler());
 });
-
-//删除
-$("#delAgreement").click(function(){
-	var selectedCode = $('#dataGrid').datagrid('getSelected');
-	if(!selectedCode){
-		$.messager.alert('提示','请选择操作行。');
-		return;
-	}
-	if(selectedCode.approvalStatus!=0){
-		$.messager.alert('提示','该行数据已经提交，不可删除！');
-		return;
-	}
-	$.messager.confirm('提示', '确定删除该行数据吗？', function(r){
-				if (r){
-					$.messager.progress({text:"提交中..."});
-					$.ajax({
-						type:"GET",
-					    url: "/agreementInfo/delete",
-						dataType: "json",
-					    data: "id=" + selectedCode.id,
-					    cache:false,
-						success:function(data, textStatus){
-							if (data.success) {
-								$('#dataGrid').datagrid('reload');
-						    } else {
-						    	$.messager.alert('提示',data.message);
-						    	$('#dataGrid').datagrid('reload');
-						    }
-							$.messager.progress('close');
-						}
-					});
-			    }
-			});
-});
-
-
-//新增
-$("#addAgreement").click(function(){
-    window.location.href="/agreementInfo/toAdd";
-});
-
 
 function toApproval(id){
 	window.location.href="/agreementInfo/toApproval?id="+id;
@@ -213,7 +158,7 @@ $(function(){
         pagination: true, //显示最下端的分页工具栏
         pageList: [5,10,15,20], //可以调整每页显示的数据，即调整pageSize每次向后台请求数据时的数据
         pageSize: 20, //读取分页条数，即向后台读取数据时传过去的值
-        url:'/agreementInfo/agreementList',
+        url:'/agreementFinance/agreementList',
         queryParams: queryParamsHandler(),
         columns: [
             [
@@ -296,15 +241,6 @@ $(function(){
                     	var result='';
                     	if(row.approvalStatus==0){
                     		result = '<a href="#" onclick="doEdit(\'' + row.id + '\' )">编辑</a> ';
-                    	}
-                    	else if(row.approvalStatus==1){
-                    		result = '<a href="#" onclick="toApproval(\'' + row.id + '\' )">审核</a> ';
-                    	}
-                    	else if(row.approvalStatus==2){
-                    		result = '<a href="#" onclick="toApproval(\'' + row.id + '\' )">审核</a> ';
-                    	}
-                    	else if(row.approvalStatus==3){
-                    		result = '<a href="#" onclick="toAgreementUpload(\'' + row.id + '\' )">合同上传</a> ';
                     	}
                     	return result;
                     }
