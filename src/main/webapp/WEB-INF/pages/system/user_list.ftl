@@ -24,7 +24,7 @@
 						<tr>
 							<td class="cxlabel">姓名:</td>
 							<td class="cxinput">
-								<input name="nickName" class="easyui-textbox" style="width:100px;">
+								<input name="nickName" id="nickName" class="easyui-textbox" style="width:100px;">
 							</td>
 
 							<td class="cxlabel">
@@ -60,6 +60,7 @@
 		</div>
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit"  onclick="updateUser()">修改</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit"  onclick="auditUser()">审核通过</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-export" onclick="exportUser()">导出</a>
 	</div>
 
 	<div id="dlg" class="easyui-dialog" style="width:370px;height:200px;padding-top: 10px;"
@@ -180,8 +181,11 @@
 </div>
 
 <script type="text/javascript">
+var datagrid;
+var nickName;
 
 	function loaddata(){
+        nickName = $("#nickName").val();
 		$('#dg').datagrid('load',sy.serializeObject($("#searchForm").form()));
 	}
 	function formatDateTime(val,row){
@@ -206,7 +210,7 @@
 		<#--return "<a href='${dynamicURL}/security/updateUserInit.action?user.id="+row.id+"'>"+val+"</a>";-->
 	<#--}-->
 	$(function(){
-		$('#dg').datagrid({
+        datagrid = $('#dg').datagrid({
 			title:'用户列表',
 			toolbar:'#tb',
 			singleSelect:true,
@@ -475,6 +479,19 @@
 		var bodyWidth = document.body.clientWidth;
 		return (bodyWidth-90)*percent;
 	}
+
+    //导出
+    function exportUser(){
+        if(!datagrid){
+            $.messager.alert('提示','请先查询！','info');
+            return;
+        }
+        $.messager.confirm('确认','确定要导出吗？', function(r){
+            if (r){
+                window.location.href="/system/resetPassword?nickName=" + nickName;
+            }
+        });
+    }
 </script>
 </body>
 </html>
