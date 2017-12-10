@@ -27,7 +27,7 @@ CREATE TABLE `resource_info`
   `name`	varchar(50) NOT NULL COMMENT '名称',
   `description`	varchar(200) NOT NULL COMMENT '描述',
   `url`	varchar(200) NOT NULL COMMENT '访问路径',
-  `type` tinyint(1) DEFAULT '0' COMMENT '类别 0:模块 1:页面  2:按钮',
+  `type` tinyint(2) DEFAULT '0' COMMENT '类别 0:模块 1:页面  2:按钮',
   `order_index` int(4) DEFAULT '0' COMMENT '顺序',
   `parent_id`   int(11) NOT NULL COMMENT '上级资源id',
   `created_at` datetime NOT NULL COMMENT '创建时间',
