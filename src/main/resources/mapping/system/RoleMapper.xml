@@ -14,13 +14,13 @@
     <result column="is_delete" jdbcType="BIT" property="isDelete" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, name, description, created_at, updated_at, created_by, updated_by, remark,
+    code, name, description, created_at, updated_at, created_by, updated_by, remark,
     is_delete
   </sql>
   <sql id="table">role</sql>
 
     <select id="getRoleList"  parameterType="Map"  resultMap="roleMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT id, <include refid="Base_Column_List"/>
         FROM <include refid="table"/>
         WHERE is_delete = 0
         <include refid="roleQuery"/>
@@ -45,21 +45,20 @@
     </sql>
 
     <select id="getByName" resultMap="roleMap" parameterType="java.lang.String">
-        select <include refid="Base_Column_List"/>
+        select id, <include refid="Base_Column_List"/>
         from <include refid="table"/>
         where name = #{name}
     </select>
 
   <select id="getById" parameterType="java.lang.Integer" resultMap="roleMap">
-    select
-      <include refid="Base_Column_List" />
-    from role
+    select id, <include refid="Base_Column_List" />
+    from <include refid="table"/>
     where id = #{id,jdbcType=INTEGER}
   </select>
 
   <!-- 查询所有 -->
   <select id="getAll" resultMap="roleMap">
-    SELECT <include refid="Base_Column_List"/>
+    SELECT id, <include refid="Base_Column_List"/>
     FROM <include refid="table"/>
     <include refid="condition"/>
     ORDER BY id DESC

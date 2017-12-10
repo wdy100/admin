@@ -9,7 +9,7 @@
 <body>
 <div class="easyui-layout" data-options="fit : true,border : false">
     <div data-options="region:'north',title:'查询条件',border:false" style="height: 60px;" class="zoc">
-        <form id="roleForm" action="/uploadReportFile.html" method="post">
+        <form onsubmit="return false;" id="searchForm">
             <table class="fixedTb">
                 <tr>
                     <td class="cxlabel">角色名称:</td>
@@ -18,9 +18,6 @@
                     </td>
                     <td class="cxlabel">
                         <a href="#"  id = "searchPt"  class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
-                        <a id="add" href="#" class="easyui-linkbutton" iconCls="icon-add"  plain="false" >新增</a>
-                        <a id="update" href="#" class="easyui-linkbutton" iconCls="icon-edit"  plain="false"  >修改</a>
-                        <a id="delete" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false">删除</a>
                     </td>
 
                 </tr>
@@ -28,8 +25,13 @@
 
         </form>
     </div>
-    <div data-options="region:'center',title:'查询结果',border:false" style="left: 0px; top: 240px; width: 1920px;">
+    <div region="center" border="false">
         <table id="dataGrid"></table>
+    </div>
+    <div id="tb" >
+        <a id="add" href="#" class="easyui-linkbutton" iconCls="icon-add"  plain="false" >新增</a>
+        <a id="update" href="#" class="easyui-linkbutton" iconCls="icon-edit"  plain="false"  >修改</a>
+        <a id="delete" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false">删除</a>
     </div>
 </div>
 
@@ -57,6 +59,10 @@
 var datagrid;
 var queryParameters;
 
+function loaddata(){
+    $('#dataGrid').datagrid('load',sy.serializeObject($("#searchForm").form()));
+}
+
 // 判断是否为空
 $.isNotBlank = function(value) {
     if (value != undefined && value != "undefined" && value != null && value != "null" && value != "") {
@@ -66,7 +72,7 @@ $.isNotBlank = function(value) {
 };
 
 //角色查询
-$('#searchPt').click(function () {
+$(function(){
     queryParameters = {
         name:$("#name").val(),
         description:$("#description").val()
@@ -86,7 +92,7 @@ $('#searchPt').click(function () {
             pagination: true, //显示最下端的分页工具栏
             pageList: [5,10,15,20], //可以调整每页显示的数据，即调整pageSize每次向后台请求数据时的数据
             pageSize: 20, //读取分页条数，即向后台读取数据时传过去的值
-            url:'/system/findRoleList.html',
+            url:'/system/roleList',
             queryParams:queryParameters,
             columns: [
                 [
@@ -106,6 +112,12 @@ $('#searchPt').click(function () {
                     {
                         field: 'name',
                         title: '角色名称',
+                        width: 150,
+                        align: 'center'
+                    },
+                    {
+                        field: 'code',
+                        title: '角色编码',
                         width: 150,
                         align: 'center'
                     },
@@ -208,74 +220,5 @@ $("#delete").click(function(){
 
 });
 
-$(function(){
-    datagrid = $('#dataGrid').datagrid({
-        title:'角色列表',
-        toolbar:'#tb',
-        singleSelect:true,
-        fitColumns:true,
-        fit:true,
-        collapsible: true,
-        rownumbers: true, //显示行数 1，2，3，4...
-        pagination: true, //显示最下端的分页工具栏
-        pageList: [5,10,15,20], //可以调整每页显示的数据，即调整pageSize每次向后台请求数据时的数据
-        pageSize: 20, //读取分页条数，即向后台读取数据时传过去的值
-        url:'/system/roleList',
-        queryParams:queryParameters,
-        columns: [
-            [
-                {
-                    field: 'id',
-                    title: '编号',
-                    width: 10,
-                    align: 'center',
-                    hidden:true
-                },
-                {
-                    field: 'checked',
-                    width: 10,
-                    align: 'center',
-                    checkbox:true
-                },
-                {
-                    field: 'name',
-                    title: '角色名称',
-                    width: 150,
-                    align: 'center'
-                },
-                {
-                    field: 'description',
-                    title: '角色描述',
-                    width: 200,
-                    align: 'center'
-                },
-                {
-                    field: 'createdBy',
-                    title: '创建者',
-                    width: 150,
-                    align: 'center'
-                },
-                {
-                    field: 'createdAt',
-                    title: '创建时间',
-                    width: 150,
-                    align: 'center'
-                },
-                {
-                    field: 'updatedBy',
-                    title: '最后修改人',
-                    width: 150,
-                    align: 'center'
-                },
-                {
-                    field: 'updatedAt',
-                    title: '最后更新时间',
-                    width: 150,
-                    align: 'center'
-                }
-            ]
-        ]
-    });
-})
 </script>
 </body>

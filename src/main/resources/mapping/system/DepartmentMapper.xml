@@ -22,25 +22,25 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, code, name, description, created_at, updated_at, created_by, updated_by, remark, is_delete, parent_id
+    code, name, description, created_at, updated_at, created_by, updated_by, remark, is_delete, parent_id
   </sql>
 
   <sql id="table">department</sql>
 
   <sql id="selectAllDepartmentColumns">
-    select <include refid="Base_Column_List" />
+    select id, <include refid="Base_Column_List" />
   </sql>
 
   <select id="getById" parameterType="java.lang.Integer" resultMap="departmentMap">
-    select 
+    select id,
     <include refid="Base_Column_List" />
-    from department
+    from <include refid="table"/>
     where id = #{id,jdbcType=INTEGER}
   </select>
 
   <!-- 查询所有部门 -->
   <select id="getAll" resultMap="departmentMap">
-    SELECT <include refid="Base_Column_List"/>
+    SELECT id, <include refid="Base_Column_List"/>
     FROM <include refid="table"/>
     <include refid="condition"/>
     ORDER BY id DESC
@@ -114,7 +114,7 @@
   </sql>
 
   <select id="queryListBy" resultMap="departmentMap" parameterType="map">
-    SELECT <include refid="Base_Column_List"/>
+    SELECT id, <include refid="Base_Column_List"/>
     FROM <include refid="table"/>
     <include refid="condition"/>
     ORDER BY id DESC
@@ -227,19 +227,17 @@
 		]]>
   </insert>
 
-  <!-- 根据区域名称查询区域编码 -->
+  <!-- 根据部门名称查询部门编码 -->
   <select id="getDepartmentByName" resultMap="departmentMap" parameterType="string">
-    select
-    <include refid="Base_Column_List" />
-    from department
+    select id, <include refid="Base_Column_List" />
+    from <include refid="table"/>
     WHERE name = #{name}
   </select>
 
   <!-- 根据部门编码获取部门 -->
   <select id="getDepartmentByCode" resultMap="departmentMap" parameterType="string">
-    select
-    <include refid="Base_Column_List" />
-    from department
+    select id, <include refid="Base_Column_List" />
+    from <include refid="table"/>
     WHERE code = #{code}
   </select>
 
