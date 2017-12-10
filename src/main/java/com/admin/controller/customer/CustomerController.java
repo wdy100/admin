@@ -3,6 +3,7 @@ package com.admin.controller.customer;
 import com.admin.entity.customer.Customer;
 import com.admin.service.customer.CustomerService;
 import com.admin.service.system.ResourceInfoService;
+import com.admin.web.util.ButtonConstant;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.SessionSecurityConstants;
 import com.admin.web.util.WebUtil;
@@ -33,7 +34,6 @@ import java.util.Map;
 @RequestMapping("/customer")
 @Slf4j
 public class CustomerController {
-    public final static String DISTRIBUTION_CODE= "100102101102";
     @Resource
     private ResourceInfoService resourceInfoService;
     @Resource  
@@ -48,10 +48,20 @@ public class CustomerController {
         }
         Map<String, String> buttonsMap = resourceInfoService.getButtonCodeByUserId(userId);
         String showDistributionCustomerButton = "NO";
-        if(buttonsMap.containsKey(DISTRIBUTION_CODE)){
+        String showCreateCustomerButton = "NO";
+        String showFeedbackCustomerButton = "NO";
+        if(buttonsMap.containsKey(ButtonConstant.CUSTOMER_DISTRIBUTION_CODE)){
             showDistributionCustomerButton = "YES";
         }
+        if(buttonsMap.containsKey(ButtonConstant.CUSTOMER_ADD_CODE)){
+            showCreateCustomerButton = "YES";
+        }
+        if(buttonsMap.containsKey(ButtonConstant.CUSTOMER_FEEDBACK_CODE)){
+            showFeedbackCustomerButton = "YES";
+        }
         dataMap.put("showDistributionCustomerButton", showDistributionCustomerButton);
+        dataMap.put("showCreateCustomerButton", showCreateCustomerButton);
+        dataMap.put("showFeedbackCustomerButton", showFeedbackCustomerButton);
         return "customer/customer_list";
     }
 

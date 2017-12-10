@@ -100,6 +100,12 @@ public class LoginController {
             for(ResourceInfo resourceInfo : moduleList){
                 resourceInfo.setChildren(pageMap.get(resourceInfo.getId()));
             }
+            //去掉无任何页面的模块
+            for(int i = 0; i < moduleList.size(); i++){
+                if(moduleList.get(i).getChildren() == null || moduleList.get(i).getChildren().size() == 0){
+                    moduleList.remove(i);
+                }
+            }
         }
         return moduleList;
     }

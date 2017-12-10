@@ -47,10 +47,9 @@
       </table>
       <form method="post" id="fm" style="display: none;"></form>
       <div id="tb">
-        <a href="#"  class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="delDepartment()">删除</a>
-        <a href="#"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="updateDepartment()">修改</a>
         <a href="#"  class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="createDepartment()">新增</a>
-
+          <a href="#"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="updateDepartment()">修改</a>
+          <a href="#"  class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="delDepartment()">删除</a>
       </div>
     </div>
   </div>

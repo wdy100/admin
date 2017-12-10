@@ -28,11 +28,15 @@
     <div id="tb" >
         <#--<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="false" onclick="deleteCustomer()">删除</a>-->
         <#--<a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="updateCustomer()">修改</a>-->
-            <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="createCustomer()">新增</a>
+            <#if showCreateCustomerButton?? && showCreateCustomerButton == "YES">
+                <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="createCustomer()">新增</a>
+            </#if>
             <#if showDistributionCustomerButton?? && showDistributionCustomerButton == "YES">
                 <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="distributionCustomer()">分配</a>
             </#if>
-        <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="feedback()">反馈</a>
+            <#if showFeedbackCustomerButton?? && showFeedbackCustomerButton == "YES">
+                <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="feedback()">反馈</a>
+            </#if>
 
     </div>
     <div region="center" border="false">

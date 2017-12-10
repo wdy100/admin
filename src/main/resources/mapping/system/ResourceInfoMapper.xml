@@ -18,21 +18,20 @@
     <result column="is_delete" jdbcType="BIT" property="isDelete" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, name, description, url, type, `order_index`, parent_id, created_at, updated_at, created_by,updated_by, remark, is_delete
+    code, name, description, url, type, `order_index`, parent_id, created_at, updated_at, created_by,updated_by, remark, is_delete
   </sql>
 
   <sql id="table">resource_info</sql>
 
   <select id="getById" parameterType="java.lang.Integer" resultMap="resourceInfoMap">
-    select 
-    <include refid="Base_Column_List" />
+    select id, <include refid="Base_Column_List" />
     from <include refid="table"/>
     where id = #{id,jdbcType=INTEGER}
   </select>
 
   <!-- 查询所有 -->
   <select id="getAll" resultMap="resourceInfoMap">
-    SELECT <include refid="Base_Column_List"/>
+    SELECT id, <include refid="Base_Column_List"/>
      FROM <include refid="table"/>
      <include refid="condition"/>
   </select>
@@ -120,9 +119,17 @@
   <select id="getByUserId" parameterType="java.lang.Integer" resultMap="resourceInfoMap">
     select r.id, r.code, r.name, r.description, r.url, r.type, r.`order_index`, r.parent_id
     from resource_info r
-    INNER JOIN role_resource rr on rr.resource_id = r.id
-    INNER JOIN user_role ur on ur.role_id = rr.role_id
-    where r.id != r.parent_id and r.is_delete = 0 and ur.user_id = #{userId,jdbcType=INTEGER}
+    where r.is_delete = 0 and
+    (
+      r.type = 0 or r.id in
+      (
+        select DISTINCT ri.parent_id
+        from resource_info ri
+        INNER JOIN role_resource rr on rr.resource_id = ri.id
+        INNER JOIN user_role ur on ur.role_id = rr.role_id
+        where ri.type = 2 and ri.is_delete = 0 and ur.user_id = #{userId,jdbcType=INTEGER}
+      )
+    )
     ORDER BY r.type, r.`order_index`
   </select>
 

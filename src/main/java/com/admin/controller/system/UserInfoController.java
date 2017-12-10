@@ -242,6 +242,7 @@ public class UserInfoController {
      * @param request
      * @param response
      */
+    /**
     @RequestMapping(value = { "/exportUserList" })
     public void exportWaterVatInvoiceList(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -283,13 +284,14 @@ public class UserInfoController {
             e.printStackTrace();
         }
     }
-
+*/
     /**
      * 导出用户列表的具体数据，实现回调函数
      * @param sheet
      * @param temp 行号
      * @param list 传入需要导出的 list
      */
+    /**
     private void setExcelBodyTotalForUserList(WritableSheet sheet, int temp, List<UserInfo> list) throws Exception {
         WritableFont font = new WritableFont(WritableFont.ARIAL, 9, WritableFont.NO_BOLD, false,
                 UnderlineStyle.NO_UNDERLINE, jxl.format.Colour.BLACK);
@@ -304,7 +306,7 @@ public class UserInfoController {
 
         for (UserInfo userInfo : list) {
             //jxl.write.Number(列号,行号 ,内容 )
-            /* "用户名", "真实姓名", "手机号", "邮箱","使用状态"*/
+            // "用户名", "真实姓名", "手机号", "邮箱","使用状态"
             sheet.setColumnView(0, 25);
             sheet.addCell(new Label(0, temp, CommUtil.getStringValue(userInfo.userName()), textFormat));
 
@@ -330,5 +332,6 @@ public class UserInfoController {
             temp++;
         }
     }
+    */
 
 }  
