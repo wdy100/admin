@@ -41,10 +41,12 @@
 					<thead>
 					<tr>
 						<th data-options="field:'ck',checkbox:true,formatter : function(value, row, index) {return row.rowId;}"></th>
-						<th data-options="field:'userName', halign : 'center' ,align : 'left', width:200">用户名</th>
-						<th field="nickName"  halign="center"  align="left" width="200">真实姓名</th>
-						<th field="mobile"  halign="center"  align="left"  width="360">手机号</th>
-						<th field="email"  halign="center"  align="left"  width="360">邮箱</th>
+						<th data-options="field:'userName', halign : 'center' ,align : 'center', width:200">用户名</th>
+						<th field="nickName"  halign="center"  align="center" width="200">真实姓名</th>
+                        <th field="sex"  halign="center"  align="center"  width="200">性别</th>
+						<th field="mobile"  halign="center"  align="center"  width="200">手机号</th>
+						<th field="departmentName"  halign="center"  align="center"  width="200">部门</th>
+                        <th field="roleName"  halign="center"  align="center"  width="200">职务</th>
 						<th data-options="field:'status',align:'center',width:200,formatter:statusFormater">使用状态</th>
 					</tr>
 					</thead>
@@ -56,10 +58,17 @@
 		<a href="javascript:void(0)" id="morefunction" class="easyui-menubutton"  plain="false"
 		   data-options="menu:'#functions',iconCls:'icon-task'">更多</a>
 		<div id="functions" style="width:150px;">
-			<div data-options="iconCls:'icon-redo'" onclick="resetUserPassword()">重置密码</div>
+            <#if showResetPasswordButton?? && showResetPasswordButton == "YES">
+                <div data-options="iconCls:'icon-redo'" onclick="resetUserPassword()">重置密码</div>
+            </#if>
+
 		</div>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit"  onclick="updateUser()">修改</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit"  onclick="auditUser()">审核通过</a>
+        <#if showEditButton?? && showEditButton == "YES">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit"  onclick="updateUser()">修改</a>
+        </#if>
+        <#if showAuditButton?? && showAuditButton == "YES">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit"  onclick="auditUser()">审核通过</a>
+        </#if>
         <a href="#" class="easyui-linkbutton" iconCls="icon-export" onclick="exportUser()">导出</a>
 	</div>
 

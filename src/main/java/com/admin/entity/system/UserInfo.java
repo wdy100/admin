@@ -45,6 +45,10 @@ public class UserInfo  extends BaseEntity{
 
     private String address;
 
+    private String roleName;
+
+    private String departmentName;
+
     public static enum StatusEnum{
         INIT(0),ENABLE(1),DISABLE(-1),LOCKED(-2);
         @Getter

@@ -1,8 +1,11 @@
 package com.admin.controller.system;
 
 import com.admin.entity.system.RoleResource;
+import com.admin.service.system.ResourceInfoService;
 import com.admin.service.system.RoleResourceService;
+import com.admin.web.util.ButtonConstant;
 import com.admin.web.util.HttpJsonResult;
+import com.admin.web.util.SessionSecurityConstants;
 import com.haier.common.ServiceResult;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
@@ -28,15 +31,27 @@ import java.util.Map;
 @RequestMapping("/system") 
 @Slf4j
 public class RoleResourceController {
-    
+    @Resource
+    private ResourceInfoService resourceInfoService;
     @Resource
     private RoleResourceService roleResourceService;
     
     @RequestMapping(value = "roleResource.html", method = { RequestMethod.GET, RequestMethod.POST })
     public String index(@RequestParam(required = false)
             HttpServletRequest request, HttpServletResponse response,
-            Map<String, Object> modelMap) throws Exception {
+            Map<String, Object> dataMap) throws Exception {
+        Long userId = (Long)(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_ID));
+        if (null == userId) {
+            log.error("[RoleResourceController][index] userId不存在,userId={}", userId);
+            return "redirect:/login.html";
+        }
+        Map<String, String> buttonsMap = resourceInfoService.getButtonCodeByUserId(userId);
+        String showEditButton = "NO";
+        if(buttonsMap.containsKey(ButtonConstant.ROLE_RESOURCE_EDIT_CODE)){
+            showEditButton = "YES";
+        }
 
+        dataMap.put("showEditButton", showEditButton);
         return "system/roleResource_list";
     }
 

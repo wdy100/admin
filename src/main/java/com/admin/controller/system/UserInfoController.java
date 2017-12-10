@@ -3,13 +3,11 @@ package com.admin.controller.system;
 import com.admin.entity.system.UserDepartment;
 import com.admin.entity.system.UserInfo;
 import com.admin.entity.system.UserRole;
+import com.admin.service.system.ResourceInfoService;
 import com.admin.service.system.UserDepartmentService;
 import com.admin.service.system.UserInfoService;
 import com.admin.service.system.UserRoleService;
-import com.admin.web.util.DateUtil;
-import com.admin.web.util.HttpJsonResult;
-import com.admin.web.util.PasswordUtil;
-import com.admin.web.util.WebUtil;
+import com.admin.web.util.*;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.haier.common.BusinessException;
@@ -45,6 +43,8 @@ import java.util.Map;
 @Slf4j
 public class UserInfoController {
     @Resource
+    private ResourceInfoService resourceInfoService;
+    @Resource
     private UserInfoService userInfoService;
     @Resource
     private UserDepartmentService userDepartmentService;
@@ -52,7 +52,28 @@ public class UserInfoController {
     private UserRoleService userRoleService;
 
     @RequestMapping(value = "user.html", method = { RequestMethod.GET, RequestMethod.POST })
-    public String index(HttpServletRequest request, Model model) throws Exception {
+    public String index(HttpServletRequest request, Map<String, Object> dataMap) throws Exception {
+        Long userId = (Long)(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_ID));
+        if (null == userId) {
+            log.error("[UserInfoController][index] userId不存在,userId={}", userId);
+            return "redirect:/login.html";
+        }
+        Map<String, String> buttonsMap = resourceInfoService.getButtonCodeByUserId(userId);
+        String showResetPasswordButton = "NO";
+        String showEditButton = "NO";
+        String showAuditButton = "NO";
+        if(buttonsMap.containsKey(ButtonConstant.USER_RESET_PASSWORD_CODE)){
+            showResetPasswordButton = "YES";
+        }
+        if(buttonsMap.containsKey(ButtonConstant.USER_EDIT_CODE)){
+            showEditButton = "YES";
+        }
+        if(buttonsMap.containsKey(ButtonConstant.USER_ADUIT_CODE)){
+            showAuditButton = "YES";
+        }
+        dataMap.put("showResetPasswordButton", showResetPasswordButton);
+        dataMap.put("showEditButton", showEditButton);
+        dataMap.put("showAuditButton", showAuditButton);
         return "system/user_list";
     }
 

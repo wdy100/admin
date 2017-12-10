@@ -28,7 +28,9 @@
     </div>
 
     <div id="tb" >
-        <a id="update" href="#" class="easyui-linkbutton" iconCls="icon-edit"  plain="false"  >设置权限</a>
+        <#if showEditButton?? && showEditButton == "YES">
+            <a id="update" href="#" class="easyui-linkbutton" iconCls="icon-edit"  plain="false"  >设置权限</a>
+        </#if>
 
     </div>
     <div region="center" border="false">
