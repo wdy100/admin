@@ -37,8 +37,7 @@ public class RoleResourceController {
     private RoleResourceService roleResourceService;
     
     @RequestMapping(value = "roleResource.html", method = { RequestMethod.GET, RequestMethod.POST })
-    public String index(@RequestParam(required = false)
-            HttpServletRequest request, HttpServletResponse response,
+    public String index(HttpServletRequest request,
             Map<String, Object> dataMap) throws Exception {
         Long userId = (Long)(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_ID));
         if (null == userId) {
