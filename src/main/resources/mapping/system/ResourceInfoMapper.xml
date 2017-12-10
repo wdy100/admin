@@ -125,5 +125,13 @@
     where r.id != r.parent_id and r.is_delete = 0 and ur.user_id = #{userId,jdbcType=INTEGER}
     ORDER BY r.type, r.`order_index`
   </select>
+
+  <select id="getButtonCodeByUserId" parameterType="java.lang.Integer" resultType="String">
+    select r.code
+    from resource_info r
+    INNER JOIN role_resource rr on rr.resource_id = r.id
+    INNER JOIN user_role ur on ur.role_id = rr.role_id
+    where r.type = 2 and r.is_delete = 0 and ur.user_id = #{userId,jdbcType=INTEGER}
+  </select>
   
 </mapper>

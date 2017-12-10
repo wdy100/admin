@@ -2,7 +2,9 @@ package com.admin.controller.customer;
 
 import com.admin.entity.customer.Customer;
 import com.admin.service.customer.CustomerService;
+import com.admin.service.system.ResourceInfoService;
 import com.admin.web.util.HttpJsonResult;
+import com.admin.web.util.SessionSecurityConstants;
 import com.admin.web.util.WebUtil;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
@@ -31,11 +33,25 @@ import java.util.Map;
 @RequestMapping("/customer")
 @Slf4j
 public class CustomerController {
+    public final static String DISTRIBUTION_CODE= "100102101102";
+    @Resource
+    private ResourceInfoService resourceInfoService;
     @Resource  
     private CustomerService customerService;
 
     @RequestMapping(value = "customer.html", method = { RequestMethod.GET, RequestMethod.POST })
     public String index(HttpServletRequest request,Map<String, Object> dataMap) throws Exception {
+        Long userId = (Long)(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_ID));
+        if (null == userId) {
+            log.error("[CustomerController][index] userId不存在,userId={}", userId);
+            return "redirect:/login.html";
+        }
+        Map<String, String> buttonsMap = resourceInfoService.getButtonCodeByUserId(userId);
+        String showDistributionCustomerButton = "NO";
+        if(buttonsMap.containsKey(DISTRIBUTION_CODE)){
+            showDistributionCustomerButton = "YES";
+        }
+        dataMap.put("showDistributionCustomerButton", showDistributionCustomerButton);
         return "customer/customer_list";
     }
 

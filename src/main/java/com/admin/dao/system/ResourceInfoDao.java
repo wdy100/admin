@@ -24,4 +24,8 @@ public class ResourceInfoDao   extends BaseDao{
     public List<ResourceInfo> getByUserId(Long userId){
         return this.getSqlSession().selectList(namespace + "getByUserId", userId);
     }
+
+    public List<String> getButtonCodeByUserId(Long userId){
+        return this.getSqlSession().selectList(namespace + "getButtonCodeByUserId", userId);
+    }
 }
