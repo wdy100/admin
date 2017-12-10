@@ -16,7 +16,9 @@ import com.haier.common.BusinessException;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 import com.haier.common.util.JsonUtil;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -228,6 +234,101 @@ public class UserInfoController {
         }
         jsonResult.setData(result.getSuccess());
         return jsonResult;
+    }
+
+    /**
+     * 用户 列表导出Excel
+     * @param exportData
+     * @param request
+     * @param response
+     */
+    @RequestMapping(value = { "/exportUserList" })
+    public void exportWaterVatInvoiceList(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> params = new HashMap<String, Object>();
+
+        String nickName = request.getParameter("nickName");
+        if(nickName != null && !"".equals(nickName)){
+            //参数加入params里
+            params.put("nickName", nickName);
+        }
+
+        ServiceResult<Map<String, Object>> serviceResult = userInfoService.searchUserInfos(params, null);
+        if(!serviceResult.getSuccess()){
+            log.error("查询列表发生异常！");
+            return;
+        }
+        Map<String, Object> map = serviceResult.getResult();
+        List<UserInfo> list = null;
+        if(map != null && map.size() > 0){
+            list = (List<UserInfo>)map.get("data");
+        }
+
+        String fileName = "用户列表" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String sheetName = "数据导出";
+        String[] sheetHead = new String[] { "用户名", "真实姓名", "手机号","邮箱","使用状态" };
+
+        try {
+            ExcelExportUtil.exportEntity(logger, request, response, fileName, sheetName, sheetHead,
+                    new ExcelCallbackInterfaceUtil() {
+
+                        @Override
+                        public void setExcelBodyTotal(OutputStream os, WritableSheet sheet, int temp)
+                                throws Exception {
+                            setExcelBodyTotalForUserList(sheet, temp, list);
+                        }
+
+                    });
+        } catch (Exception e) {
+            log.error("用户列表导出失败！", e);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 导出用户列表的具体数据，实现回调函数
+     * @param sheet
+     * @param temp 行号
+     * @param list 传入需要导出的 list
+     */
+    private void setExcelBodyTotalForUserList(WritableSheet sheet, int temp, List<UserInfo> list) throws Exception {
+        WritableFont font = new WritableFont(WritableFont.ARIAL, 9, WritableFont.NO_BOLD, false,
+                UnderlineStyle.NO_UNDERLINE, jxl.format.Colour.BLACK);
+        WritableCellFormat textFormat = new WritableCellFormat(font);
+        textFormat.setAlignment(Alignment.CENTRE);
+        textFormat.setBorder(Border.ALL, BorderLineStyle.THIN);
+
+        DisplayFormat displayFormat = NumberFormats.INTEGER;
+        WritableCellFormat numberFormat = new WritableCellFormat(font, displayFormat);
+        numberFormat.setAlignment(jxl.format.Alignment.RIGHT);
+        numberFormat.setBorder(jxl.format.Border.ALL, jxl.format.BorderLineStyle.THIN);
+
+        for (UserInfo userInfo : list) {
+            //jxl.write.Number(列号,行号 ,内容 )
+            /* "用户名", "真实姓名", "手机号", "邮箱","使用状态"*/
+            sheet.setColumnView(0, 25);
+            sheet.addCell(new Label(0, temp, CommUtil.getStringValue(userInfo.userName()), textFormat));
+
+            sheet.setColumnView(1, 25);
+            sheet.addCell(new Label(1, temp, CommUtil.getStringValue(userInfo.nickName()),textFormat));
+
+            sheet.setColumnView(2, 25);
+            sheet.addCell(new Label(2, temp, CommUtil.getStringValue(userInfo.mobile()),textFormat));
+
+            sheet.setColumnView(3, 25);
+            sheet.addCell(new Label(3, temp, CommUtil.getStringValue(userInfo.email()),textFormat));
+
+            //状态转化为名称 '1': '启用',  "2": '待审核'
+            String status = CommUtil.getStringValue(userInfo.getStatus());
+            if ("1".equals(status)) {
+                status = "启用";
+            } else if ("0".equals(status)) {
+                status = "待审核";
+            }
+            sheet.setColumnView(4, 25);
+            sheet.addCell(new Label(4, temp, CommUtil.getStringValue(status),textFormat));
+
+            temp++;
+        }
     }
 
 }  
