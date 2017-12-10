@@ -211,7 +211,7 @@ var nickName;
 	<#--}-->
 	$(function(){
         datagrid = $('#dg').datagrid({
-			title:'用户查询',
+			title:'用户列表',
 			toolbar:'#tb',
 			singleSelect:true,
 			fit:true,
