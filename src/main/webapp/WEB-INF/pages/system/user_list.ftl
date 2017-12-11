@@ -69,7 +69,7 @@
         <#if showAuditButton?? && showAuditButton == "YES">
             <a href="#" class="easyui-linkbutton" iconCls="icon-edit"  onclick="auditUser()">审核通过</a>
         </#if>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-export" onclick="exportUser()">导出</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="exportUser()">导出</a>
 	</div>
 
 	<div id="dlg" class="easyui-dialog" style="width:370px;height:200px;padding-top: 10px;"
@@ -219,6 +219,7 @@ var nickName;
 		<#--return "<a href='${dynamicURL}/security/updateUserInit.action?user.id="+row.id+"'>"+val+"</a>";-->
 	<#--}-->
 	$(function(){
+        nickName = $("#nickName").val();
         datagrid = $('#dg').datagrid({
 			title:'用户列表',
 			toolbar:'#tb',
@@ -497,7 +498,7 @@ var nickName;
         }
         $.messager.confirm('确认','确定要导出吗？', function(r){
             if (r){
-                window.location.href="/system/resetPassword?nickName=" + nickName;
+                window.location.href="/system/exportUserList?nickName=" + nickName;
             }
         });
     }

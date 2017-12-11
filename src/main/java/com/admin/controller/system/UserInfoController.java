@@ -15,8 +15,15 @@ import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 import com.haier.common.util.JsonUtil;
 
+import jxl.biff.DisplayFormat;
+import jxl.format.Alignment;
+import jxl.format.Border;
+import jxl.format.BorderLineStyle;
+import jxl.format.UnderlineStyle;
+import jxl.write.*;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.log4j.LogManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,11 +34,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -42,6 +47,8 @@ import java.util.Map;
 @RequestMapping("/system") 
 @Slf4j
 public class UserInfoController {
+    private final static org.apache.log4j.Logger logger = LogManager.getLogger(UserInfoController.class);
+
     @Resource
     private ResourceInfoService resourceInfoService;
     @Resource
@@ -259,11 +266,9 @@ public class UserInfoController {
 
     /**
      * 用户 列表导出Excel
-     * @param exportData
      * @param request
      * @param response
      */
-    /**
     @RequestMapping(value = { "/exportUserList" })
     public void exportWaterVatInvoiceList(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -273,21 +278,23 @@ public class UserInfoController {
             //参数加入params里
             params.put("nickName", nickName);
         }
+        PagerInfo pager = new PagerInfo(5000, 1);
 
-        ServiceResult<Map<String, Object>> serviceResult = userInfoService.searchUserInfos(params, null);
+        ServiceResult<Map<String, Object>> serviceResult = userInfoService.searchUserInfos(params, pager);
         if(!serviceResult.getSuccess()){
             log.error("查询列表发生异常！");
             return;
         }
         Map<String, Object> map = serviceResult.getResult();
-        List<UserInfo> list = null;
+        List<UserInfo> list = new ArrayList<UserInfo>();
         if(map != null && map.size() > 0){
             list = (List<UserInfo>)map.get("data");
         }
+        final List<UserInfo> result = list;
 
         String fileName = "用户列表" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         String sheetName = "数据导出";
-        String[] sheetHead = new String[] { "用户名", "真实姓名", "手机号","邮箱","使用状态" };
+        String[] sheetHead = new String[] { "用户名", "真实姓名",  "性别", "手机号", "部门", "职务", "使用状态" };
 
         try {
             ExcelExportUtil.exportEntity(logger, request, response, fileName, sheetName, sheetHead,
@@ -296,7 +303,7 @@ public class UserInfoController {
                         @Override
                         public void setExcelBodyTotal(OutputStream os, WritableSheet sheet, int temp)
                                 throws Exception {
-                            setExcelBodyTotalForUserList(sheet, temp, list);
+                            setExcelBodyTotalForUserList(sheet, temp, result);
                         }
 
                     });
@@ -305,14 +312,13 @@ public class UserInfoController {
             e.printStackTrace();
         }
     }
-*/
+
     /**
      * 导出用户列表的具体数据，实现回调函数
      * @param sheet
      * @param temp 行号
      * @param list 传入需要导出的 list
      */
-    /**
     private void setExcelBodyTotalForUserList(WritableSheet sheet, int temp, List<UserInfo> list) throws Exception {
         WritableFont font = new WritableFont(WritableFont.ARIAL, 9, WritableFont.NO_BOLD, false,
                 UnderlineStyle.NO_UNDERLINE, jxl.format.Colour.BLACK);
@@ -327,18 +333,24 @@ public class UserInfoController {
 
         for (UserInfo userInfo : list) {
             //jxl.write.Number(列号,行号 ,内容 )
-            // "用户名", "真实姓名", "手机号", "邮箱","使用状态"
+            // "用户名", "真实姓名", "性别", "手机号", "部门", "职务","使用状态"
             sheet.setColumnView(0, 25);
-            sheet.addCell(new Label(0, temp, CommUtil.getStringValue(userInfo.userName()), textFormat));
+            sheet.addCell(new Label(0, temp, CommUtil.getStringValue(userInfo.getUserName()), textFormat));
 
             sheet.setColumnView(1, 25);
-            sheet.addCell(new Label(1, temp, CommUtil.getStringValue(userInfo.nickName()),textFormat));
+            sheet.addCell(new Label(1, temp, CommUtil.getStringValue(userInfo.getNickName()),textFormat));
 
             sheet.setColumnView(2, 25);
-            sheet.addCell(new Label(2, temp, CommUtil.getStringValue(userInfo.mobile()),textFormat));
+            sheet.addCell(new Label(2, temp, CommUtil.getStringValue(userInfo.getSex()),textFormat));
 
             sheet.setColumnView(3, 25);
-            sheet.addCell(new Label(3, temp, CommUtil.getStringValue(userInfo.email()),textFormat));
+            sheet.addCell(new Label(3, temp, CommUtil.getStringValue(userInfo.getMobile()),textFormat));
+
+            sheet.setColumnView(4, 25);
+            sheet.addCell(new Label(4, temp, CommUtil.getStringValue(userInfo.getDepartmentName()),textFormat));
+
+            sheet.setColumnView(5, 25);
+            sheet.addCell(new Label(5, temp, CommUtil.getStringValue(userInfo.getRoleName()),textFormat));
 
             //状态转化为名称 '1': '启用',  "2": '待审核'
             String status = CommUtil.getStringValue(userInfo.getStatus());
@@ -347,12 +359,11 @@ public class UserInfoController {
             } else if ("0".equals(status)) {
                 status = "待审核";
             }
-            sheet.setColumnView(4, 25);
-            sheet.addCell(new Label(4, temp, CommUtil.getStringValue(status),textFormat));
+            sheet.setColumnView(6, 25);
+            sheet.addCell(new Label(6, temp, CommUtil.getStringValue(status),textFormat));
 
             temp++;
         }
     }
-    */
 
 }  
