@@ -17,7 +17,7 @@
             <table class="fixedTb">
                 <tr>
                     <td class="cxlabel">客户名称:</td>
-                    <td class="cxinput"><input name="q_customerName" type="text" class="easyui-textbox" style="width:100px;"/></td>
+                    <td class="cxinput"><input name="q_customerName" id="q_customerName" type="text" class="easyui-textbox" style="width:100px;"/></td>
                     <td class="cxlabel">
                         <a id="searchPt" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
                     </td>
@@ -37,6 +37,7 @@
             <#if showFeedbackCustomerButton?? && showFeedbackCustomerButton == "YES">
                 <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="feedback()">反馈</a>
             </#if>
+            <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-save" onclick="exportUser()">导出</a>
 
     </div>
     <div region="center" border="false">
@@ -440,7 +441,10 @@
     var customerEditDialog;
     var distributionCustomerDialog;
     var customerFeedbackDialog;
+    var customerName;
+
     function loaddata(){
+        customerName = $("#q_customerName").val();
         <#--$('#dg').datagrid({url:'${dynamicURL}/basic/searchCustomer.action?'+$("#searchForm").form().serialize()});-->
         $('#dg').datagrid('load',sy.serializeObject($("#searchForm").form()));
     }
@@ -506,8 +510,22 @@
         customerFeedbackDialog.dialog('open');
     }
 
+    //导出
+    function exportUser(){
+        if(!datagrid){
+            $.messager.alert('提示','请先查询！','info');
+            return;
+        }
+        $.messager.confirm('确认','确定要导出吗？', function(r){
+            if (r){
+                window.location.href="/customer/exportCustomerList?customerName=" + customerName;
+            }
+        });
+    }
+
     $(function(){
-        $('#dg').datagrid({
+        customerName = $("#q_customerName").val();
+        datagrid = $('#dg').datagrid({
             title:'客户列表',
             toolbar:'#tb',
             singleSelect:true,

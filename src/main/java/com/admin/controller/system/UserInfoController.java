@@ -270,7 +270,7 @@ public class UserInfoController {
      * @param response
      */
     @RequestMapping(value = { "/exportUserList" })
-    public void exportWaterVatInvoiceList(HttpServletRequest request, HttpServletResponse response) {
+    public void exportUserList(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> params = new HashMap<String, Object>();
 
         String nickName = request.getParameter("nickName");
