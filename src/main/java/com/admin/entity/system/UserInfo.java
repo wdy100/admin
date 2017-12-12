@@ -45,6 +45,10 @@ public class UserInfo  extends BaseEntity{
 
     private String address;
 
+    private Long parentId;
+
+    private String parentNickName;
+
     private String roleName;
 
     private String departmentName;

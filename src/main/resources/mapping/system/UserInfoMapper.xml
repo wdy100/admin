@@ -13,6 +13,8 @@
     <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
     <result column="identity_no" jdbcType="VARCHAR" property="identityNo" />
     <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="parent_nick_name" jdbcType="VARCHAR" property="parentNickName" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
@@ -24,7 +26,7 @@
     <result column="departmentName" jdbcType="VARCHAR" property="departmentName" />
   </resultMap>
   <sql id="Base_Column_List">
-    user_name, password, status, sex, mobile, email, nick_name, birthday, identity_no, address,
+    user_name, password, status, sex, mobile, email, nick_name, birthday, identity_no, address, parent_id, parent_nick_name,
     created_at, updated_at,
     created_by, updated_by, remark, is_delete
   </sql>
@@ -50,13 +52,13 @@
   <insert id="insert" parameterType="UserInfo">
     insert into <include refid="table"/> (id, user_name, password,
       status, sex, mobile, email, 
-      nick_name, birthday, identity_no, address,
+      nick_name, birthday, identity_no, address, parent_id, parent_nick_name,
       created_at, updated_at,
       created_by, updated_by, remark, 
       is_delete)
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{status}, #{sex,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
-      #{nickName,jdbcType=VARCHAR}, #{birthday},  #{identityNo}, #{address},
+      #{nickName,jdbcType=VARCHAR}, #{birthday},  #{identityNo}, #{address}, #{parentId}, #{parentNickName},
        #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},
       #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       0)
@@ -94,6 +96,12 @@
       </if>
       <if test="address != null">
         address = #{address},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId},
+      </if>
+      <if test="parentNickName != null">
+        parent_nick_name = #{parentNickName},
       </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
@@ -136,7 +144,7 @@
   </sql>
 
   <select id="queryListBy" resultMap="userInfoMap" parameterType="map">
-    SELECT u.id, u.user_name, u.status, u.sex, u.mobile, u.email, u.nick_name, u.birthday, u.identity_no, u.address,
+    SELECT u.id, u.user_name, u.status, u.sex, u.mobile, u.email, u.nick_name, u.birthday, u.identity_no, u.address, u.parent_id, u.parent_nick_name,
     r.name roleName, d.name departmentName
     FROM user_info u INNER JOIN user_role ur on ur.user_id = u.id
     INNER JOIN user_department ud on ud.user_id = u.id
@@ -154,6 +162,12 @@
     INNER JOIN role r on ur.role_id = r.id
     INNER JOIN department d on ud.department_id = d.id
     <include refid="condition"/>
+  </select>
+
+  <select id="getAll" parameterType="java.lang.Integer" resultMap="userInfoMap">
+    select id, <include refid="Base_Column_List" />
+    from <include refid="table"/>
+    where is_delete = 0
   </select>
   
 </mapper>

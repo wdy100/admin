@@ -79,6 +79,8 @@ public class UserInfoServiceImpl implements UserInfoService {
             executeResult.setError("", "该用户不存在或已经被删除。");
             return executeResult;
         }
+        dbUserInfo.setParentId(userInfo.getParentId());
+        dbUserInfo.setParentNickName(userInfo.getParentNickName());
         dbUserInfo.setStatus(userInfo.getStatus());
         dbUserInfo.setPassword(userInfo.getPassword());
         dbUserInfo.setUpdatedBy(userInfo.getUpdatedBy());
@@ -108,6 +110,13 @@ public class UserInfoServiceImpl implements UserInfoService {
             return executeResult;
         }
         executeResult.setResult(userInfo);
+        return executeResult;
+    }
+
+    @Override
+    public ServiceResult<List<UserInfo>> getAll() {
+        ServiceResult<List<UserInfo>> executeResult = new ServiceResult<List<UserInfo>>();
+        executeResult.setResult(userInfoDao.getAll());
         return executeResult;
     }
 }

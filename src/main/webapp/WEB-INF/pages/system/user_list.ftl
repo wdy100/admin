@@ -125,6 +125,13 @@
                         data-options="required:true,url:'/system/searchRoleCombo'"></select>
             </td>
         </tr>
+        <tr>
+            <td style="text-align: right;">直线上级<span class="star">*</span>:</td>
+            <td>
+                <select id="aduit_parentId" name="aduit_parentId" class="easyui-combotree" style="width:100%;"
+                        data-options="required:true,url:'/system/searchParentUserCombo'"></select>
+            </td>
+        </tr>
 
     </table>
 
@@ -180,9 +187,10 @@
                     <input id="show_address"  name="show_address" class="easyui-textbox" style="width:100%"
                            data-options="editable:false,iconCls:'icon-lock'" />
                 </td>
-                <td width="10%"></td>
-                <td width="23%" style="padding-right: 20px;">
-
+                <td width="10%">&nbsp;&nbsp;上级姓名:</td>
+                <td width="24%" style="padding-right: 20px;">
+                    <input id="show_parentNickName"  name="show_parentNickName" class="easyui-textbox" style="width:100%"
+                           data-options="editable:false,iconCls:'icon-lock'" />
                 </td>
             </tr>
         </table>
@@ -265,6 +273,7 @@ var nickName;
         $('#show_identityNo').textbox("setValue",selectedRow.identityNo);
         $('#show_birthday').textbox("setValue",selectedRow.birthday);
         $('#show_address').textbox("setValue",selectedRow.address);
+        $("#show_parentNickName").textbox("setValue",selectedRow.parentNickName);
         $("#showDetailWin").window("open");
 	}
 
@@ -300,6 +309,7 @@ var nickName;
         $('#aduit_nickName').textbox("setValue",selectedRow.nickName);
         $('#aduit_departmentId').combotree("setValue","");
         $('#aduit_roleId').combotree("setValue","");
+        $('#aduit_parentId').combotree("setValue","");
         $("#aduitUserDiv").dialog("open");
 
 	}
@@ -314,11 +324,12 @@ var nickName;
         var userId = selectedRow.id;
         var departmentId = $('#aduit_departmentId').combotree("getValue");
         var roleId = $('#aduit_roleId').combotree("getValue");
+        var parentId = $('#aduit_parentId').combotree("getValue");
         $.ajax({
             type:'post',
             url:'/system/updateUser',
             dataType : "json",
-            data:{userId:userId, departmentId:departmentId, roleId:roleId},
+            data:{userId:userId, departmentId:departmentId, roleId:roleId, parentId:parentId},
             cache:false,
             async:false,
             success:function(data){
@@ -372,6 +383,7 @@ var nickName;
         $('#aduit_nickName').textbox("setValue",selectedRow.nickName);
         $('#aduit_departmentId').combotree("setValue","");
         $('#aduit_roleId').combotree("setValue","");
+        $('#aduit_parentId').combotree("setValue","");
         $("#aduitUserDiv").dialog("open");
 
     }
@@ -386,11 +398,12 @@ var nickName;
         var userId = selectedRow.id;
         var departmentId = $('#aduit_departmentId').combotree("getValue");
         var roleId = $('#aduit_roleId').combotree("getValue");
+        var parentId = $('#aduit_parentId').combotree("getValue");
         $.ajax({
             type:'post',
             url:'/system/auditUser',
             dataType : "json",
-            data:{userId:userId, departmentId:departmentId, roleId:roleId},
+            data:{userId:userId, departmentId:departmentId, roleId:roleId, parentId:parentId},
             cache:false,
             async:false,
             success:function(data){

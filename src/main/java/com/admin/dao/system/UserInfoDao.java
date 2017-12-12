@@ -38,4 +38,8 @@ public class UserInfoDao   extends BaseDao{
     public Integer update(UserInfo userInfo){
         return this.getSqlSession().update(namespace+"update", userInfo);
     }
+
+    public List<UserInfo> getAll(){
+        return this.getSqlSession().selectList(namespace+"getAll");
+    }
 }

@@ -4,6 +4,7 @@ import com.admin.entity.system.UserInfo;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,4 +47,10 @@ public interface UserInfoService {
      */
     public ServiceResult<UserInfo> login(String userName, String password,
                                                   String ipAddress);
+
+    /**
+     * 查询所有用户
+     * @return
+     */
+    public ServiceResult<List<UserInfo>> getAll();
 }

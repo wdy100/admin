@@ -3,6 +3,7 @@ package com.admin.controller.system;
 import com.admin.entity.system.UserDepartment;
 import com.admin.entity.system.UserInfo;
 import com.admin.entity.system.UserRole;
+import com.admin.entity.util.TreeNode;
 import com.admin.service.system.ResourceInfoService;
 import com.admin.service.system.UserDepartmentService;
 import com.admin.service.system.UserInfoService;
@@ -23,6 +24,7 @@ import jxl.format.UnderlineStyle;
 import jxl.write.*;
 import lombok.extern.slf4j.Slf4j;
 
+import net.sf.json.JSONArray;
 import org.apache.log4j.LogManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -173,12 +175,23 @@ public class UserInfoController {
         String userId = request.getParameter("userId");
         String departmentId = request.getParameter("departmentId");
         String roleId = request.getParameter("roleId");
+        String parentId = request.getParameter("parentId");
+        ServiceResult<UserInfo> parentResult = userInfoService.getById(Long.parseLong(parentId));
+        if (!parentResult.getSuccess()) {
+            log.error("修改失败！");
+            jsonResult.setMessage("修改失败！");
+            return jsonResult;
+        }
+        UserInfo parentUser = parentResult.getResult();
+
         UserInfo userInfo = new UserInfo();
         userInfo.setId(Long.parseLong(userId));
+        userInfo.setParentId(Long.parseLong(parentId));
+        userInfo.setParentNickName(parentUser.getNickName());
         ServiceResult<UserInfo> result = userInfoService.updateUserInfo(userInfo);
         if (!result.getSuccess()) {
-            log.error("审核通过失败！");
-            jsonResult.setMessage("审核通过失败！");
+            log.error("修改失败！");
+            jsonResult.setMessage("修改失败！");
             return jsonResult;
         }
         //保存用户部门信息
@@ -207,8 +220,19 @@ public class UserInfoController {
         String userId = request.getParameter("userId");
         String departmentId = request.getParameter("departmentId");
         String roleId = request.getParameter("roleId");
+        String parentId = request.getParameter("parentId");
+        ServiceResult<UserInfo> parentResult = userInfoService.getById(Long.parseLong(parentId));
+        if (!parentResult.getSuccess()) {
+            log.error("修改失败！");
+            jsonResult.setMessage("修改失败！");
+            return jsonResult;
+        }
+        UserInfo parentUser = parentResult.getResult();
+
         UserInfo userInfo = new UserInfo();
         userInfo.setId(Long.parseLong(userId));
+        userInfo.setParentId(Long.parseLong(parentId));
+        userInfo.setParentNickName(parentUser.getNickName());
         userInfo.setStatus(1);
         ServiceResult<UserInfo> result = userInfoService.updateUserInfo(userInfo);
         if (!result.getSuccess()) {
@@ -364,6 +388,32 @@ public class UserInfoController {
 
             temp++;
         }
+    }
+
+    /**
+     * 直线上级下拉菜单
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/searchParentUserCombo", method = RequestMethod.POST)
+    @ResponseBody
+    public Object searchRoleCombo(HttpServletRequest request) {
+        List<TreeNode> nodeList = new ArrayList<TreeNode>();
+        ServiceResult<List<UserInfo>> result = userInfoService.getAll();
+        if(!result.getSuccess()){
+            log.error("查询直线上级列表发生异常！");
+            return null;
+        }
+        List<UserInfo> userList = result.getResult();
+        for (UserInfo userInfo : userList) {
+            TreeNode node = new TreeNode();
+            node.setId(String.valueOf(userInfo.getId()));
+            node.setText(userInfo.getNickName());
+            node.setState("open");
+            nodeList.add(node);
+        }
+        JSONArray roleNodes = JSONArray.fromObject(nodeList);
+        return roleNodes;
     }
 
 }  
