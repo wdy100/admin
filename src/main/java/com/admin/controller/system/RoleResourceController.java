@@ -7,12 +7,11 @@ import com.admin.web.util.ButtonConstant;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.SessionSecurityConstants;
 import com.haier.common.ServiceResult;
+import com.haier.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -73,7 +72,8 @@ public class RoleResourceController {
                 }
             }
         }
-        JSONArray resourceIds = JSONArray.fromObject(resourceIdList.toArray());
+//        JSONArray resourceIds = JSONArray.fromObject(resourceIdList.toArray());
+        String resourceIds = JsonUtil.toJson(resourceIdList.toArray());
         return resourceIds;
     }
 

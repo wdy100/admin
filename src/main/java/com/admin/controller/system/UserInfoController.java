@@ -24,7 +24,6 @@ import jxl.format.UnderlineStyle;
 import jxl.write.*;
 import lombok.extern.slf4j.Slf4j;
 
-import net.sf.json.JSONArray;
 import org.apache.log4j.LogManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -412,8 +411,9 @@ public class UserInfoController {
             node.setState("open");
             nodeList.add(node);
         }
-        JSONArray roleNodes = JSONArray.fromObject(nodeList);
-        return roleNodes;
+//        JSONArray roleNodes = JSONArray.fromObject(nodeList);
+        String userNodes = JsonUtil.toJson(nodeList);
+        return userNodes;
     }
 
 }  

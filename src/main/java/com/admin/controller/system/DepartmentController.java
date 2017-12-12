@@ -12,7 +12,6 @@ import com.google.common.collect.Maps;
 import com.haier.common.BusinessException;
 import com.haier.common.PagerInfo;
 import com.haier.common.util.JsonUtil;
-import net.sf.json.JSONArray;
 import com.haier.common.ServiceResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -87,11 +86,12 @@ public class DepartmentController {
     @RequestMapping(value = "/departmentTree", method = RequestMethod.POST)
     @ResponseBody
     public Object departmentTree(HttpServletRequest request) {
-        HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
+//        HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
         List<Department> roots = null;
         roots = departmentService.getAll();
-        JSONArray departmentNodes = JSONArray.fromObject(new ClosedDepartmentTreeNodeFactory().buildTreeNodeList(roots));
-        jsonResult.setData(departmentNodes);
+//        JSONArray departmentNodes = JSONArray.fromObject(new ClosedDepartmentTreeNodeFactory().buildTreeNodeList(roots));
+        String departmentNodes = JsonUtil.toJson(new ClosedDepartmentTreeNodeFactory().buildTreeNodeList(roots));
+//        jsonResult.setData(departmentNodes);
         return departmentNodes;
     }
 

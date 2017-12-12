@@ -4,8 +4,8 @@ import com.admin.entity.system.ResourceInfo;
 import com.admin.entity.util.ModuleResourceInfoTreeNodeFactory;
 import com.admin.entity.util.TreeNode;
 import com.admin.service.system.ResourceInfoService;
+import com.haier.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +51,8 @@ public class ResourceInfoController {
     public Object allModuleResourceTree(HttpServletRequest request) {
         List<ResourceInfo> rs = resourceInfoService.getAll();
         List<TreeNode> treeNodeList = new ModuleResourceInfoTreeNodeFactory().buildTreeNodeList(rs);
-        JSONArray treeNodes = JSONArray.fromObject(treeNodeList);
+//        JSONArray treeNodes = JSONArray.fromObject(treeNodeList);
+        String treeNodes = JsonUtil.toJson(treeNodeList);
         return treeNodes;
     }
 
