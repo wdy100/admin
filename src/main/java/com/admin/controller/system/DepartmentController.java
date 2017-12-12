@@ -1,8 +1,10 @@
 package com.admin.controller.system;
 
 import com.admin.entity.system.Department;
+import com.admin.entity.system.UserInfo;
 import com.admin.entity.util.ClosedDepartmentTreeNodeFactory;
 import com.admin.service.system.DepartmentService;
+import com.admin.service.system.UserInfoService;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.WebUtil;
 import com.google.common.base.Throwables;
@@ -36,6 +38,8 @@ import java.util.Map;
 public class DepartmentController {
     @Resource
     private DepartmentService departmentService;
+    @Resource
+    private UserInfoService userInfoService;
 
     @RequestMapping(value = "department.html", method = { RequestMethod.GET, RequestMethod.POST })
     public String index(HttpServletRequest request, Model model) throws Exception {
@@ -102,6 +106,15 @@ public class DepartmentController {
         HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
         String name = request.getParameter("name");
         String code = request.getParameter("code");
+        String principalUserId = request.getParameter("principalUserId");
+        ServiceResult<UserInfo> parentResult = userInfoService.getById(Long.parseLong(principalUserId));
+        if (!parentResult.getSuccess()) {
+            log.error("新增失败！");
+            jsonResult.setMessage("新增失败！");
+            return jsonResult;
+        }
+        UserInfo principalUser = parentResult.getResult();
+
         String parentId = request.getParameter("parentId");
         String description = request.getParameter("description");
         Department parent = new Department();
@@ -109,6 +122,8 @@ public class DepartmentController {
         Department department = new Department();
         department.setName(name);
         department.setCode(code);
+        department.setPrincipalUserId(Long.parseLong(principalUserId));
+        department.setPrincipalNickName(principalUser.getNickName());
         department.setParent(parent);
         department.setDescription(description);
         department.setCreatedBy("system");

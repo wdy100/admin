@@ -88,6 +88,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         dbDepartment.setCode(StringUtils.trim(department.getCode()));
         dbDepartment.setName(StringUtils.trim(department.getName()));
+        dbDepartment.setPrincipalUserId(department.getPrincipalUserId());
+        dbDepartment.setPrincipalNickName(StringUtils.trim(department.getPrincipalNickName()));
         dbDepartment.setUpdatedBy(department.getUpdatedBy());
         dbDepartment.setUpdatedAt(new Date());
         departmentDao.update(dbDepartment);

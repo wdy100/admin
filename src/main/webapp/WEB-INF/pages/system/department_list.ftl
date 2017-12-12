@@ -64,15 +64,24 @@
             <td>
                 <input id="dname" name="name" size="54" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width: 200px;"/></td>
         </tr>
+
         <tr>
             <td style="text-align: right;">部门编码<span class="star">*</span>:</td>
             <td><input id="dcode" name="code" size="54" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width: 200px;"/></td>
         </tr>
 
         <tr>
+            <td style="text-align: right;">部门负责人<span class="star">*</span>:</td>
+            <td>
+                <select id="principal_user_id" name="principal_user_id" size="54" class="easyui-combotree" style="width:200px;"
+                        data-options="required:true,url:'/system/searchParentUserCombo'"></select>
+            </td>
+        </tr>
+
+        <tr>
             <td style="text-align: right;">上级部门<span class="star">*</span>:</td>
             <td>
-                <input size="54" name="parentId" id="parent_department_id"  style="width: 200px;" class="easyui-combotree"data-options="
+                <input size="54" name="parentId" id="parent_department_id"  style="width: 200px;" class="easyui-combotree" data-options="
 						url: '/system/departmentTree',
 						animate: true,required:true"/>
             </td>
@@ -226,21 +235,23 @@
     $('#did').val("");
     $('#dname').textbox("setValue","");
     $('#dcode').textbox("setValue","");
-      $('#parent_department_id').combotree("setValue","");
-      $('#ddescription').textbox("setValue","");
+    $('#principal_user_id').combotree("setValue","");
+    $('#parent_department_id').combotree("setValue","");
+    $('#ddescription').textbox("setValue","");
     $("#manageDepartmentDiv").dialog("open");
   }
 
   function createDepartmentCommit(){
       var name = $('#dname').val();
       var code = $('#dcode').val();
+      var principalUserId = $('#principal_user_id').combotree("getValue");
       var parentId = $('#parent_department_id').combotree("getValue");
       var description = $('#ddescription').val();
       $.ajax({
           type:'post',
           url:'/system/createDepartment',
           dataType : "json",
-          data:{name:name, code:code, parentId:parentId, description:description},
+          data:{name:name, code:code, principalUserId:principalUserId, parentId:parentId, description:description},
           cache:false,
           async:false,
           success:function(data){

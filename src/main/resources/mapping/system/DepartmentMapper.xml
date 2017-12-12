@@ -5,6 +5,8 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="principal_user_id" jdbcType="VARCHAR" property="principalUserId" />
+    <result column="principal_nick_name" jdbcType="VARCHAR" property="principalNickName" />
     <result  column="description" property="description"/>
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
@@ -22,7 +24,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    code, name, description, created_at, updated_at, created_by, updated_by, remark, is_delete, parent_id
+    code, name, principal_user_id, principal_nick_name, description, created_at, updated_at, created_by, updated_by, remark, is_delete, parent_id
   </sql>
 
   <sql id="table">department</sql>
@@ -51,11 +53,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="Department"  useGeneratedKeys="true" keyProperty="id">
-    insert into <include refid="table"/> (code, name, description,
+    insert into <include refid="table"/> (code, name, principal_user_id, principal_nick_name, description,
       created_at, updated_at, created_by, 
       updated_by, remark, is_delete, parent_id
       )
-    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{principalUserId,jdbcType=INTEGER}, #{principalNickName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
       #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}, #{parent.id}
       )
@@ -69,6 +71,12 @@
       </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="principalUserId != null">
+        principal_user_id = #{principalUserId,jdbcType=INTEGER},
+      </if>
+      <if test="principalNickName != null">
+        principal_nick_name = #{principalNickName,jdbcType=VARCHAR},
       </if>
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},

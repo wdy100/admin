@@ -391,7 +391,7 @@ public class UserInfoController {
     }
 
     /**
-     * 直线上级下拉菜单
+     * 用户下拉菜单
      * @param request
      * @return
      */
@@ -401,7 +401,7 @@ public class UserInfoController {
         List<TreeNode> nodeList = new ArrayList<TreeNode>();
         ServiceResult<List<UserInfo>> result = userInfoService.getAll();
         if(!result.getSuccess()){
-            log.error("查询直线上级列表发生异常！");
+            log.error("查询所有用户列表发生异常！");
             return null;
         }
         List<UserInfo> userList = result.getResult();

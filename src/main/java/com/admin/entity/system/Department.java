@@ -24,6 +24,10 @@ public class Department extends BaseEntity {
 
     private String name;
 
+    private Long principalUserId;
+
+    private String principalNickName;
+
     private String description;
 
     private Department parent;
