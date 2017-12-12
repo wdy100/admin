@@ -1,0 +1,33 @@
+package com.admin.service.order;
+import com.admin.entity.order.Orders;
+import com.haier.common.PagerInfo;
+import com.haier.common.ServiceResult;
+
+import java.util.Map;
+
+/**
+ * Created by GaoJingFei on 2017/12/13.
+ */
+
+public interface OrdersService {
+
+    /**
+     * 分页查询
+     * @param params
+     * @param pagerInfo
+     * @return
+     */
+    public ServiceResult<Map<String, Object>> searchOrders(Map<String, Object> params, PagerInfo pagerInfo);
+
+    /**
+     * 创建
+     * @param orders
+     */
+    public ServiceResult<Orders> createOrders(Orders orders);
+
+    /**
+     * 更新
+     * @param orders
+     */
+    public ServiceResult<Orders> updateOrders(Orders orders);
+}

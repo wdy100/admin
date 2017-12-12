@@ -19,5 +19,7 @@
         <typeAlias alias="Customer" type="com.admin.entity.customer.Customer"/>
         <typeAlias alias="CustomerFeedback" type="com.admin.entity.customer.CustomerFeedback"/>
 
+        <typeAlias alias="Orders" type="com.admin.entity.order.Orders"/>
+
     </typeAliases>
 </configuration>

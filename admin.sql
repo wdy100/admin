@@ -201,5 +201,29 @@ CREATE TABLE `customer_feedback`
   `is_delete` tinyint(1) DEFAULT '0' COMMENT '是否删除 1:是   0:否',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='客户反馈表';
+
+--订单
+-- DROP TABLE IF EXISTS `orders`;
+CREATE TABLE `orders`
+(
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_sn` varchar(20) NOT NULL COMMENT '订单编号',
+  `customer_code`	varchar(20) DEFAULT NULL COMMENT '客户编码',
+  `customer_name`	varchar(50) NOT NULL COMMENT '客户名称',
+  `agree_sn` varchar(50) NOT NULL COMMENT '合同编号',
+  `approval_status` tinyint(2) COMMENT '合同状态。0已保存待提交 1待内勤初审 2总监审核 3合同上传 4签订完成',
+  `pre_install_at` datetime DEFAULT NULL COMMENT '预约安装时间',
+  `deliver_at` datetime DEFAULT NULL COMMENT '发货时间',
+  `install_at` datetime DEFAULT NULL COMMENT '实际安装时间',
+  `completed_at` datetime DEFAULT NULL COMMENT '安装完成时间',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NOT NULL COMMENT '最近更新时间',
+  `created_by` varchar(20) NOT NULL COMMENT '创建人',
+  `updated_by` varchar(20) NOT NULL COMMENT '最近更新人',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `is_delete` tinyint(1) DEFAULT '0' COMMENT '是否删除 1:是   0:否',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='订单表';
+
 --admin系统业务表 end--
 
