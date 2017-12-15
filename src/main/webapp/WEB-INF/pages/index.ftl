@@ -26,7 +26,7 @@
 		   <div class="nav">
 			   <div class="clear"></div>
 		   </div>
-		   <div class="welcomequit">您好，<strong id="User" >${(user.nickName)!''}</strong><a href="#"> 欢迎回家！ [退出]</a> <a href="#"> [网站首页]</a></div>
+		   <div class="welcomequit">您好，<strong id="User" >${(user.nickName)!''}</strong>&nbsp;&nbsp;欢迎回家！ <a href="#" onclick="logoutCommit();">[退出]</a> <a href="#"> [网站首页]</a></div>
 		   </div>
 		  <div class="clear"></div>
 		</div>
@@ -92,6 +92,19 @@
                 closable:true
             });
         }
+    }
+
+    //退出登录
+    function logoutCommit() {
+        $.ajax({
+            url:'/logoutCommit',
+            dataType : 'json',
+            type : 'POST',
+            async:false,
+            success: function (data){
+                window.location.href = "/login.html";
+            }
+        });
     }
 
 </script>

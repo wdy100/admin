@@ -23,4 +23,11 @@ public interface RoleService {
      * @return
      */
     public List<Role> getAll();
+
+    /**
+     * 获取用户的角色信息
+     * @param userId
+     * @return
+     */
+    public List<Role> getUserRoles(Long userId);
 }

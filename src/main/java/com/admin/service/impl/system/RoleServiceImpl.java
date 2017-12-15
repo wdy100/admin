@@ -67,4 +67,9 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> getAll() {
         return roleDao.getAll();
     }
+
+    @Override
+    public List<Role> getUserRoles(Long userId) {
+        return roleDao.getUserRoles(userId);
+    }
 }

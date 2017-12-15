@@ -40,4 +40,17 @@ public class SessionSecurityConstants {
      * 客户端语言
      */
     public static final String KEY_LOCAL_LANGUAGE = "WW_TRANS_I18N_LOCALE";
+
+    /**
+     * Session存放的app用戶登录名
+     */
+    public static final String KEY_USER_NAME_APP = "_user_name_app";
+    /**
+     * Session中存放的app用户真实姓名
+     */
+    public static final String KEY_USER_NICK_NAME_APP = "_user_nick_name_app";
+    /**
+     * Session存放的app用户id
+     */
+    public static final String KEY_USER_ID_APP = "_user_id_app";
 }

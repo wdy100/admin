@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +54,21 @@ public class LoginController {
         request.getSession().setAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME, user.getNickName());
 
         jsonResult.setData(result.getSuccess());
+        return jsonResult;
+    }
+
+    @RequestMapping(value = "/logoutCommit", method = { RequestMethod.POST, RequestMethod.GET })
+    @ResponseBody
+    public Object logoutCommit(HttpServletRequest request,
+                              HttpServletResponse response){
+        HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
+        HttpSession session = request.getSession();
+       if(session.getAttribute(SessionSecurityConstants.KEY_USER_ID) != null){
+           session.removeAttribute(SessionSecurityConstants.KEY_USER_ID);
+           session.removeAttribute(SessionSecurityConstants.KEY_USER_NAME);
+           session.removeAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME);
+       }
+        jsonResult.setData(true);
         return jsonResult;
     }
     

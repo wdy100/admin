@@ -1,6 +1,7 @@
 package com.admin.dao.system;
 
 import com.admin.dao.BaseDao;
+import com.admin.entity.system.Department;
 import com.admin.entity.system.Role;
 import org.springframework.stereotype.Repository;
 
@@ -35,5 +36,14 @@ public class RoleDao   extends BaseDao{
      */
     public List<Role> getAll(){
         return this.getSqlSession().selectList(namespace+"getAll");
+    }
+
+    /**
+     * 获取用户的角色信息
+     * @param userId
+     * @return
+     */
+    public List<Role> getUserRoles(Long userId){
+        return this.getSqlSession().selectList(namespace+"getUserRoles", userId);
     }
 }
