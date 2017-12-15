@@ -58,7 +58,7 @@ public class AppLoginController {
         dataMap.put("success", true);
         try {
             dataMap = VerifyTokenUtil.verify(request, dataMap);
-            if (VerifyTokenUtil.VERIFY_SUCCESS.equals(dataMap.get("success").toString())) {
+            if (VerifyTokenUtil.VERIFY_SUCCESS.equals(dataMap.get("verifyPassed").toString())) {
                 ServiceResult<UserInfo> result = userInfoService.login(userName, password, "");
                 if (!result.getSuccess()) {
                     log.error(result.getMessage());

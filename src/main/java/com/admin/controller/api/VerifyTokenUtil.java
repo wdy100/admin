@@ -15,11 +15,11 @@ public class VerifyTokenUtil {
     public static final String VERIFY_FAIL = "NO";
     public static final String VERIFY_KEY = "CRM";
     public static Map<String, Object> verify(HttpServletRequest request, Map<String, Object> dataMap){
-        dataMap.put("success", VERIFY_SUCCESS);
+        dataMap.put("verifyPassed", VERIFY_SUCCESS);
         Boolean signFlag = Signatures.verify(request, VERIFY_KEY);
         if (!signFlag) {
             log.error("token未通过验证");
-            dataMap.put("success", VERIFY_FAIL);
+            dataMap.put("verifyPassed", VERIFY_FAIL);
             dataMap.put("error", "103");
             dataMap.put("msg", "token错误");
         }
