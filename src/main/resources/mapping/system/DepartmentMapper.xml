@@ -137,9 +137,9 @@
 
   <select id="getUserDepartments" parameterType="long" resultMap="departmentMap">
     <![CDATA[
-		SELECT d.ID, d.NAME
-		  FROM DEPARTMENT d, user_department ud
-		 WHERE d.ID = ud.department_id
+		SELECT d.id, d.name
+		  FROM department d, user_department ud
+		 WHERE d.id = ud.department_id
 		   and ud.user_id = #{userId}
 		]]>
   </select>
@@ -251,9 +251,9 @@
 
   <select id="searchDepartmentByUserId" resultMap="departmentMap" parameterType="long">
     <![CDATA[
-		select d.name from DEPARTMENT d
-			left join USER_DEPARTMENT ud
-				on d.code = ud.department_id
+		select d.name from department d
+			left join user_department ud
+				on d.id = ud.department_id
 			where ud.user_id = #{userId}
 		]]>
   </select>
