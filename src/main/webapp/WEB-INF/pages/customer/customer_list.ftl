@@ -30,6 +30,7 @@
         <#--<a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="updateCustomer()">修改</a>-->
             <#if showCreateCustomerButton?? && showCreateCustomerButton == "YES">
                 <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="createCustomer()">新增</a>
+                <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-excel" plain="false" onclick="openImportWin()">导入</a>
             </#if>
             <#if showDistributionCustomerButton?? && showDistributionCustomerButton == "YES">
                 <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="distributionCustomer()">分配</a>
@@ -37,7 +38,13 @@
             <#if showFeedbackCustomerButton?? && showFeedbackCustomerButton == "YES">
                 <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="feedback()">反馈</a>
             </#if>
-            <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-save" onclick="exportUser()">导出</a>
+
+            <!-- 更多按钮 -->
+            <a href="javascript:void(0)" id="morefunction" class="easyui-menubutton"  plain="false"
+               data-options="menu:'#functions',iconCls:'icon-task'">更多</a>
+            <div id="functions" style="width:150px;">
+                <div data-options="iconCls:'icon-excel'" onclick="exportUser()">导出</div>
+            </div>
 
     </div>
     <div region="center" border="false">
@@ -273,6 +280,32 @@
     </table>
 </div>
 
+<!-- 导入窗口 -->
+<div id="importDialog" class="easyui-window" title="导入客户"  style="width:460px;height:120px"
+     data-options="closed:true,iconCls:'icon-excel',modal:true,collapsible:false,minimizable:false,maximizable:false">
+    <form onsubmit="return false;" id="importForm" enctype="multipart/form-data" method="post"
+          action="/customer/importCustomer">
+        <table class="fixedTb">
+            <tr>
+                <td class="formlabletd">文件:</td>
+                <td width="200px;">
+                    <input id="importFile" type="file"  name="file" onchange="checkExt(this.id, 'xls',this.value)" style="width:200px">
+                    <input id="importFileName" type="hidden"  name="fileName" >
+                </td>
+                <td style="width:100px;padding-left: 20px;padding-right: 20px;">
+                    <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-excel'" onclick="importRow();">导入</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="formlabletd">模板下载:</td>
+                <td>
+                    <a href="${domainUrlUtil.dynamicURL}/downloadTemplate?location=template/customer.xls&fileName=客户导入模板.xls">客户导入模板.xls</a>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>
 
 <script type="text/javascript">
     var addCustomerDialog;
@@ -646,6 +679,68 @@
             });
             $.messager.alert('操作失败提示',error,'error');
         }
+    }
+
+    //打开导入窗口
+    function openImportWin(){
+        $('#importForm').form("clear");
+        $("#importDialog").window("open");
+    }
+    //检查导入文件种类
+    function checkExt(fileId, ext, val) {
+        var result = true;
+        var tempext = ext;
+        ext = ',' + ext + ','; // ,xls,xlxs,
+        var value = $("#" + fileId).val(); // 111.xlxs
+        if (value == "")
+            return false;
+        if (value.indexOf(".") > 0) {
+            var o = value.split("."); // 111.xlxs ==> o[111] o[xlxs]
+            var e = ',' + o[o.length - 1].toLowerCase() + ','; // ,xlxs,
+            if (ext.indexOf(e) == -1) // ext中不包含e
+                result = false;
+        } else{
+            result = false;
+        }
+        if (!result) {
+            $.messager.alert('提示', '请选择Excel文件！', 'warning');
+            document.getElementById(fileId).outerHTML = document
+                    .getElementById(fileId).outerHTML.replace(/(value=\").+\"/i,
+                    "$1\"");
+        } else {
+            $('#importFileName').val(val);
+        }
+    }
+    //上传文件
+    function importRow(){
+        $('#importForm').form('submit',{
+            onSubmit : function(param) {
+                if($("#importFile").val()==""){
+                    $.messager.alert('提示','请选择要上传的Excel！','warning');
+                    return false;
+                }
+                $.messager.progress({
+                    text : '正在上传，请稍后...',
+                    interval : 100
+                });
+                return true;
+            },
+            success : function(result) {
+                $.messager.progress('close');
+                var data = eval('(' + result + ')');
+                var messages = data.messages;
+                if(messages!=null && messages!=""){
+                    $.messager.alert('提示',messages,'warning');
+                }else{
+                    $.messager.show({
+                        title : '提示',
+                        msg : '导入成功！'
+                    });
+                    $("#importDialog").window("close");
+                    $('#dg').datagrid('reload');
+                }
+            }
+        });
     }
 </script>
 </body>

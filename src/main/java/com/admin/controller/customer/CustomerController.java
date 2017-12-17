@@ -4,17 +4,24 @@ import com.admin.entity.customer.Customer;
 import com.admin.service.customer.CustomerService;
 import com.admin.service.system.ResourceInfoService;
 import com.admin.web.util.*;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.haier.common.BusinessException;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 import com.haier.common.util.JsonUtil;
+import com.haier.common.util.StringUtil;
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
 import jxl.biff.DisplayFormat;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.UnderlineStyle;
+import jxl.read.biff.BiffException;
 import jxl.write.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.LogManager;
@@ -22,12 +29,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
+import java.io.PrintWriter;
+import java.lang.Boolean;
+import java.math.BigDecimal;
+import java.text.*;
 import java.util.*;
 
 /**
@@ -40,6 +54,7 @@ import java.util.*;
 @Slf4j
 public class CustomerController {
     private final static org.apache.log4j.Logger logger = LogManager.getLogger(CustomerController.class);
+    private String checkStr = "客户名称,所属行业,电话,传真,地址,网址,公司法人/总经理,联系方式,对接部门,对接部门联系人,对接部门联系方式,关联部门,关联部门联系人,关联部门联系方式,姓名,职务,手机,电话,姓名,职务,手机,电话,姓名,职务,手机,电话,姓名,职务,手机,电话,姓名,职务,手机,电话";
 
     @Resource
     private ResourceInfoService resourceInfoService;
@@ -270,6 +285,177 @@ public class CustomerController {
             sheet.addCell(new Label(5, temp, CommUtil.getStringValue(customer.getResponsiblePerson()),textFormat));
 
             temp++;
+        }
+    }
+
+    /**
+     * 客户导入
+     */
+    @RequestMapping(value =  "/importCustomer" )
+    public void importCustomer(HttpServletRequest request,
+                                   HttpServletResponse response) {
+        HttpJsonResult<Map<String, Object>> result = new HttpJsonResult<Map<String, Object>>();
+        // 转型为MultipartHttpRequest
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+
+        // 获得文件
+        MultipartFile file = multipartRequest.getFile("file");
+        if (file == null) {
+            result.setMessage("没有选择导入文件，请选择导入文件后再点击导入操作！");
+            writeAjaxHtmlResponse(result, request, response);
+            return;
+        }
+
+        try {
+
+            List<String[]> list = this.readExcel(file.getInputStream(), 2);
+
+            //验证模板表头信息
+            String[] firstLineData = list.get(0);
+            boolean flag = this.checkDataTemplate(firstLineData, checkStr);
+            if (!flag) {
+                result.setMessage("很抱歉！你导入的Excel数据格式与系统模板格式存在差异，请下载模板后重新导入！");
+                writeAjaxHtmlResponse(result, request, response);
+                return;
+            }
+
+            //验证是否有数据
+            if (list.size() <= 1) {
+                result.setMessage("很抱歉！你导入的Excel没有数据记录，请重新整理导入！");
+                writeAjaxHtmlResponse(result, request, response);
+                return;
+            }
+
+            if (list.size() > 5000 ) {
+                result.setMessage("很抱歉！你导入的Excel数据超出限制 5000条，请重新整理导入！");
+                writeAjaxHtmlResponse(result, request, response);
+                return;
+            }
+            String nickName = (String)(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME));
+            List<Customer> customerList = new ArrayList<Customer>();
+            for( int i=1 ; i < list.size() ; i++){
+                String[] str = list.get(i);
+                String customerName = StringUtil.nullSafeString(str[0]);
+                String typeName = StringUtil.nullSafeString(str[1]);
+
+                if (StringUtil.isEmpty(customerName, true)) {
+                    result.setMessage("很抱歉！你导入的Excel数据,第"+ (i+1) +"行数据 客户名称不能为空! 请核查后重新导入！");
+                    writeAjaxHtmlResponse(result, request, response);
+                    return;
+                }
+
+                Customer customer = new Customer();
+                customer.setCustomerName(customerName);
+                customer.setTypeName(typeName);
+                customer.setCreatedBy(nickName);
+                customer.setUpdatedBy(nickName);
+                ServiceResult<Customer> createResult = customerService.createCustomer(customer);
+                if(!createResult.getSuccess()){
+                    log.error("导入失败");
+                    result.setMessage(createResult.getMessage());
+                    writeAjaxHtmlResponse(result, request, response);
+                    return;
+                }
+                writeAjaxHtmlResponse(result, request, response);
+                return;
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error("导入失败", e);
+            result.setMessage(e.getMessage());
+            writeAjaxHtmlResponse(result, request, response);
+            return;
+        }
+
+    }
+
+    private boolean checkDataTemplate(String[] firstLineData, String checkStr) {
+        boolean flag = false;
+        StringBuffer sb = new StringBuffer();
+        for (String str : firstLineData) {
+            if (sb.length() > 0){
+                sb.append(",");
+            }
+            sb.append(str.trim());
+        }
+        String str = sb.toString();
+        if(str.endsWith(",")){
+            str = str.substring(0,str.length()-1);
+        }
+        if (str.equals(checkStr))
+            flag = true;
+        return flag;
+    }
+
+    /**
+     *
+     * @param stream 读取文件对象
+     * @param rowNum 从第几行开始读，如果有一行表头则从第二行开始读
+     */
+    private List<String[]> readExcel(InputStream stream, int rowNum) throws BiffException,
+            IOException {
+        // 创建一个list 用来存储读取的内容
+        List<String[]> list = new ArrayList<String[]>();
+        Workbook rwb = null;
+        Cell cell = null;
+        // 创建输入流
+        //        InputStream stream = new FileInputStream(excelFile);
+        // 获取Excel文件对象
+        rwb = Workbook.getWorkbook(stream);
+        // 获取文件的指定工作表 默认的第一个
+        Sheet sheet = rwb.getSheet(0);
+        // 行数(表头的目录不需要，从1开始)
+        for (int i = rowNum - 1; i < sheet.getRows(); i++) {
+            // 创建一个数组 用来存储每一列的值
+            String[] str = new String[sheet.getColumns()];
+            // 列数
+            for (int j = 0; j < sheet.getColumns(); j++) {
+                // 获取第i行，第j列的值
+                cell = sheet.getCell(j, i);
+                str[j] = cell.getContents();
+            }
+            // 把刚获取的列存入list
+            list.add(str);
+        }
+        rwb.close();
+        stream.close();
+        // 返回值集合
+        return list;
+    }
+
+    /**
+     * 将json或jsonp的返回数据写入到response中。
+     *
+     * @param result 要转换为json或jsonp的对象
+     * @param request
+     * @param response
+     */
+    private void writeAjaxHtmlResponse(Object result, HttpServletRequest request, HttpServletResponse response) {
+        PrintWriter out = null;
+        try {
+            response.setContentType("text/html;charset=utf-8");
+            out = response.getWriter();
+            String jsonStr = null;
+            String callback = request.getParameter("callback");
+            String json = JSON.toJSONString(result, SerializerFeature.BrowserCompatible);
+            if (StringUtil.isEmpty(callback, true)) {
+                jsonStr = json;
+            } else {
+                jsonStr = callback + "(" + json + ")";
+            }
+            out.write(jsonStr);
+        } catch (IOException e) {
+            log.error("[writeAjaxResponse]开启输出流错误", e);
+        } finally {
+            if (out != null) {
+                try {
+                    out.flush();
+                    out.close();
+                } catch (Exception e) {
+                    log.error("[writeAjaxResponse]关闭输出流错误", e);
+                }
+            }
         }
     }
 
