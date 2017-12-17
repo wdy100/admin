@@ -13,4 +13,6 @@ public class CommonController {
     public String login(HttpServletRequest request) {
         return "login";
     }
+
+
 }  
