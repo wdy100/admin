@@ -114,7 +114,7 @@ public class CustomerServiceImpl implements CustomerService {
      * 保存客户联系人
      * */
     private void saveCustomerContact(Customer customer, CustomerContact customerContact, String type){
-        customerContact.setCustomerId(customer.getId());
+        customerContact.setCustomerId(customer.getId() == null ? 0L : customer.getId());
         customerContact.setCustomerName(customer.getCustomerName());
         customerContact.setCustomerCode(customer.getCustomerCode());
         customerContact.setType(type);

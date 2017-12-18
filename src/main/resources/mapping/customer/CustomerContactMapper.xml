@@ -45,13 +45,13 @@
     delete from <include refid="table"/>
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="CustomerContact">
-    insert into <include refid="table"/> (id, customer_id, customer_code, customer_name,
+  <insert id="insert" parameterType="CustomerContact"  useGeneratedKeys="true" keyProperty="id">
+    insert into <include refid="table"/> (customer_id, customer_code, customer_name,
     type, contact_name, contact_post, phone, mobile,
       created_at, updated_at, created_by, 
       updated_by, remark, is_delete
       )
-    values (#{id,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, #{customerCode,jdbcType=VARCHAR},  #{customerName,jdbcType=VARCHAR},
+    values (#{customerId,jdbcType=INTEGER}, #{customerCode,jdbcType=VARCHAR},  #{customerName,jdbcType=VARCHAR},
       #{type,jdbcType=VARCHAR}, #{contactName,jdbcType=VARCHAR},  #{contactPost,jdbcType=VARCHAR},  #{phone,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
       #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}

@@ -49,8 +49,8 @@
     delete from <include refid="table"/>
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="Customer">
-    insert into <include refid="table"/> (id, customer_code, customer_name,
+  <insert id="insert" parameterType="Customer"  useGeneratedKeys="true" keyProperty="id">
+    insert into <include refid="table"/> (customer_code, customer_name,
       type_code, type_name, phone, 
       fax, address, url, 
       manager, contact,
@@ -60,7 +60,7 @@
       updated_by, remark, is_delete,
       responsible_person, responsible_person_id, assist_person, assist_person_id
       )
-    values (#{id,jdbcType=INTEGER}, #{customerCode,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, 
+    values (#{customerCode,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR},
       #{typeCode,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{fax,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
       #{manager,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR},
