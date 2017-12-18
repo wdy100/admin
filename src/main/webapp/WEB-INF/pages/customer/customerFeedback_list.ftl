@@ -152,7 +152,7 @@
         var fax = $('#fax').val();
         var address = $('#address').val();
         var url = $('#url').val();
-        var corporate = $('#corporate').val();
+        //var corporate = $('#corporate').val();
         var manager = $('#manager').val();
         var contact = $('#contact').val();
         var dockDepartment = $('#dockDepartment').val();
@@ -167,7 +167,7 @@
             dataType : "json",
             data:{customerCode:customerCode, customerName:customerName, typeCode:typeCode,
                 typeName:typeName, phone:phone, fax:fax, address:address,
-                url:url, corporate:corporate, manager:manager,
+                url:url, manager:manager,
                 contact:contact, dockDepartment:dockDepartment, dockPerson:dockPerson,
                 dockContact:dockContact, relateDepartment:relateDepartment, relatePerson:relatePerson,
                 relateContact:relateContact},

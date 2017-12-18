@@ -14,11 +14,15 @@ import lombok.ToString;
 @Setter
 public class CustomerFeedback extends BaseEntity{
 
+    private Integer customerId;
+
 	private String customerCode;
 
     private String customerName;
 
     private String responsiblePerson;
+
+    private Integer responsiblePersonId;
 
     private String description;
 

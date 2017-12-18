@@ -55,8 +55,7 @@
                 <th data-options="field:'customerName',width:150,halign:'center',align:'left'">客户名称</th>
                 <th data-options="field:'phone',width:100,halign:'center',align:'left'">电话</th>
                 <th data-options="field:'address',width:250,halign:'center',align:'left'">地址</th>
-                <th data-options="field:'corporate',width:100,halign:'center',align:'left'">公司法人</th>
-                <th data-options="field:'manager',width:100,halign:'center',align:'left'">总经理</th>
+                <th data-options="field:'manager',width:100,halign:'center',align:'left'">公司法人/总经理</th>
                 <th data-options="field:'responsiblePerson',width:100,halign:'center',align:'left'">业务人员</th>
                 <th data-options="field:'helpPerson',width:100,halign:'center',align:'left'">协助人</th>
             </tr>
@@ -163,80 +162,80 @@
             <tr style="height: 25px;">
                 <td width="20%">设备用电管理人:</td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="electric_contactName" class="easyui-textbox" name="electric_contactName" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="electric_contactPost" class="easyui-textbox" name="electric_contactPost" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="electric_phone" class="easyui-textbox" name="electric_phone" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="electric_mobile" class="easyui-textbox" name="electric_mobile" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
             </tr>
             <tr style="height: 25px;">
                 <td width="20%">建筑消防用水:</td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="water_contactName" class="easyui-textbox" name="water_contactName" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="water_contactPost" class="easyui-textbox" name="water_contactPost" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="water_phone" class="easyui-textbox" name="water_phone" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="water_mobile" class="easyui-textbox" name="water_mobile" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
             </tr>
             <tr style="height: 25px;">
                 <td width="20%">安全巡检:</td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="safe_contactName" class="easyui-textbox" name="safe_contactName" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="safe_contactPost" class="easyui-textbox" name="safe_contactPost" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="safe_phone" class="easyui-textbox" name="safe_phone" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="safe_mobile" class="easyui-textbox" name="safe_mobile" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
             </tr>
             <tr style="height: 25px;">
                 <td width="20%">可视化监管:</td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="visual_contactName" class="easyui-textbox" name="visual_contactName" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="visual_contactPost" class="easyui-textbox" name="visual_contactPost" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="visual_phone" class="easyui-textbox" name="visual_phone" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="visual_mobile" class="easyui-textbox" name="visual_mobile" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
             </tr>
             <tr style="height: 25px;">
                 <td width="20%"><font color="red">紧急联系人:</font></td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="emergency_contactName" class="easyui-textbox" name="emergency_contactName" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="emergency_contactPost" class="easyui-textbox" name="emergency_contactPost" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="emergency_phone" class="easyui-textbox" name="emergency_phone" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
                 <td width="20%">
-                    <input id="dockDepartment" class="easyui-textbox" name="dockDepartment" style="width:90%" data-options="validType:'maxLength[100]'"/>
+                    <input id="emergency_mobile" class="easyui-textbox" name="emergency_mobile" style="width:90%" data-options="validType:'maxLength[100]'"/>
                 </td>
             </tr>
 
-            <tr style="height: 25px;">
+            <tr id="button_tr" style="height: 25px;">
                 <td width="50%" colspan="5" align="center">
                     <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-ok" plain="false" onclick="submitForm(1)">保存提交</a>
                     <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="submitForm(0)">保存草稿</a>
@@ -369,6 +368,7 @@
     function createCustomer() {
         //addCustomerDialog.dialog('open');
         $("#addCustomerWin").window("open");
+        $("#button_tr").show();
     }
 
     //分配
@@ -410,10 +410,13 @@
             pageSize: 20, //读取分页条数，即向后台读取数据时传过去的值
             url:'/customer/customerList',
             nowrap : true,
-            border : false
+            border : false,
+            onDblClickRow : function(rowIndex,rowData){
+                showFormWin(rowIndex,rowData);
+            }
         });
 
-        //增加网点
+        //新增客户
         addCustomerDialog = $("#addCustomerDiv").dialog({
             title: '新增',
             width: 400,
@@ -511,7 +514,7 @@
         var fax = $('#fax').val();
         var address = $('#address').val();
         var url = $('#url').val();
-        var corporate = $('#corporate').val();
+        //var corporate = $('#corporate').val();
         var manager = $('#manager').val();
         var contact = $('#contact').val();
         var dockDepartment = $('#dockDepartment').val();
@@ -520,16 +523,47 @@
         var relateDepartment = $('#relateDepartment').val();
         var relatePerson = $('#relatePerson').val();
         var relateContact = $('#relateContact').val();
+
+        var electric_contactName = $('#electric_contactName').val();
+        var electric_contactPost = $('#electric_contactPost').val();
+        var electric_phone = $('#electric_phone').val();
+        var electric_mobile = $('#electric_mobile').val();
+
+        var water_contactName = $('#water_contactName').val();
+        var water_contactPost = $('#water_contactPost').val();
+        var water_phone = $('#water_phone').val();
+        var water_mobile = $('#water_mobile').val();
+
+        var safe_contactName = $('#safe_contactName').val();
+        var safe_contactPost = $('#safe_contactPost').val();
+        var safe_phone = $('#safe_phone').val();
+        var safe_mobile = $('#safe_mobile').val();
+
+        var visual_contactName = $('#visual_contactName').val();
+        var visual_contactPost = $('#visual_contactPost').val();
+        var visual_phone = $('#visual_phone').val();
+        var visual_mobile = $('#visual_mobile').val();
+
+        var emergency_contactName = $('#emergency_contactName').val();
+        var emergency_contactPost = $('#emergency_contactPost').val();
+        var emergency_phone = $('#emergency_phone').val();
+        var emergency_mobile = $('#emergency_mobile').val();
         $.ajax({
             type:'post',
             url:'/customer/createCustomer',
             dataType : "json",
             data:{customerCode:customerCode, customerName:customerName, typeCode:typeCode,
                 typeName:typeName, phone:phone, fax:fax, address:address,
-                url:url, corporate:corporate, manager:manager,
+                url:url, manager:manager,
                 contact:contact, dockDepartment:dockDepartment, dockPerson:dockPerson,
                 dockContact:dockContact, relateDepartment:relateDepartment, relatePerson:relatePerson,
-                relateContact:relateContact},
+                relateContact:relateContact,
+                electric_contactName:electric_contactName, electric_contactPost:electric_contactPost, electric_phone:electric_phone, electric_mobile:electric_mobile,
+                water_contactName:water_contactName, water_contactPost:water_contactPost, water_phone:water_phone, water_mobile:water_mobile,
+                safe_contactName:safe_contactName, safe_contactPost:safe_contactPost, safe_phone:safe_phone, safe_mobile:safe_mobile,
+                visual_contactName:visual_contactName, visual_contactPost:visual_contactPost, visual_phone:visual_phone, visual_mobile:visual_mobile,
+                emergency_contactName:emergency_contactName, emergency_contactPost:emergency_contactPost, emergency_phone:emergency_phone, emergency_mobile:emergency_mobile
+            },
             cache:false,
             async:false,
             success:function(data){
@@ -547,6 +581,34 @@
             }
         });
 
+    }
+
+    //双击看明细
+    function showFormWin(rowIndex,rowData){
+        var selectedRow = $('#dg').datagrid('getSelected');
+        $('#customerName').textbox("setValue",selectedRow.customerName);
+        $('#typeName').textbox("setValue",selectedRow.typeName);
+        $('#phone').textbox("setValue",selectedRow.phone);
+        $('#fax').textbox("setValue",selectedRow.fax);
+        $('#address').textbox("setValue",selectedRow.address);
+        $('#url').textbox("setValue",selectedRow.url);
+        $('#manager').textbox("setValue",selectedRow.manager);
+        $('#contact').textbox("setValue",selectedRow.contact);
+        $("#dockDepartment").textbox("setValue",selectedRow.dockDepartment);
+
+        $('#dockPerson').textbox("setValue",selectedRow.dockPerson);
+        $('#dockContact').textbox("setValue",selectedRow.dockContact);
+        $('#relateDepartment').textbox("setValue",selectedRow.relateDepartment);
+        $('#relatePerson').textbox("setValue",selectedRow.relatePerson);
+        $('#relateContact').textbox("setValue",selectedRow.relateContact);
+
+//            $('#electric_contactName').textbox("setValue",selectedRow.electric.contactName);
+//            $('#electric_contactPost').textbox("setValue",selectedRow.electric.contactPost);
+//            $('#electric_phone').textbox("setValue",selectedRow.electric.phone);
+//            $('#electric_mobile').textbox("setValue",selectedRow.electric.mobile);
+
+        $("#addCustomerWin").window("open");
+        $("#button_tr").hide();
     }
 
     //修改数据

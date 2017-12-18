@@ -165,8 +165,7 @@ CREATE TABLE `customer`
   `fax`	varchar(50) DEFAULT NULL COMMENT '传真',
   `address`	varchar(100) DEFAULT NULL COMMENT '地址',
   `url`	varchar(50) DEFAULT NULL COMMENT '网址',
-  `corporate`	varchar(50) DEFAULT NULL COMMENT '公司法人',
-  `manager`	varchar(50) DEFAULT NULL COMMENT '总经理',
+  `manager`	varchar(50) DEFAULT NULL COMMENT '公司法人或总经理',
   `contact`	varchar(50) DEFAULT NULL COMMENT '联系方式',
   `dock_department`	varchar(50) DEFAULT NULL COMMENT '对接部门',
   `dock_person`	varchar(50) DEFAULT NULL COMMENT '对接部门联系人',
@@ -181,17 +180,44 @@ CREATE TABLE `customer`
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `is_delete` tinyint(1) DEFAULT '0' COMMENT '是否删除 1:是   0:否',
   `responsible_person`	varchar(50) DEFAULT NULL COMMENT '负责人',
+  `responsible_person_id`	int(11) DEFAULT NULL COMMENT '负责人id',
+  `assist_person`	varchar(50) DEFAULT NULL COMMENT '协助人',
+  `assist_person_id`	int(11) DEFAULT NULL COMMENT '协助人id',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='客户表';
+
+--客户联系人
+-- DROP TABLE IF EXISTS `customer_contact`;
+CREATE TABLE `customer_contact`
+(
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id`	int(11) NOT NULL COMMENT '客户id',
+  `customer_code`	varchar(20) DEFAULT NULL COMMENT '客户编码',
+  `customer_name`	varchar(50) NOT NULL COMMENT '客户名称',
+  `type`	varchar(20) NOT NULL COMMENT '类别：设备用电管理人、建筑消防用水、安全巡检、可视化监管、紧急联系人',
+  `contact_name`	varchar(50) NOT NULL COMMENT '姓名',
+  `contact_post`	varchar(50) DEFAULT NULL COMMENT '职务',
+  `mobile`	varchar(50) DEFAULT NULL COMMENT '手机',
+  `phone`	varchar(50) DEFAULT NULL COMMENT '电话',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NOT NULL COMMENT '最近更新时间',
+  `created_by` varchar(20) NOT NULL COMMENT '创建人',
+  `updated_by` varchar(20) NOT NULL COMMENT '最近更新人',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `is_delete` tinyint(1) DEFAULT '0' COMMENT '是否删除 1:是   0:否',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='客户联系人表';
 
 --客户反馈
 -- DROP TABLE IF EXISTS `customer_feedback`;
 CREATE TABLE `customer_feedback`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id`	int(11) NOT NULL COMMENT '客户id',
   `customer_code`	varchar(20) DEFAULT NULL COMMENT '客户编码',
   `customer_name`	varchar(50) NOT NULL COMMENT '客户名称',
   `responsible_person`	varchar(50) DEFAULT NULL COMMENT '负责人',
+  `responsible_person_id`	int(11) DEFAULT NULL COMMENT '负责人id',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `created_at` datetime NOT NULL COMMENT '创建时间',
   `updated_at` datetime NOT NULL COMMENT '最近更新时间',

@@ -34,7 +34,7 @@ public class Customer extends BaseEntity{
 
     private String url;
 
-    private String corporate;
+    //private String corporate;
 
     private String manager;
 
@@ -53,5 +53,21 @@ public class Customer extends BaseEntity{
     private String relateContact;
 
     private String responsiblePerson;
+
+    private Integer responsiblePersonId;
+
+    private String assistPerson;
+
+    private Integer assistPersonId;
+
+    private CustomerContact electric;//设备用电管理人
+
+    private CustomerContact water;//建筑消防用水
+
+    private CustomerContact safe;//安全巡检
+
+    private CustomerContact visual;//可视化监管
+
+    private CustomerContact emergency;//紧急联系人
 
 }

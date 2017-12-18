@@ -1,6 +1,7 @@
 package com.admin.controller.customer;
 
 import com.admin.entity.customer.Customer;
+import com.admin.entity.customer.CustomerContact;
 import com.admin.service.customer.CustomerService;
 import com.admin.service.system.ResourceInfoService;
 import com.admin.web.util.*;
@@ -124,6 +125,7 @@ public class CustomerController {
     @RequestMapping(value = "/createCustomer", method = RequestMethod.POST)
     @ResponseBody
     public Object createCustomer(HttpServletRequest request) {
+        String nickName = (String)(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME));
         HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
         String customerCode = request.getParameter("customerCode");
         String customerName = request.getParameter("customerName");
@@ -133,7 +135,6 @@ public class CustomerController {
         String fax = request.getParameter("fax");
         String address = request.getParameter("address");
         String url = request.getParameter("url");
-        String corporate = request.getParameter("corporate");
         String manager = request.getParameter("manager");
         String contact = request.getParameter("contact");
         String dockDepartment = request.getParameter("dockDepartment");
@@ -142,6 +143,32 @@ public class CustomerController {
         String relateDepartment = request.getParameter("relateDepartment");
         String relatePerson = request.getParameter("relatePerson");
         String relateContact = request.getParameter("relateContact");
+
+        String electric_contactName = request.getParameter("electric_contactName");
+        String electric_contactPost = request.getParameter("electric_contactPost");
+        String electric_phone = request.getParameter("electric_phone");
+        String electric_mobile = request.getParameter("electric_mobile");
+
+        String water_contactName = request.getParameter("water_contactName");
+        String water_contactPost = request.getParameter("water_contactPost");
+        String water_phone = request.getParameter("water_phone");
+        String water_mobile = request.getParameter("water_mobile");
+
+        String safe_contactName = request.getParameter("safe_contactName");
+        String safe_contactPost = request.getParameter("safe_contactPost");
+        String safe_phone = request.getParameter("safe_phone");
+        String safe_mobile = request.getParameter("safe_mobile");
+
+        String visual_contactName = request.getParameter("visual_contactName");
+        String visual_contactPost = request.getParameter("visual_contactPost");
+        String visual_phone = request.getParameter("visual_phone");
+        String visual_mobile = request.getParameter("visual_mobile");
+
+        String emergency_contactName = request.getParameter("emergency_contactName");
+        String emergency_contactPost = request.getParameter("emergency_contactPost");
+        String emergency_phone = request.getParameter("emergency_phone");
+        String emergency_mobile = request.getParameter("emergency_mobile");
+
         Customer customer = new Customer();
         customer.setCustomerCode(customerCode);
         customer.setCustomerName(customerName);
@@ -151,7 +178,6 @@ public class CustomerController {
         customer.setFax(fax);
         customer.setAddress(address);
         customer.setUrl(url);
-        customer.setCorporate(corporate);
         customer.setManager(manager);
         customer.setContact(contact);
         customer.setDockDepartment(dockDepartment);
@@ -160,8 +186,58 @@ public class CustomerController {
         customer.setRelateDepartment(relateDepartment);
         customer.setRelatePerson(relatePerson);
         customer.setRelateContact(relateContact);
-        customer.setCreatedBy("system");
-        customer.setUpdatedBy("system");
+        customer.setCreatedBy(nickName);
+        customer.setUpdatedBy(nickName);
+        if(electric_contactName != null && !"".equals(electric_contactName)){
+            CustomerContact electric = new CustomerContact();
+            electric.setContactName(electric_contactName);
+            electric.setContactPost(electric_contactPost);
+            electric.setPhone(electric_phone);
+            electric.setMobile(electric_mobile);
+            electric.setCreatedBy(nickName);
+            electric.setUpdatedBy(nickName);
+            customer.setElectric(electric);
+        }
+        if(water_contactName != null && !"".equals(water_contactName)){
+            CustomerContact water = new CustomerContact();
+            water.setContactName(water_contactName);
+            water.setContactPost(water_contactPost);
+            water.setPhone(water_phone);
+            water.setMobile(water_mobile);
+            water.setCreatedBy(nickName);
+            water.setUpdatedBy(nickName);
+            customer.setWater(water);
+        }
+        if(safe_contactName != null && !"".equals(safe_contactName)){
+            CustomerContact safe = new CustomerContact();
+            safe.setContactName(safe_contactName);
+            safe.setContactPost(safe_contactPost);
+            safe.setPhone(safe_phone);
+            safe.setMobile(safe_mobile);
+            safe.setCreatedBy(nickName);
+            safe.setUpdatedBy(nickName);
+            customer.setSafe(safe);
+        }
+        if(visual_contactName != null && !"".equals(visual_contactName)){
+            CustomerContact visual = new CustomerContact();
+            visual.setContactName(visual_contactName);
+            visual.setContactPost(visual_contactPost);
+            visual.setPhone(visual_phone);
+            visual.setMobile(visual_mobile);
+            visual.setCreatedBy(nickName);
+            visual.setUpdatedBy(nickName);
+            customer.setVisual(visual);
+        }
+        if(emergency_contactName != null && !"".equals(emergency_contactName)){
+            CustomerContact emergency = new CustomerContact();
+            emergency.setContactName(emergency_contactName);
+            emergency.setContactPost(emergency_contactPost);
+            emergency.setPhone(emergency_phone);
+            emergency.setMobile(emergency_mobile);
+            emergency.setCreatedBy(nickName);
+            emergency.setUpdatedBy(nickName);
+            customer.setEmergency(emergency);
+        }
         ServiceResult<Customer> result = customerService.createCustomer(customer);
         if (!result.getSuccess()) {
             log.error("新增客户失败！");
@@ -226,7 +302,7 @@ public class CustomerController {
 
         String fileName = "客户列表" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         String sheetName = "数据导出";
-        String[] sheetHead = new String[] { "客户名称", "电话",  "地址", "公司法人", "总经理", "业务人员" };
+        String[] sheetHead = new String[] { "客户名称", "电话",  "地址", "公司法人或总经理", "业务人员" };
 
         try {
             ExcelExportUtil.exportEntity(logger, request, response, fileName, sheetName, sheetHead,
@@ -265,7 +341,7 @@ public class CustomerController {
 
         for (Customer customer : list) {
             //jxl.write.Number(列号,行号 ,内容 )
-            // "客户名称", "电话",  "地址", "公司法人", "总经理", "业务人员"
+            // "客户名称", "电话",  "地址",  "总经理", "业务人员"
             sheet.setColumnView(0, 25);
             sheet.addCell(new Label(0, temp, CommUtil.getStringValue(customer.getCustomerName()), textFormat));
 
@@ -274,9 +350,6 @@ public class CustomerController {
 
             sheet.setColumnView(2, 25);
             sheet.addCell(new Label(2, temp, CommUtil.getStringValue(customer.getAddress()),textFormat));
-
-            sheet.setColumnView(3, 25);
-            sheet.addCell(new Label(3, temp, CommUtil.getStringValue(customer.getCorporate()),textFormat));
 
             sheet.setColumnView(4, 25);
             sheet.addCell(new Label(4, temp, CommUtil.getStringValue(customer.getManager()),textFormat));
@@ -337,6 +410,43 @@ public class CustomerController {
                 String[] str = list.get(i);
                 String customerName = StringUtil.nullSafeString(str[0]);
                 String typeName = StringUtil.nullSafeString(str[1]);
+                String phone = StringUtil.nullSafeString(str[2]);
+                String fax = StringUtil.nullSafeString(str[3]);
+                String address = StringUtil.nullSafeString(str[4]);
+                String url = StringUtil.nullSafeString(str[5]);
+                String manager = StringUtil.nullSafeString(str[6]);
+                String contact = StringUtil.nullSafeString(str[7]);
+                String dockDepartment = StringUtil.nullSafeString(str[8]);
+                String dockPerson = StringUtil.nullSafeString(str[9]);
+                String dockContact = StringUtil.nullSafeString(str[10]);
+                String relateDepartment = StringUtil.nullSafeString(str[11]);
+                String relatePerson = StringUtil.nullSafeString(str[12]);
+                String relateContact = StringUtil.nullSafeString(str[13]);
+
+                String electric_contactName = StringUtil.nullSafeString(str[14]);
+                String electric_contactPost = StringUtil.nullSafeString(str[15]);
+                String electric_phone = StringUtil.nullSafeString(str[16]);
+                String electric_mobile = StringUtil.nullSafeString(str[17]);
+
+                String water_contactName = StringUtil.nullSafeString(str[18]);
+                String water_contactPost = StringUtil.nullSafeString(str[19]);
+                String water_phone = StringUtil.nullSafeString(str[20]);
+                String water_mobile = StringUtil.nullSafeString(str[21]);
+
+                String safe_contactName = StringUtil.nullSafeString(str[22]);
+                String safe_contactPost = StringUtil.nullSafeString(str[23]);
+                String safe_phone = StringUtil.nullSafeString(str[24]);
+                String safe_mobile = StringUtil.nullSafeString(str[25]);
+
+                String visual_contactName = StringUtil.nullSafeString(str[26]);
+                String visual_contactPost = StringUtil.nullSafeString(str[27]);
+                String visual_phone = StringUtil.nullSafeString(str[28]);
+                String visual_mobile = StringUtil.nullSafeString(str[29]);
+
+                String emergency_contactName = StringUtil.nullSafeString(str[30]);
+                String emergency_contactPost = StringUtil.nullSafeString(str[31]);
+                String emergency_phone = StringUtil.nullSafeString(str[32]);
+                String emergency_mobile = StringUtil.nullSafeString(str[33]);
 
                 if (StringUtil.isEmpty(customerName, true)) {
                     result.setMessage("很抱歉！你导入的Excel数据,第"+ (i+1) +"行数据 客户名称不能为空! 请核查后重新导入！");
@@ -347,6 +457,70 @@ public class CustomerController {
                 Customer customer = new Customer();
                 customer.setCustomerName(customerName);
                 customer.setTypeName(typeName);
+                customer.setPhone(phone);
+                customer.setFax(fax);
+                customer.setAddress(address);
+                customer.setUrl(url);
+                customer.setManager(manager);
+                customer.setContact(contact);
+                customer.setDockDepartment(dockDepartment);
+                customer.setDockPerson(dockPerson);
+                customer.setDockContact(dockContact);
+                customer.setRelateDepartment(relateDepartment);
+                customer.setRelatePerson(relatePerson);
+                customer.setRelateContact(relateContact);
+                customer.setCreatedBy(nickName);
+                customer.setUpdatedBy(nickName);
+                if(electric_contactName != null && !"".equals(electric_contactName)){
+                    CustomerContact electric = new CustomerContact();
+                    electric.setContactName(electric_contactName);
+                    electric.setContactPost(electric_contactPost);
+                    electric.setPhone(electric_phone);
+                    electric.setMobile(electric_mobile);
+                    electric.setCreatedBy(nickName);
+                    electric.setUpdatedBy(nickName);
+                    customer.setElectric(electric);
+                }
+                if(water_contactName != null && !"".equals(water_contactName)){
+                    CustomerContact water = new CustomerContact();
+                    water.setContactName(water_contactName);
+                    water.setContactPost(water_contactPost);
+                    water.setPhone(water_phone);
+                    water.setMobile(water_mobile);
+                    water.setCreatedBy(nickName);
+                    water.setUpdatedBy(nickName);
+                    customer.setWater(water);
+                }
+                if(safe_contactName != null && !"".equals(safe_contactName)){
+                    CustomerContact safe = new CustomerContact();
+                    safe.setContactName(safe_contactName);
+                    safe.setContactPost(safe_contactPost);
+                    safe.setPhone(safe_phone);
+                    safe.setMobile(safe_mobile);
+                    safe.setCreatedBy(nickName);
+                    safe.setUpdatedBy(nickName);
+                    customer.setSafe(safe);
+                }
+                if(visual_contactName != null && !"".equals(visual_contactName)){
+                    CustomerContact visual = new CustomerContact();
+                    visual.setContactName(visual_contactName);
+                    visual.setContactPost(visual_contactPost);
+                    visual.setPhone(visual_phone);
+                    visual.setMobile(visual_mobile);
+                    visual.setCreatedBy(nickName);
+                    visual.setUpdatedBy(nickName);
+                    customer.setVisual(visual);
+                }
+                if(emergency_contactName != null && !"".equals(emergency_contactName)){
+                    CustomerContact emergency = new CustomerContact();
+                    emergency.setContactName(emergency_contactName);
+                    emergency.setContactPost(emergency_contactPost);
+                    emergency.setPhone(emergency_phone);
+                    emergency.setMobile(emergency_mobile);
+                    emergency.setCreatedBy(nickName);
+                    emergency.setUpdatedBy(nickName);
+                    customer.setEmergency(emergency);
+                }
                 customer.setCreatedBy(nickName);
                 customer.setUpdatedBy(nickName);
                 ServiceResult<Customer> createResult = customerService.createCustomer(customer);
