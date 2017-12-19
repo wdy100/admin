@@ -229,7 +229,7 @@ public class AppCustomerController {
                     dataMap.put("error", "");
                     dataMap.put("msg", "获取当前登录用户异常");
                 }else{
-                    UserInfo user = userResult.getResult();
+                    //UserInfo user = userResult.getResult();
                     if(customerName != null && !"".equals(customerName)){
                         criteria.put("customerName", customerName);
                     }
@@ -270,6 +270,88 @@ public class AppCustomerController {
         }catch (Exception e) {
             log.error("[AppCustomerController][searchCustomer] /searchCustomer accepted token:{}, userId:{}, customerName:{}, error:{}",
                     token, userId, customerName, Throwables.getStackTraceAsString(e));
+            dataMap.put("success", false);
+            dataMap.put("error", "105");
+            dataMap.put("msg", "调用服务出错");
+        }
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(JsonUtil.toJson(dataMap));
+        response.getWriter().flush();
+        response.getWriter().close();
+    }
+
+    @RequestMapping(value = "/getCustomerDetailById", method = { RequestMethod.GET, RequestMethod.POST }, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public void getCustomerDetailById(
+            @RequestParam(value="token",required = true) String token,
+            @RequestParam(value="id",required = true) String id,
+            HttpServletRequest request,
+            HttpServletResponse response)throws IOException {
+        log.info("[AppCustomerController][getCustomerDetailById] /getCustomerDetailById accepted token:{}, id:{}",
+                token, id);
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        Map <String, Object> criteria = Maps.newHashMap();
+        dataMap.put("success", true);
+        try {
+            dataMap = VerifyTokenUtil.verify(request, dataMap);
+            if (VerifyTokenUtil.VERIFY_SUCCESS.equals(dataMap.get("verifyPassed").toString())) {
+                ServiceResult<Customer> serviceResult = customerService.getById(Long.parseLong(id));
+                if(serviceResult.getSuccess()){
+                    Customer customer = serviceResult.getResult();
+                    Map<String, Object> customerMap = new HashMap<String, Object>();
+                    customerMap.put("id", customer.getId());
+                    customerMap.put("status", "2");//TODO
+                    customerMap.put("customerName", customer.getCustomerName());
+                    customerMap.put("typeName", customer.getTypeName());
+                    customerMap.put("phone", customer.getPhone());
+                    customerMap.put("fax", customer.getFax());
+                    customerMap.put("address", customer.getAddress());
+                    customerMap.put("url", customer.getUrl());
+                    customerMap.put("manager", customer.getManager());
+                    customerMap.put("contact", customer.getContact());
+                    customerMap.put("dockDepartment", customer.getDockDepartment());
+                    customerMap.put("dockPerson", customer.getDockPerson());
+                    customerMap.put("dockContact", customer.getDockContact());
+                    customerMap.put("relateDepartment", customer.getRelateDepartment());
+                    customerMap.put("relatePerson", customer.getRelatePerson());
+                    customerMap.put("relateContact", customer.getRelateContact());
+                    if(customer.getElectric() != null){
+                        customerMap.put("electricContactName", customer.getElectric().getContactName());
+                        customerMap.put("electricContactPost", customer.getElectric().getContactPost());
+                        customerMap.put("electricPhone", customer.getElectric().getPhone());
+                        customerMap.put("electricMobile", customer.getElectric().getMobile());
+                    }
+                    if(customer.getWater() != null){
+                        customerMap.put("waterContactName", customer.getWater().getContactName());
+                        customerMap.put("waterContactPost", customer.getWater().getContactPost());
+                        customerMap.put("waterPhone", customer.getWater().getPhone());
+                        customerMap.put("waterMobile", customer.getWater().getMobile());
+                    }
+                    if(customer.getSafe() != null){
+                        customerMap.put("safeContactName", customer.getSafe().getContactName());
+                        customerMap.put("safeContactPost", customer.getSafe().getContactPost());
+                        customerMap.put("safePhone", customer.getSafe().getPhone());
+                        customerMap.put("safeMobile", customer.getSafe().getMobile());
+                    }
+                    if(customer.getVisual() != null){
+                        customerMap.put("visualContactName", customer.getVisual().getContactName());
+                        customerMap.put("visualContactPost", customer.getVisual().getContactPost());
+                        customerMap.put("visualPhone", customer.getVisual().getPhone());
+                        customerMap.put("visualMobile", customer.getVisual().getMobile());
+                    }
+                    if(customer.getEmergency() != null){
+                        customerMap.put("emergencyContactName", customer.getEmergency().getContactName());
+                        customerMap.put("emergencyContactPost", customer.getEmergency().getContactPost());
+                        customerMap.put("emergencyPhone", customer.getEmergency().getPhone());
+                        customerMap.put("emergencyMobile", customer.getEmergency().getMobile());
+                    }
+                    customerMap.put("draft", "0");//TODO
+                    dataMap.put("customer", customerMap);
+                }
+            }
+        }catch (Exception e) {
+            log.error("[AppCustomerController][getCustomerDetailById] /getCustomerDetailById accepted token:{}, id:{}, error:{}",
+                    token, id, Throwables.getStackTraceAsString(e));
             dataMap.put("success", false);
             dataMap.put("error", "105");
             dataMap.put("msg", "调用服务出错");

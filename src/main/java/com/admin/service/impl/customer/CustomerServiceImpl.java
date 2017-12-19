@@ -48,7 +48,9 @@ public class CustomerServiceImpl implements CustomerService {
         params.put("start", start);
         params.put("size", size);
         List<Customer> customers = customerDao.queryListBy(params);
-        setCustomerContact(customers);
+        for(Customer customer : customers){
+            setCustomerContact(customer);
+        }
         map.put("data", customers);
         map.put("total", rowsCount);
         result.setResult(map);
@@ -58,25 +60,23 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * 设置客户联系人
      * */
-    private void setCustomerContact(List<Customer> customers){
-        for(Customer customer : customers){
-            List<CustomerContact> customerContactList = customerContactDao.getByCustomerId(customer.getId());
-            for(CustomerContact customerContact : customerContactList){
-                if(CustomerContact.TYPE_ELECTRIC.equals(customerContact.getType())){
-                    customer.setElectric(customerContact);
-                }
-                if(CustomerContact.TYPE_WATER.equals(customerContact.getType())){
-                    customer.setWater(customerContact);
-                }
-                if(CustomerContact.TYPE_SAFE.equals(customerContact.getType())){
-                    customer.setSafe(customerContact);
-                }
-                if(CustomerContact.TYPE_VISUAL.equals(customerContact.getType())){
-                    customer.setVisual(customerContact);
-                }
-                if(CustomerContact.TYPE_EMERGENCY.equals(customerContact.getType())){
-                    customer.setEmergency(customerContact);
-                }
+    private void setCustomerContact(Customer customer){
+        List<CustomerContact> customerContactList = customerContactDao.getByCustomerId(customer.getId());
+        for(CustomerContact customerContact : customerContactList){
+            if(CustomerContact.TYPE_ELECTRIC.equals(customerContact.getType())){
+                customer.setElectric(customerContact);
+            }
+            if(CustomerContact.TYPE_WATER.equals(customerContact.getType())){
+                customer.setWater(customerContact);
+            }
+            if(CustomerContact.TYPE_SAFE.equals(customerContact.getType())){
+                customer.setSafe(customerContact);
+            }
+            if(CustomerContact.TYPE_VISUAL.equals(customerContact.getType())){
+                customer.setVisual(customerContact);
+            }
+            if(CustomerContact.TYPE_EMERGENCY.equals(customerContact.getType())){
+                customer.setEmergency(customerContact);
             }
         }
     }
@@ -134,12 +134,16 @@ public class CustomerServiceImpl implements CustomerService {
             executeResult.setMessage("该客户不存在或已经被删除。");
             return executeResult;
         }
-//        dbCustomer.setStatus(customer.getStatus());
-//        dbCustomer.setPassword(customer.getPassword());
-        dbCustomer.setResponsiblePerson(customer.getResponsiblePerson());
-        dbCustomer.setUpdatedBy(customer.getUpdatedBy());
-        dbCustomer.setUpdatedAt(new Date());
-        customerDao.update(dbCustomer);
+        customerDao.update(customer);
+        return executeResult;
+    }
+
+    @Override
+    public ServiceResult<Customer> getById(Long id) {
+        ServiceResult<Customer> executeResult = new ServiceResult<Customer>();
+        Customer customer = customerDao.getById(id);
+        setCustomerContact(customer);
+        executeResult.setResult(customer);
         return executeResult;
     }
 }

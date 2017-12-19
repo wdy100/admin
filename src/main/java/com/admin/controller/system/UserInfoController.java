@@ -416,4 +416,34 @@ public class UserInfoController {
         return userNodes;
     }
 
+    /**
+     * 特定角色的用户下拉菜单
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/searchUserByRoleIdCombo", method = RequestMethod.POST)
+    @ResponseBody
+    public Object searchUserByRoleIdCombo(HttpServletRequest request) {
+        List<TreeNode> nodeList = new ArrayList<TreeNode>();
+        String roleId = request.getParameter("roleId");
+        if(roleId == null || "".equals(roleId)){
+            return JsonUtil.toJson(nodeList);
+        }
+
+        ServiceResult<List<UserInfo>> result = userInfoService.getUserByRoleId(Long.parseLong(roleId));
+        if(!result.getSuccess()){
+            log.error("查询特定角色的用户列表发生异常！");
+            return null;
+        }
+        List<UserInfo> userList = result.getResult();
+        for (UserInfo userInfo : userList) {
+            TreeNode node = new TreeNode();
+            node.setId(String.valueOf(userInfo.getId()));
+            node.setText(userInfo.getNickName());
+            node.setState("open");
+            nodeList.add(node);
+        }
+        return JsonUtil.toJson(nodeList);
+    }
+
 }  

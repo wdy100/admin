@@ -253,7 +253,8 @@
         <tr>
             <td style="text-align: right;">业务人员<span style="color:red;">*</span>:</td>
             <td>
-                <input id="responsiblePerson" name="responsiblePerson" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:200px;"></input>
+                <select id="responsiblePersonId" name="responsiblePersonId" size="54" class="easyui-combotree" style="width:200px;"
+                        data-options="required:true,url:'/system/searchUserByRoleIdCombo?roleId=5'"></select>
             </td>
         </tr>
 
@@ -728,12 +729,13 @@
     function submitDistribution(){
         var row = $('#dg').datagrid('getSelected');
         var customeId = row.id;
-        var responsiblePerson = $('#responsiblePerson').val();
+        var responsiblePersonId = $('#responsiblePersonId').combotree("getValue");
+        var responsiblePerson = $('#responsiblePersonId').combotree("getText");
         $.ajax({
             type:'post',
             url:'/customer/distributionCustomer',
             dataType : "json",
-            data:{customeId:customeId, responsiblePerson:responsiblePerson},
+            data:{customeId:customeId, responsiblePersonId:responsiblePersonId, responsiblePerson:responsiblePerson},
             cache:false,
             async:false,
             success:function(data){

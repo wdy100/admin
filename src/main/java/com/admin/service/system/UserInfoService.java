@@ -53,4 +53,10 @@ public interface UserInfoService {
      * @return
      */
     public ServiceResult<List<UserInfo>> getAll();
+
+    /**
+     * 查询特定角色的用户
+     * @return
+     */
+    public ServiceResult<List<UserInfo>> getUserByRoleId(Long roleId);
 }

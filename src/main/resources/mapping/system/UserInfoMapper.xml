@@ -167,7 +167,15 @@
   <select id="getAll" parameterType="java.lang.Integer" resultMap="userInfoMap">
     select id, <include refid="Base_Column_List" />
     from <include refid="table"/>
-    where is_delete = 0
+    where is_delete = 0 and user_name != 'admin'
+  </select>
+
+  <select id="getUserByRoleId" resultMap="userInfoMap" parameterType="java.lang.Integer">
+    SELECT u.id, u.user_name, u.status, u.sex, u.mobile, u.email, u.nick_name,
+    u.birthday, u.identity_no, u.address, u.parent_id, u.parent_nick_name
+    FROM user_info u INNER JOIN user_role ur on ur.user_id = u.id
+    where u.is_delete = 0 and ur.role_id = #{roleId}
+    ORDER BY u.nick_name
   </select>
   
 </mapper>

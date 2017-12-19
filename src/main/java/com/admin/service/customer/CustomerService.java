@@ -30,4 +30,10 @@ public interface CustomerService {
      * @param customer
      */
     public ServiceResult<Customer> updateCustomer(Customer customer);
+
+    /**
+     * 根据id获取
+     * @param id
+     */
+    public ServiceResult<Customer> getById(Long id);
 }

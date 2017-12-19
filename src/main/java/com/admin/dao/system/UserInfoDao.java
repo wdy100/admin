@@ -42,4 +42,8 @@ public class UserInfoDao   extends BaseDao{
     public List<UserInfo> getAll(){
         return this.getSqlSession().selectList(namespace+"getAll");
     }
+
+    public List<UserInfo> getUserByRoleId(Long roleId){
+        return this.getSqlSession().selectList(namespace+"getUserByRoleId", roleId);
+    }
 }

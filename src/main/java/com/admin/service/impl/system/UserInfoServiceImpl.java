@@ -119,4 +119,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         executeResult.setResult(userInfoDao.getAll());
         return executeResult;
     }
+
+    @Override
+    public ServiceResult<List<UserInfo>> getUserByRoleId(Long roleId) {
+        ServiceResult<List<UserInfo>> executeResult = new ServiceResult<List<UserInfo>>();
+        executeResult.setResult(userInfoDao.getUserByRoleId(roleId));
+        return executeResult;
+    }
 }

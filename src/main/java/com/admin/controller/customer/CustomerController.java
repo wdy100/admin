@@ -258,10 +258,14 @@ public class CustomerController {
     public Object distributionCustomer(HttpServletRequest request) {
         HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
         String customeId = request.getParameter("customeId");
+        String responsiblePersonId = request.getParameter("responsiblePersonId");
         String responsiblePerson = request.getParameter("responsiblePerson");
         Customer customer = new Customer();
         customer.setId(Long.parseLong(customeId));
         customer.setResponsiblePerson(responsiblePerson);
+        customer.setResponsiblePersonId(Integer.parseInt(responsiblePersonId));
+        customer.setUpdatedBy(String.valueOf(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME)));
+        customer.setUpdatedAt(new Date());
         ServiceResult<Customer> result = customerService.updateCustomer(customer);
         if (!result.getSuccess()) {
             log.error("客户分配失败！");
