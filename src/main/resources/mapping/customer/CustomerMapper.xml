@@ -182,6 +182,12 @@
       <if test="assistPersonId!=null">
         AND assist_person_id = #{assistPersonId}
       </if>
+      <if test="createdAtStart !=null and createdAtStart != ''">
+        AND <![CDATA[created_at >= #{createdAtStart}]]>
+      </if>
+      <if test="createdAtEnd !=null and createdAtEnd != ''">
+        AND <![CDATA[created_at <= #{createdAtEnd}]]>
+      </if>
     </where>
   </sql>
 

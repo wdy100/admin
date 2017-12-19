@@ -2,6 +2,7 @@ package com.admin.service.impl.customer;
 
 import com.admin.dao.customer.CustomerContactDao;
 import com.admin.dao.customer.CustomerDao;
+import com.admin.entity.BaseEntity;
 import com.admin.entity.customer.Customer;
 import com.admin.entity.customer.CustomerContact;
 import com.admin.service.customer.CustomerService;
@@ -85,6 +86,7 @@ public class CustomerServiceImpl implements CustomerService {
         ServiceResult<Customer> executeResult = new ServiceResult<Customer>();
         customer.setCreatedAt(new Date());
         customer.setUpdatedAt(new Date());
+        customer.setIsDelete(Customer.IsDeleteEnum.NO.getIsDelete());
         Integer count = customerDao.insert(customer);
         if(count < 1){
             executeResult.setMessage("客户保存失败。");
@@ -118,6 +120,9 @@ public class CustomerServiceImpl implements CustomerService {
         customerContact.setCustomerName(customer.getCustomerName());
         customerContact.setCustomerCode(customer.getCustomerCode());
         customerContact.setType(type);
+        customerContact.setCreatedAt(new Date());
+        customerContact.setUpdatedAt(new Date());
+        customerContact.setIsDelete(CustomerContact.IsDeleteEnum.NO.getIsDelete());
         customerContactDao.insert(customerContact);
     }
 

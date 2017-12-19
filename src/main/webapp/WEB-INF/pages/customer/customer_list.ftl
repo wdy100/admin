@@ -43,7 +43,7 @@
             <a href="javascript:void(0)" id="morefunction" class="easyui-menubutton"  plain="false"
                data-options="menu:'#functions',iconCls:'icon-task'">更多</a>
             <div id="functions" style="width:150px;">
-                <div data-options="iconCls:'icon-excel'" onclick="exportUser()">导出</div>
+                <div data-options="iconCls:'icon-excel'" onclick="exportCustomer()">导出</div>
             </div>
 
     </div>
@@ -366,7 +366,46 @@
 
     //新增数据
     function createCustomer() {
-        //addCustomerDialog.dialog('open');
+        $('#customerName').textbox("setValue","");
+        $('#typeName').textbox("setValue","");
+        $('#phone').textbox("setValue","");
+        $('#fax').textbox("setValue","");
+        $('#address').textbox("setValue","");
+        $('#url').textbox("setValue","");
+        $('#manager').textbox("setValue","");
+        $('#contact').textbox("setValue","");
+        $("#dockDepartment").textbox("setValue","");
+
+        $('#dockPerson').textbox("setValue","");
+        $('#dockContact').textbox("setValue","");
+        $('#relateDepartment').textbox("setValue","");
+        $('#relatePerson').textbox("setValue","");
+        $('#relateContact').textbox("setValue","");
+
+        $('#electric_contactName').textbox("setValue","");
+        $('#electric_contactPost').textbox("setValue","");
+        $('#electric_phone').textbox("setValue","");
+        $('#electric_mobile').textbox("setValue","");
+
+        $('#water_contactName').textbox("setValue","");
+        $('#water_contactPost').textbox("setValue","");
+        $('#water_phone').textbox("setValue","");
+        $('#water_mobile').textbox("setValue","");
+
+        $('#safe_contactName').textbox("setValue","");
+        $('#safe_contactPost').textbox("setValue","");
+        $('#safe_phone').textbox("setValue","");
+        $('#safe_mobile').textbox("setValue","");
+
+        $('#visual_contactName').textbox("setValue","");
+        $('#visual_contactPost').textbox("setValue","");
+        $('#visual_phone').textbox("setValue","");
+        $('#visual_mobile').textbox("setValue","");
+
+        $('#emergency_contactName').textbox("setValue","");
+        $('#emergency_contactPost').textbox("setValue","");
+        $('#emergency_phone').textbox("setValue","");
+        $('#emergency_mobile').textbox("setValue","");
         $("#addCustomerWin").window("open");
         $("#button_tr").show();
     }
@@ -382,7 +421,7 @@
     }
 
     //导出
-    function exportUser(){
+    function exportCustomer(){
         if(!datagrid){
             $.messager.alert('提示','请先查询！','info');
             return;
@@ -571,7 +610,8 @@
                 if(!data.success){
                     $.messager.alert('提示',data.message);
                 }
-                $('#dg').datagrid('reload');
+                //$('#dg').datagrid('reload');
+                loaddata();
                 $("#addCustomerWin").window("close");
                 //addCustomerDialog.dialog('close');
                 $.messager.alert('提示',"新增客户成功");
@@ -602,10 +642,30 @@
         $('#relatePerson').textbox("setValue",selectedRow.relatePerson);
         $('#relateContact').textbox("setValue",selectedRow.relateContact);
 
-//            $('#electric_contactName').textbox("setValue",selectedRow.electric.contactName);
-//            $('#electric_contactPost').textbox("setValue",selectedRow.electric.contactPost);
-//            $('#electric_phone').textbox("setValue",selectedRow.electric.phone);
-//            $('#electric_mobile').textbox("setValue",selectedRow.electric.mobile);
+        $('#electric_contactName').textbox("setValue",selectedRow.electric.contactName);
+        $('#electric_contactPost').textbox("setValue",selectedRow.electric.contactPost);
+        $('#electric_phone').textbox("setValue",selectedRow.electric.phone);
+        $('#electric_mobile').textbox("setValue",selectedRow.electric.mobile);
+
+        $('#water_contactName').textbox("setValue",selectedRow.water.contactName);
+        $('#water_contactPost').textbox("setValue",selectedRow.water.contactPost);
+        $('#water_phone').textbox("setValue",selectedRow.water.phone);
+        $('#water_mobile').textbox("setValue",selectedRow.water.mobile);
+
+        $('#safe_contactName').textbox("setValue",selectedRow.safe.contactName);
+        $('#safe_contactPost').textbox("setValue",selectedRow.safe.contactPost);
+        $('#safe_phone').textbox("setValue",selectedRow.safe.phone);
+        $('#safe_mobile').textbox("setValue",selectedRow.safe.mobile);
+
+        $('#visual_contactName').textbox("setValue",selectedRow.visual.contactName);
+        $('#visual_contactPost').textbox("setValue",selectedRow.visual.contactPost);
+        $('#visual_phone').textbox("setValue",selectedRow.visual.phone);
+        $('#visual_mobile').textbox("setValue",selectedRow.visual.mobile);
+
+        $('#emergency_contactName').textbox("setValue",selectedRow.emergency.contactName);
+        $('#emergency_contactPost').textbox("setValue",selectedRow.emergency.contactPost);
+        $('#emergency_phone').textbox("setValue",selectedRow.emergency.phone);
+        $('#emergency_mobile').textbox("setValue",selectedRow.emergency.mobile);
 
         $("#addCustomerWin").window("open");
         $("#button_tr").hide();
@@ -799,7 +859,8 @@
                         msg : '导入成功！'
                     });
                     $("#importDialog").window("close");
-                    $('#dg').datagrid('reload');
+                    //$('#dg').datagrid('reload');
+                    loaddata();
                 }
             }
         });
