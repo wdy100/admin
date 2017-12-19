@@ -18,6 +18,8 @@ public class ExpenseReports extends BaseEntity {
 
     private String name;
 
+    private Integer year;
+
     private Integer month;
 
     private BigDecimal fuelCharge;

@@ -6,6 +6,7 @@
     <resultMap id="expenseReportsMap" type="com.admin.entity.reports.ExpenseReports">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
+        <result property="year" column="year"/>
         <result property="month" column="month"/>
         <result property="fuelCharge" column="fuel_charge"/>
         <result property="busFee" column="bus_fee"/>
@@ -24,7 +25,7 @@
     </resultMap>
 
     <sql id="columns">
-        name,month,fuel_charge,bus_fee,taxi_fee,telephone_charge,fete_fee,travelling_expenses,marketing_costs,all_costs,enable,created_by,created_at,updated_by,updated_at,remark
+        name,year,month,fuel_charge,bus_fee,taxi_fee,telephone_charge,fete_fee,travelling_expenses,marketing_costs,all_costs,enable,created_by,created_at,updated_by,updated_at,remark
     </sql>
     <sql id="table">expense_reports</sql>
 
@@ -34,45 +35,39 @@
         where id = #{id}
     </select>
 
-    <select id="getExpenseReportsList"  parameterType="Map"  resultMap="expenseReportsMap">
+    <select id="getExpenseReportsListByPerson"  parameterType="Map"  resultMap="expenseReportsMap">
         SELECT id,<include refid="columns"/>
         FROM <include refid="table"/>
         WHERE enable = 1
         <include refid="expenseReportsQuery"/>
-        Order By updated_at DESC
+        ORDER BY name,month
         <if test="m!=null and n!=null">
             Limit ${m},${n}
         </if>
     </select>
 
     <sql id="expenseReportsQuery">
-        <if test="customerName != null and customerName != ''">
-            AND customer_name = #{customerName}
+        <if test="year != null and year != ''">
+            AND year = #{year}
         </if>
-        <if test="status != null">
-            AND status = #{status}
+        <if test="year == null or year == ''">
+            AND year = DATE_FORMAT(NOW(), '%Y')
+        </if>
+        <if test="month != null and month != ''">
+            AND month = #{month}
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.admin.entity.reports.ExpenseReports" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO <include refid="table"/>(<include refid="columns"/>)
-        VALUES(
-        #{name},
-        #{month},
-        #{fuelCharge},
-        #{busFee},
-        #{taxiFee},
-        #{telephoneCharge},
-        #{feteFee},
-        #{travellingExpenses},
-        #{marketingCosts},
-        #{allCosts},
-        1,
-        #{createdBy},
-        now(),
-        #{updatedBy},
-        now(),
-        #{remark}
-        )
-    </insert>
+    <select id="getExpenseReportsListByMonth"  parameterType="Map"  resultMap="expenseReportsMap">
+        SELECT month, sum(fuel_charge) fuelCharge, sum(bus_fee) busFee, sum(taxi_fee) taxiFee, sum(telephone_charge) telephoneCharge, sum(fete_fee) feteFee,
+        sum(travelling_expenses) travellingExpenses, sum(marketing_costs) marketingCosts, sum(all_costs) allCosts
+        FROM <include refid="table"/>
+        WHERE enable = 1
+        <include refid="expenseReportsQuery"/>
+        GROUP BY month
+        ORDER BY month ASC
+        <if test="m!=null and n!=null">
+            Limit ${m},${n}
+        </if>
+    </select>
 </mapper>
