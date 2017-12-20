@@ -88,7 +88,9 @@ public class Signatures {
         String toVerify = Joiner.on('&').withKeyValueSeparator("=").join(filterMap);
         String stub = Signatures.sign(toVerify + key, 1);
         Signatures.log.debug("stub={}, sign={}, toVerify={}, checked={}", stub, sign, toVerify, Objects.equal(stub, sign));
-        log.info("stub={}, sign={}, toVerify={}, checked={}", stub, sign, toVerify, Objects.equal(stub, sign));
+        if(!Objects.equal(stub, sign)){
+            log.error("token未通过验证,stub={}, sign={}, toVerify={}", stub, sign, toVerify);
+        }
         return Objects.equal(stub, sign);
     }
     
