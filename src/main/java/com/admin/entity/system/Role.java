@@ -19,6 +19,7 @@ public class Role  extends BaseEntity{
 	 * 
 	 */
 	private static final long serialVersionUID = -550322401297851576L;
+    public static final long BUSINESS_ROLE_ID = 5L;//业务人员角色id
 
 	private String code;
 

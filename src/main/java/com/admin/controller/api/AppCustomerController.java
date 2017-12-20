@@ -31,10 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/api")
@@ -352,6 +349,118 @@ public class AppCustomerController {
         }catch (Exception e) {
             log.error("[AppCustomerController][getCustomerDetailById] /getCustomerDetailById accepted token:{}, id:{}, error:{}",
                     token, id, Throwables.getStackTraceAsString(e));
+            dataMap.put("success", false);
+            dataMap.put("error", "105");
+            dataMap.put("msg", "调用服务出错");
+        }
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(JsonUtil.toJson(dataMap));
+        response.getWriter().flush();
+        response.getWriter().close();
+    }
+
+    @RequestMapping(value = "/searchBusiness", method = { RequestMethod.GET, RequestMethod.POST }, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public void searchBusiness(
+            @RequestParam(value="token",required = true) String token,
+            @RequestParam(value="userId",required = true) String userId,
+            HttpServletRequest request,
+            HttpServletResponse response)throws IOException {
+        log.info("[AppCustomerController][searchBusiness] accepted token:{}, userId:{}",
+                token, userId);
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        dataMap.put("success", true);
+        try {
+            dataMap = VerifyTokenUtil.verify(request, dataMap);
+            if (VerifyTokenUtil.VERIFY_SUCCESS.equals(dataMap.get("verifyPassed").toString())) {
+                ServiceResult<UserInfo> userResult = userInfoService.getById(Long.parseLong(userId));
+                if (!userResult.getSuccess()) {
+                    log.error(userResult.getMessage());
+                    dataMap.put("success", false);
+                    dataMap.put("error", "");
+                    dataMap.put("msg", "获取当前登录用户异常");
+                }else{
+                    //UserInfo user = userResult.getResult();
+                    ServiceResult<List<UserInfo>> result = userInfoService.getUserByRoleId(Role.BUSINESS_ROLE_ID);
+                    if(!result.getSuccess()){
+                        log.error(result.getMessage());
+                        dataMap.put("success", false);
+                        dataMap.put("error", "");
+                        dataMap.put("msg", "获取业务人员异常");
+                    }else{
+                        List< Map<String, Object>> businessList = new ArrayList<Map<String, Object>>();
+                        for(UserInfo user : result.getResult()){
+                            Map<String, Object> business = new HashMap<String, Object>();
+                            business.put("id", user.getId());
+                            business.put("nickName", user.getNickName());
+                            businessList.add(business);
+                        }
+                        dataMap.put("businessList", businessList);
+                    }
+
+                }
+            }
+        }catch (Exception e) {
+            log.error("[AppCustomerController][searchBusiness] accepted token:{}, userId:{}, error:{}",
+                    token, userId, Throwables.getStackTraceAsString(e));
+            dataMap.put("success", false);
+            dataMap.put("error", "105");
+            dataMap.put("msg", "调用服务出错");
+        }
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(JsonUtil.toJson(dataMap));
+        response.getWriter().flush();
+        response.getWriter().close();
+    }
+
+    /**
+     * 客户分配
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/distribution", method = { RequestMethod.POST }, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public void distribution(
+            @RequestParam(value="token",required = true) String token,
+            @RequestParam(value="userId",required = true) String userId,
+            @RequestParam(value="customeId",required = true) String customeId,
+            @RequestParam(value="businessId",required = true) String businessId,
+            @RequestParam(value="businessNickName",required = true) String businessNickName,
+            HttpServletRequest request,
+            HttpServletResponse response)throws IOException {
+        log.info("[AppCustomerController][distribution] accepted token:{}, userId:{}, customeId:{}, businessId:{}, businessNickName:{}",
+                token, userId, customeId, businessId, businessNickName);
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        dataMap.put("success", true);
+        try {
+            dataMap = VerifyTokenUtil.verify(request, dataMap);
+            if (VerifyTokenUtil.VERIFY_SUCCESS.equals(dataMap.get("verifyPassed").toString())) {
+                ServiceResult<UserInfo> userResult = userInfoService.getById(Long.parseLong(userId));
+                if (!userResult.getSuccess()) {
+                    log.error(userResult.getMessage());
+                    dataMap.put("success", false);
+                    dataMap.put("error", "");
+                    dataMap.put("msg", "获取当前登录用户异常");
+                }else{
+                    UserInfo user = userResult.getResult();
+                    Customer customer = new Customer();
+                    customer.setId(Long.parseLong(customeId));
+                    customer.setResponsiblePerson(businessNickName);
+                    customer.setResponsiblePersonId(Integer.parseInt(businessId));
+                    customer.setUpdatedBy(user.getNickName());
+                    customer.setUpdatedAt(new Date());
+                    ServiceResult<Customer> result = customerService.updateCustomer(customer);
+                    if (!result.getSuccess()) {
+                        log.error("app客户分配失败！");
+                        dataMap.put("success", false);
+                        dataMap.put("error", "");
+                        dataMap.put("msg", "app客户分配失败" + result.getMessage());
+                    }
+                }
+            }
+        }catch (Exception e) {
+            log.error("[AppCustomerController][distribution] /createCustomer accepted token:{}, userId:{}, customeId:{}, businessId:{}, businessNickName:{}, error:{}",
+                    token, userId, customeId, businessId, businessNickName, Throwables.getStackTraceAsString(e));
             dataMap.put("success", false);
             dataMap.put("error", "105");
             dataMap.put("msg", "调用服务出错");
