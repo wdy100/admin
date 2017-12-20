@@ -19,6 +19,7 @@ public class VerifyTokenUtil {
         Boolean signFlag = Signatures.verify(request, VERIFY_KEY);
         if (!signFlag) {
             log.error("token未通过验证");
+            dataMap.put("success", false);
             dataMap.put("verifyPassed", VERIFY_FAIL);
             dataMap.put("error", "103");
             dataMap.put("msg", "token错误");
