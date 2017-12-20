@@ -61,7 +61,11 @@ public class Signatures {
         String expect = Hashing.md5().newHasher()
                 .putString(toVerify, Charsets.UTF_8)
                 .putString(restKey, Charsets.UTF_8).hash().toString();
-        return Objects.equal(expect, sign);
+        boolean result = Objects.equal(expect, sign);
+        if(!result){
+            log.error("token未通过验证,expect={}, sign={}, toVerify={}", expect, sign, toVerify);
+        }
+        return result;
     }
 
     private static boolean isValueEmptyOrSignRelatedKey(String key, String value) {

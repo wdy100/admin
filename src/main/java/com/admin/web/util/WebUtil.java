@@ -1,13 +1,5 @@
 package com.admin.web.util;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Map;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.haier.common.PagerInfo;
@@ -15,6 +7,12 @@ import com.haier.common.util.StringUtil;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Map;
 
 public class WebUtil {
     protected static org.apache.log4j.Logger log = org.apache.log4j.LogManager
@@ -74,6 +72,9 @@ public class WebUtil {
 					: Integer.parseInt(request.getParameter("rows"));
 			int pageIndex = "".equals(StringUtil.nullSafeString(request.getParameter("page"))) ? 1
 					: Integer.parseInt(request.getParameter("page"));
+			if(pageIndex == 0){
+				pageIndex = 1;
+			}
 
 			if (map instanceof ModelAndView) {
 				((ModelAndView) map).addObject("pageSize", pageSize);
