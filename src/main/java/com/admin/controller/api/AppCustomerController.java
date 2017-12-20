@@ -216,6 +216,12 @@ public class AppCustomerController {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         Map <String, Object> criteria = Maps.newHashMap();
         dataMap.put("success", true);
+        if(userId == null || "".equals(userId)){
+            log.error("获取当前登录用户异常,userId不能为空");
+            dataMap.put("success", false);
+            dataMap.put("error", "");
+            dataMap.put("msg", "获取当前登录用户异常,userId不能为空");
+        }
         try {
             dataMap = VerifyTokenUtil.verify(request, dataMap);
             if (VerifyTokenUtil.VERIFY_SUCCESS.equals(dataMap.get("verifyPassed").toString())) {
