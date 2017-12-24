@@ -28,13 +28,13 @@
 			<@form.form method="post" class="validForm" id="addForm" name="addForm">
 			<tr>
 				<td class="tdright" width="130">合同签署单位：<em style="font-style:normal;color:#c7003a">*</em></td>
-				<td><input class="" name="firstParty" id="firstParty" />     
+				<td><input class="" name="firstParty" id="firstParty" value="${(agreementInfo.firstParty)!''}"/>     
 			    </td>
 		  	</tr>
 		  	
 		  	<tr>
 				<td class="tdright" width="130">项目名称：<em style="font-style:normal;color:#c7003a">*</em></td>
-				<td><input class="" name="projectName" id="projectName" />    
+				<td><input class="" name="projectName" id="projectName" value="${(agreementInfo.projectName)!''}" />    
 			    </td>
 		  	</tr>
 		  	
@@ -129,34 +129,20 @@
 					<td>安装费及辅材费用合计（元/套）</td>
                     
                 </tr>
-                </thead>                  
+                </thead>
+                <#if agreementGoodsList?? >
+                <#list agreementGoodsList as agreementGood >
                 <tr class="table-tr">
-                	<td><input type="text" value="系统名称" name="systemName" /></td>
-                	<td><input type="text" value="硬件名称" name="hardwareName" /></td>
-                	<td><input type="text" value="3" name="goodsNum" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="500.0" name="price" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="200.0" name="hardwareAmount" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="100.0" name="serviceAmount" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="300.0" name="allAmount" style="width:80px; text-align: center;"/></td>
+                    <td><input type="text" name="systemName" value="${(agreementGood.systemName)!''}"  /></td>
+                    <td><input type="text" name="hardwareName" value="${(agreementGood.hardwareName)!''}"   /></td>
+                    <td><input type="text" name="goodsNum" value="${(agreementGood.goodsNum)!''}"  style="width:40px"  /></td>
+                    <td><input type="text" name="price" value="${(agreementGood.price?string("0.00"))!''}" style="width:50px"   /></td>
+                    <td><input type="text" name="hardwareAmount" value="${(agreementGood.hardwareAmount?string("0.00"))!''}" style="width:80px" /></td>
+                    <td><input type="text" name="serviceAmount" value="${(agreementGood.serviceAmount?string("0.00"))!''}" style="width:80px"  /></td>
+                    <td><input type="text" name="allAmount" value="${(agreementGood.allAmount?string("0.00"))!''}" style="width:80px" /></td>
                 </tr>
-                <tr class="table-tr">
-                	<td><input type="text" value="系统名称2" name="systemName" /></td>
-                	<td><input type="text" value="硬件名称2" name="hardwareName" /></td>
-                	<td><input type="text" value="4" name="goodsNum" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="501.0" name="price" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="201.0" name="hardwareAmount" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="101.0" name="serviceAmount" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="301.0" name="allAmount" style="width:80px; text-align: center;"/></td>
-                </tr>
-                <tr class="table-tr">
-                	<td><input type="text" value="" name="" /></td>
-                	<td><input type="text" value="" name="" /></td>
-                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
-                	<td><input type="text" value="" name="" style="width:80px; text-align: center;"/></td>
-                </tr> 
+                </#list >
+                </#if>                  
                 
             </table>    
             <input type="hidden" id="agreementId" name="agreementId" value="${(agreementId)!''}"/>
