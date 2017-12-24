@@ -44,7 +44,7 @@ public class PerformanceReports extends BaseEntity {
 
     private String daily;
 
-    private BigDecimal checkRanking;
+    private Integer checkRanking;
 
     private Integer enable;
 }

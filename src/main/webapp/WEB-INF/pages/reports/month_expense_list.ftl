@@ -31,7 +31,6 @@
         <table id="dg">
             <thead>
             <tr>
-                <th data-options="field:'ck',checkbox:true,formatter : function(value, row, index) {return row.id;}"></th>
                 <th data-options="field:'month',width:150,halign:'center',align:'left'">月份</th>
                 <th data-options="field:'fuelCharge',width:200,halign:'center',align:'left'">燃油费</th>
                 <th data-options="field:'busFee',width:200,halign:'center',align:'left'">公交/长途车</th>

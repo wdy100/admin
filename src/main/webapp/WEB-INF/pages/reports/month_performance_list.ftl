@@ -31,7 +31,6 @@
         <table id="dg">
             <thead>
             <tr>
-                <th data-options="field:'ck',checkbox:true,formatter : function(value, row, index) {return row.id;}"></th>
                 <th data-options="field:'month',width:150,halign:'center',align:'left'">月份</th>
                 <th data-options="field:'orderMonthTarget',width:200,halign:'center',align:'left'">订单完成目标</th>
                 <th data-options="field:'orderMonthActual',width:200,halign:'center',align:'left'">订单完成实际</th>

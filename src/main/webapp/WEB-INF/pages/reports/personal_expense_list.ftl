@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <#include "../common/easyui_core.ftl"/>
-    <title>费用支出报表-当月累计</title>
+    <title>费用支出报表-人员累计</title>
     <style type="text/css">
 
     </style>
@@ -35,7 +35,6 @@
         <table id="dg">
             <thead>
             <tr>
-                <th data-options="field:'ck',checkbox:true,formatter : function(value, row, index) {return row.id;}"></th>
                 <th data-options="field:'name',width:150,halign:'center',align:'left'">人员</th>
                 <th data-options="field:'month',width:150,halign:'center',align:'left'">月份</th>
                 <th data-options="field:'fuelCharge',width:200,halign:'center',align:'left'">燃油费</th>
@@ -60,7 +59,7 @@
 
     $(function(){
         $('#dg').datagrid({
-            title:'费用支出报表-当月累计',
+            title:'费用支出报表-人员累计',
             toolbar:'#tb',
             singleSelect:true,
             fit:true,

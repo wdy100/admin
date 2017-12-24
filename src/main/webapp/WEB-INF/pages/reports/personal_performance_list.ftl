@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <#include "../common/easyui_core.ftl"/>
-    <title>业绩完成率报表-当月累计</title>
+    <title>业绩完成率报表-人员累计</title>
     <style type="text/css">
 
     </style>
