@@ -84,7 +84,6 @@ public class ExpenseReportsController {
 
     @RequestMapping("/findMonthExpenseList")
     public void findMonthExpenseList(@RequestParam(required = false) Integer year,
-                                        @RequestParam(required = false) Integer month,
                                         @RequestParam(required = false) Integer rows,
                                         @RequestParam(required = false) Integer page,
                                         HttpServletRequest request, HttpServletResponse response) {
@@ -98,7 +97,6 @@ public class ExpenseReportsController {
             params.put("n", rows);
             //参数加入params里
             params.put("year", year);
-            params.put("month", month);
 
             ServiceResult<List<ExpenseReports>> result = expenseReportsService.getExpenseReportsListByMonth(params);
             if(result == null || !result.getSuccess()) {
