@@ -1,42 +1,45 @@
 package com.admin.controller.reports;
 
-import com.admin.entity.reports.ExpenseReports;
-import com.admin.service.reports.ReportsService;
-import com.haier.common.BusinessException;
-import com.haier.common.ServiceResult;
-import com.haier.common.util.JsonUtil;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.apache.log4j.LogManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.admin.entity.reports.PerformanceReports;
+import com.admin.service.reports.ReportsService;
+import com.haier.common.BusinessException;
+import com.haier.common.ServiceResult;
+import com.haier.common.util.JsonUtil;
 
 /**
- * Created by lx on 2017/12/19.
+ * Created by lx on 17-12-24.
  */
 @Controller
 @RequestMapping("/report")
 @Slf4j
-public class ExpenseReportsController {
-    private final static org.apache.log4j.Logger logger = LogManager.getLogger(ExpenseReportsController.class);
+public class PerformanceReportsController {
+    private final static org.apache.log4j.Logger logger = LogManager.getLogger(PerformanceReportsController.class);
 
     @Resource
     private ReportsService reportsService;
 
-    @RequestMapping(value = "personalExpense.html", method = { RequestMethod.GET, RequestMethod.POST })
+    @RequestMapping(value = "personalPerformance.html", method = { RequestMethod.GET, RequestMethod.POST })
     public String personalExpense(HttpServletRequest request,Map<String, Object> dataMap) throws Exception {
-        return "reports/personal_expense_list";
+        return "reports/personal_performance_list";
     }
 
-    @RequestMapping("/findPersonalExpenseList")
+    @RequestMapping("/findPersonalPerformanceList")
     public void findPersonalExpenseList(@RequestParam(required = false) Integer year,
                                         @RequestParam(required = false) Integer month,
                                         @RequestParam(required = false) Integer rows,
@@ -54,39 +57,39 @@ public class ExpenseReportsController {
             params.put("year", year);
             params.put("month", month);
 
-            ServiceResult<List<ExpenseReports>> result = reportsService.getExpenseReportsListByPerson(params);
+            ServiceResult<List<PerformanceReports>> result = reportsService.getPerformanceReportsListByPerson(params);
             if(result == null || !result.getSuccess()) {
-                logger.error("人员费用支出报表查询失败");
-                throw new BusinessException("人员费用支出报表查询失败");
+                logger.error("人员业绩完成率报表查询失败");
+                throw new BusinessException("人员业绩完成率报表查询失败");
             }
-            List<ExpenseReports> expenseReportsList = result.getResult();
+            List<PerformanceReports> performanceReportsList = result.getResult();
 
             //获得条数
-            int resultcount = expenseReportsList.size();
+            int resultcount = performanceReportsList.size();
             Map<String, Object> retMap = new HashMap<String, Object>();
             retMap.put("total", resultcount);
-            retMap.put("rows", expenseReportsList);
+            retMap.put("rows", performanceReportsList);
 
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(JsonUtil.toJson(retMap));
             response.getWriter().flush();
             response.getWriter().close();
         } catch (Exception e) {
-            logger.error("人员费用支出报表查询失败", e);
-            throw new BusinessException("人员费用支出报表查询失败" + e.getMessage());
+            logger.error("人员业绩完成率报表查询失败", e);
+            throw new BusinessException("人员业绩完成率报表查询失败" + e.getMessage());
         }
     }
 
-    @RequestMapping(value = "monthExpense.html", method = { RequestMethod.GET, RequestMethod.POST })
+    @RequestMapping(value = "monthPerformance.html", method = { RequestMethod.GET, RequestMethod.POST })
     public String monthExpense(HttpServletRequest request,Map<String, Object> dataMap) throws Exception {
-        return "reports/month_expense_list";
+        return "reports/month_performance_list";
     }
 
-    @RequestMapping("/findMonthExpenseList")
+    @RequestMapping("/findMonthPerformanceList")
     public void findMonthExpenseList(@RequestParam(required = false) Integer year,
-                                        @RequestParam(required = false) Integer rows,
-                                        @RequestParam(required = false) Integer page,
-                                        HttpServletRequest request, HttpServletResponse response) {
+                                     @RequestParam(required = false) Integer rows,
+                                     @RequestParam(required = false) Integer page,
+                                     HttpServletRequest request, HttpServletResponse response) {
         try {
             if (rows == null)
                 rows = 20;
@@ -98,26 +101,26 @@ public class ExpenseReportsController {
             //参数加入params里
             params.put("year", year);
 
-            ServiceResult<List<ExpenseReports>> result = reportsService.getExpenseReportsListByMonth(params);
+            ServiceResult<List<PerformanceReports>> result = reportsService.getPerformanceReportsListByMonth(params);
             if(result == null || !result.getSuccess()) {
-                logger.error("按月费用支出报表查询失败");
-                throw new BusinessException("按月费用支出报表查询失败");
+                logger.error("按月业绩完成率报表查询失败");
+                throw new BusinessException("按月业绩完成率报表查询失败");
             }
-            List<ExpenseReports> expenseReportsList = result.getResult();
+            List<PerformanceReports> performanceReportsList = result.getResult();
 
             //获得条数
-            int resultcount = expenseReportsList.size();
+            int resultcount = performanceReportsList.size();
             Map<String, Object> retMap = new HashMap<String, Object>();
             retMap.put("total", resultcount);
-            retMap.put("rows", expenseReportsList);
+            retMap.put("rows", performanceReportsList);
 
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(JsonUtil.toJson(retMap));
             response.getWriter().flush();
             response.getWriter().close();
         } catch (Exception e) {
-            logger.error("按月费用支出报表查询失败", e);
-            throw new BusinessException("按月费用支出报表查询失败" + e.getMessage());
+            logger.error("按月业绩完成率报表查询失败", e);
+            throw new BusinessException("按月业绩完成率报表查询失败" + e.getMessage());
         }
     }
 }
