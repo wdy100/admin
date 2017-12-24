@@ -5,6 +5,7 @@ import java.util.Map;
 import com.admin.entity.agreement.AgreementApproval;
 import com.admin.entity.agreement.AgreementGoods;
 import com.admin.entity.agreement.AgreementInfo;
+import com.admin.entity.agreement.AgreementPay;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
 
@@ -32,4 +33,8 @@ public interface AgreementService {
     public ServiceResult<List<AgreementApproval>> selectAgreementApprovalByAgreeId(Long agreeId);
     
     public ServiceResult<Boolean> saveAgreementApproval(AgreementApproval agreementApproval);
+    
+    public ServiceResult<Boolean> saveAgreementPay(AgreementPay agreementPay);
+    
+    public ServiceResult<Map<String, Object>> selectAgreementPayByAgreeId(Map<String, Object> paramMap, PagerInfo pagerInfo);
 }

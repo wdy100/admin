@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.admin.entity.agreement.AgreementApproval;
 import com.admin.entity.agreement.AgreementGoods;
 import com.admin.entity.agreement.AgreementInfo;
+import com.admin.entity.agreement.AgreementPay;
 import com.admin.service.agreement.AgreementService;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.Util;
@@ -74,7 +75,7 @@ public class AgreementFinanceController {
     }
     
     @RequestMapping(value = { "agreementList" })
-    public void roleList(HttpServletRequest request, HttpServletResponse response,
+    public void agreementList(HttpServletRequest request, HttpServletResponse response,
                               Map<String, Object> modelMap) {
         Map <String, Object> criteria = Maps.newHashMap();
         try {
@@ -112,6 +113,55 @@ public class AgreementFinanceController {
         } catch (IOException e) {
             log.error("合同列表查询失败", e);
             throw new BusinessException("合同列表查询失败" + e.getMessage());
+        }
+    }
+    
+    @RequestMapping(value = { "saveAgreementPay" })
+    @ResponseBody
+    public Object saveAgreementPay(HttpServletRequest request, HttpServletResponse response,
+                              Map<String, Object> modelMap,AgreementPay agreementPay) {
+        HttpJsonResult<Map<String,Object>> result=new HttpJsonResult<Map<String, Object>>();
+    	Map<String,Object> resultMap=new HashMap<String, Object>();
+        try {
+            
+            ServiceResult<Boolean> serviceResult = agreementService.saveAgreementPay(agreementPay);
+            if(serviceResult!=null && serviceResult.getSuccess()){
+            	resultMap.put("result",true);
+            }
+        } catch (Exception e) {
+        	result.setMessage("修改失败！");
+            log.error("合同付款保存失败", e);
+            throw new BusinessException("合同付款保存失败" + e.getMessage());
+        }
+        result.setData(resultMap);
+        return result;
+    }
+    
+    @RequestMapping(value = { "agreementPayList" })
+    public void agreementPayList(HttpServletRequest request, HttpServletResponse response,
+                              Map<String, Object> modelMap) {
+        Map <String, Object> criteria = Maps.newHashMap();
+        try {
+        	//查询参数
+        	criteria.put("agreeId", request.getParameter("agreeId"));
+            PagerInfo pager = WebUtil.handlerPagerInfo(request, modelMap);
+            ServiceResult<Map<String, Object>> serviceResult = agreementService.selectAgreementPayByAgreeId(criteria, pager);
+            if(serviceResult.getSuccess()){
+                Map<String, Object> map = serviceResult.getResult();
+                if(map!=null&&map.size()>0){
+                    List<AgreementPay> list = (List<AgreementPay>)map.get("data");
+                    int total = (Integer)map.get("total");
+                    modelMap.put("total", total);
+                    modelMap.put("rows", list);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write(JsonUtil.toJson(modelMap));
+                    response.getWriter().flush();
+                    response.getWriter().close();
+                }
+            }
+        } catch (IOException e) {
+            log.error("合同付款列表查询失败", e);
+            throw new BusinessException("合同付款列表查询失败" + e.getMessage());
         }
     }
     

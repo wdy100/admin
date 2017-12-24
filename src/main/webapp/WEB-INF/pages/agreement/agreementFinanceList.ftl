@@ -30,6 +30,7 @@
                      
                     <td class="cxlabel">
                         <a id="searchPt" href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+                        <a id="editPayRatio" href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="false" >付款录入</a>
                         <a id="editRatio" href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="false" >付款比例修改</a>
                     </td>
 
@@ -41,28 +42,82 @@
 </div>
 
 <!-- create  -->
-<div class="easyui-dialog" id="editRatioDiv" style="width:320px;height:380px;"
+<div class="easyui-dialog" id="payListDiv" style="width:486px;height:450px;"
+     data-options="modal:true,closed:true,resizable:false" >
+    <div data-options="region:'center',border:false" style="left: 0px; top: 0px; width:486px;height:450px;">
+        <table id="dataGridPay"></table>
+    </div>
+</div>
+
+<!-- create  -->
+<div class="easyui-dialog" id="addPayDiv" style="width:320px;height:780px;"
      data-options="modal:true,closed:true,resizable:false" >
     <table>
-        <tr>
-            <td style="text-align: right;">首付款比例<span style="color:red;">*</span>:</td>
+        <!--<tr>
+            <td style="text-align: right;">付款类型<span style="color:red;">*</span>:</td>
             <td>
-                <input id="firstRatio_input" name="firstRatio_input" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:80px;"></input>%
+                <input id="payType_input" name="payType_input" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:100px;"></input>
+            </td>
+        </tr> -->
+        
+        <tr>
+            <td style="text-align: right;">付款金额<span style="color:red;">*</span>:</td>
+            <td>
+                <input id="payAmount_input" name="payAmount_input" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:100px;"></input>
             </td>
         </tr>
         <tr>
-            <td style="text-align: right;">尾款比例<span style="color:red;">*</span>:</td>
+            <td style="text-align: right;">付款人<span style="color:red;">*</span>:</td>
             <td>
-                <input id="lastRatio_input" name="lastRatio_input" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:80px;"></input>%
+                <input id="userName_input" name="userName_input" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:100px;"></input>
             </td>
-            <input id="Ratio_id" name="Ratio_id" type="text"  style="width:80px;" hidden='true' />
         </tr>
+        <tr>
+            <td style="text-align: right;">备注信息<span style="color:red;"> </span>:</td>
+            <td>
+                <input id="remark_input" name="remark_input" type="text" class="easyui-textbox" data-options="validType:'maxLength[100]'" style="width:100px;"></input>
+            </td>
+        </tr>
+        <input id="agreeId" name="agreeId" type="text"  style="width:80px;" hidden='true' />
+    </table>
+</div>
+
+<div class="easyui-dialog" id="addPayDiv" style="width:320px;height:780px;"
+     data-options="modal:true,closed:true,resizable:false" >
+    <table>
+        <!--<tr>
+            <td style="text-align: right;">付款类型<span style="color:red;">*</span>:</td>
+            <td>
+                <input id="payType_input" name="payType_input" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:100px;"></input>
+            </td>
+        </tr> -->
+        
+        <tr>
+            <td style="text-align: right;">付款金额<span style="color:red;">*</span>:</td>
+            <td>
+                <input id="payAmount_input" name="payAmount_input" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:100px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">付款人<span style="color:red;">*</span>:</td>
+            <td>
+                <input id="userName_input" name="userName_input" type="text" class="easyui-textbox" data-options="required:true,missingMessage:'该输入项为必输项'" style="width:100px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">备注信息<span style="color:red;"> </span>:</td>
+            <td>
+                <input id="remark_input" name="remark_input" type="text" class="easyui-textbox" data-options="validType:'maxLength[100]'" style="width:100px;"></input>
+            </td>
+        </tr>
+        <input id="agreeId" name="agreeId" type="text"  style="width:80px;" hidden='true' />
     </table>
 </div>
 
 
 <script type="text/javascript">
 var datagrid;
+var datagridPay;
 var queryParameters;
 
 // 判断是否为空
@@ -88,6 +143,8 @@ function toAgreementUpload(id){
 };
 
 var editRatioDivDialog;
+var addPayDivDialog;
+var payListDivDialog;
 //修改比率
 $('#editRatio').click(function () {
     //grid加载
@@ -102,9 +159,89 @@ $('#editRatio').click(function () {
     }
 });
 
+//添加付款信息
+$('#editPayRatio').click(function () {
+    //grid加载
+    var row = $('#dataGrid').datagrid('getSelected');
+    if(row){
+    	$('#agreeId').val(row.id);
+    	addPayDivDialog.dialog('open');
+    }else{
+        $.messager.alert('提示', '请选择一条记录！', 'warning');
+    }
+});
+
+
+function toPayDetail(id) {
+    //grid加载
+    payListDivDialog.dialog('open');
+    $('#dataGridPay').datagrid({
+        title:'合同付款信息列表',
+        toolbar:'#tb',
+        singleSelect:true,
+        fitColumns: false,
+        fit: true,
+        collapsible: true,
+        rownumbers: true, //显示行数 1，2，3，4...
+        pagination: true, //显示最下端的分页工具栏
+        pageList: [5,10], //可以调整每页显示的数据，即调整pageSize每次向后台请求数据时的数据
+        pageSize: 10, //读取分页条数，即向后台读取数据时传过去的值
+        url:'/agreementFinance/agreementPayList',
+        queryParams: {agreeId:id},
+        columns: [
+            [
+                {
+                    field: 'id',
+                    width: 10,
+                    align: 'center',
+                    hidden:true
+                },{
+                    field: 'checked',
+                    width: 10,
+                    align: 'center',
+                    checkbox:true
+                },
+                {
+                    field: 'userName',
+                    title: '收款人',
+                    width: 100,
+                    align: 'center'
+                },{
+                    field: 'shouldPay',
+                    title: '应付金额',
+                    width: 60,
+                    align: 'center'
+                },{
+                    field: 'payAmount',
+                    title: '支付金额',
+                    width: 60,
+                    align: 'center'
+                },{
+                    field: 'createdAt',
+                    title: '支付时间',
+                    width: 100,
+                    align: 'center'
+                },{
+                    field: 'remark',
+                    title: '备注',
+                    width: 100,
+                    align: 'center'
+                }
+            ]
+        ]
+    });
+    
+    $('#dataGridPay').datagrid('load');
+};
+var regex = /^\d+\.?\d{0,2}$/;
+
 function submitForm(){
         var firstRatio = $('#firstRatio_input').val();
         var lastRatio = $('#lastRatio_input').val();
+        if (!regex.test(firstRatio)|| !regex.test(lastRatio)){
+        	$.messager.alert('提示',"付款比例必须为数字！");
+        	return;
+        }
         var Ratio_id = $('#Ratio_id').val();
         $.ajax({
             type:'post',
@@ -128,7 +265,40 @@ function submitForm(){
         });
 
     }
-    
+
+function submitAddPayForm(){
+        var agreeId = $('#agreeId').val();
+        var payType = $('#payType_input').val();
+        var payAmount = $('#payAmount_input').val();
+        var userName = $('#userName_input').val();
+        var remark = $('#remark_input').val();
+        if(!regex.test(payAmount) ){
+        	$.messager.alert('提示',"付款金额必须为数字！");
+        	return;
+        }
+        $.ajax({
+            type:'post',
+            url:'/agreementFinance/saveAgreementPay',
+            dataType : "json",
+            data:{agreeId:agreeId,payAmount:payAmount,remark:remark,userName:userName, payType:payType},
+            cache:false,
+            async:false,
+            success:function(data){
+                $.messager.progress('close');
+                if(!data.success){
+                    $.messager.alert('提示',data.message);
+                }
+                $('#dataGrid').datagrid('load',queryParamsHandler());
+                addPayDivDialog.dialog('close');
+                $.messager.alert('提示',"修改成功");
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
+            }
+        });
+
+    }
+        
 function approvalStatusFormatter(value, row, index){
 	//审批状态。0已保存待提交 1待内勤初审 2总监审核 3合同上传 4签订完成
 	var result = "";
@@ -233,6 +403,15 @@ $(function(){
                     	return result;
                     }
                 },{
+                    field: 'toPayDetail',
+                    title: '付款详情',
+                    width: 70,
+                    align: 'center',
+                    formatter: function(value, row, index){
+                    	var result = '<a href="#" onclick="toPayDetail(\'' + row.id + '\' )">查看</a> ';
+                    	return result;
+                    }
+                },{
                     field: 'operate',
                     title: '操作',
                     width: 70,
@@ -248,6 +427,7 @@ $(function(){
             ]
         ]
     });
+    
     
     editRatioDivDialog = $("#editRatioDiv").dialog({
             title: '修改合同付款比例',
@@ -268,6 +448,46 @@ $(function(){
                 iconCls:'icon-cancel',
                 handler:function(){
                     editRatioDivDialog.dialog('close');
+                }
+            }]
+        });
+        
+    addPayDivDialog = $("#addPayDiv").dialog({
+            title: '添加合同付款信息',
+            width: 300,
+            height: 250,
+            top: 30,
+            closed: true,
+            cache: false,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                iconCls:'icon-ok',
+                handler:function(){
+                    submitAddPayForm();
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    addPayDivDialog.dialog('close');
+                }
+            }]
+        });
+        
+    payListDivDialog = $("#payListDiv").dialog({
+            title: '',
+            width: 500,
+            height: 505,
+            top: 30,
+            closed: true,
+            cache: false,
+            modal: true,
+            buttons:[{
+                text:'关闭',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    payListDivDialog.dialog('close');
                 }
             }]
         });

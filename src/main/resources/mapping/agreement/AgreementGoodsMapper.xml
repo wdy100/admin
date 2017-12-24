@@ -59,8 +59,7 @@
 	        #{obj.hardwareAmount},
 	        #{obj.serviceAmount},
 	        #{obj.allAmount},
-            #{obj.createdBy},
-            now(),
+            #{obj.createdBy},now(),
             null,null,null
         )
         </foreach>  
