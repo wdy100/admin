@@ -61,7 +61,8 @@
 <script type="text/javascript">
 	var agreementId = $('#agreementId').val();
 	$(".downloadbtn").click(function(){
-	    window.location.href="/agreementInfo/toAgreementDetail.html?id="+agreementId;
+	    //window.location.href="/agreementInfo/toAgreementDetail.html?id="+agreementId;
+	    window.open("/agreementInfo/toAgreementDetail.html?id="+agreementId);
 	});
 	
 </script>

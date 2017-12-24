@@ -134,12 +134,10 @@ $('#searchPt').click(function () {
     $('#dataGrid').datagrid('load',queryParamsHandler());
 });
 
-function toApproval(id){
-	window.location.href="/agreementInfo/toApproval?id="+id;
-};
 
-function toAgreementUpload(id){
-	window.location.href="/agreementInfo/toAgreementUpload?id="+id;
+function toAgreementDetail(id){
+	//window.location.href="/agreementInfo/toAgreementUpload?id="+id;
+	window.open("/agreementInfo/toAgreementDetail.html?id="+id);
 };
 
 var editRatioDivDialog;
@@ -399,7 +397,7 @@ $(function(){
                     width: 70,
                     align: 'center',
                     formatter: function(value, row, index){
-                    	var result = '<a href="#" onclick="doEdit(\'' + row.id + '\' )">详情</a> ';
+                    	var result = '<a href="#" onclick="toAgreementDetail(\'' + row.id + '\' )">详情</a> ';
                     	return result;
                     }
                 },{

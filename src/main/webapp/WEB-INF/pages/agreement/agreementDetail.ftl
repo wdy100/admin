@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta property="wb:webmaster" content="6ffdc657eef2403e" />
-	<title>合同签订</title>
+	<title>合同签订详情</title>
 	<#include "../common/easyui_core.ftl"/>
 	<link href="${domainUrlUtil.staticURL}/css/styleAgreement.css"  rel="stylesheet" />
 	
@@ -17,7 +17,7 @@
 <div class="bigwrapper">
 	<div class="wrapper clearfix container-40">
 		<!--位置导航-->
-		<input id="printbtn" type="button" value="打印" style="margin:20px 0 0 200px;">
+		<input id="printbtn" type="button" value="打&emsp;印" style="margin:20px 0 0 200px;width:100px;height:35px;">
 		<!--startprint1-->
 		 <div class="newedit">
 					<strong style="color: #1361a6;line-height:30px">合同详情:</strong>
@@ -29,9 +29,9 @@
                                 <img src="${domainUrlUtil.staticURL}/images/image002.gif"/>
                                 <strong style=" display:block;font-size: 50px">淼盾物联</strong>
                                 <p style="font-size: 20px;margin-top:100px;">青岛淼盾八哥网络科技有限公司</p>
-                                <p style="font-size: 20px;">二0一七年<span style="width:70px;display: inline-block"></span>月</p>
+                                <p style="font-size: 20px;"> 年<span style="width:70px;display: inline-block"></span>月</p>
                             </div>
-                            <p style="text-align: right">编号：2017010 </p>
+                            <p style="text-align: right">编号：${(agreementInfo.agreeSn)!''}</p>
                             <p class="patop20px">甲方：<span class="spanborbm" style="width:300px;">${(agreementInfo.firstParty)!''}</span>（以下简称甲方）</p>
                             <p class="patop20px">乙方：<span class="spanborbm" style="width:300px;"> 青岛淼盾八哥网络科技有限公司 </span>（以下简称乙方）</p>
 
@@ -44,7 +44,7 @@
                                 </tr>
                                 <tr>
                                     <td>甲方名称</td>
-                                    <td></td>
+                                    <td>${(agreementInfo.firstParty)!''}</td>
                                     <td>乙方名称</td>
                                     <td>青岛淼盾八哥网络科技有限公司</td>
                                 </tr>
@@ -112,74 +112,43 @@
                                     <td>安装费及辅材费用合计（元/套）</td>
                                 </tr>
                                 </thead>
+                                <#if agreementGoodsList?? >
+                                <#list agreementGoodsList as agreementGood >
                                 <tr>
-                                    <td rowspan="2"><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
+                                    <td><input type="text" value="${(agreementGood.systemName)!''}"  disabled="disabled" /></td>
+                                    <td><input type="text" value="${(agreementGood.hardwareName)!''}"  disabled="disabled" /></td>
+                                    <td><input type="text" value="${(agreementGood.goodsNum)!''}"  style="width:40px" disabled="disabled" /></td>
+                                    <td><input type="text" value="${(agreementGood.price?string("0.00"))!''}" style="width:50px"  disabled="disabled" /></td>
+                                    <td><input type="text" value="${(agreementGood.hardwareAmount?string("0.00"))!''}" style="width:80px" disabled="disabled" /></td>
+                                    <td><input type="text" value="${(agreementGood.serviceAmount?string("0.00"))!''}" style="width:80px" disabled="disabled" /></td>
+                                    <td><input type="text" value="${(agreementGood.allAmount?string("0.00"))!''}" style="width:80px" disabled="disabled" /></td>
                                 </tr>
-                                <tr>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                    <td><input type="checkbox" value="值" name="名称" checked="checked"/></td>
-                                </tr>
+                                </#list >
+                                </#if>
+                                
                                 <tr>
                                     <td>设备费合计</td>
-                                    <td colspan="6">¥.00元</td>
+                                    <td colspan="6">¥${(agreementInfo.hardwareAll?string("0.00"))!''}元</td>
                                 </tr>
                                 <tr>
                                     <td>安装费合计</td>
-                                    <td colspan="6">¥.00元</td>
+                                    <td colspan="6">¥${(agreementInfo.installAll?string("0.00"))!''}元</td>
                                 </tr>
                                 <tr>
                                     <td>服务费合计</td>
-                                    <td colspan="6">¥.00元</td>
+                                    <td colspan="6">¥${(agreementInfo.serviceAll?string("0.00"))!''}元</td>
                                 </tr>
                                 <tr>
                                     <td>费用总合计</td>
-                                    <td colspan="6">¥.00元</td>
+                                    <td colspan="6">¥${(agreementInfo.expensesAll?string("0.00"))!''}元</td>
                                 </tr>
                                 <tr>
                                     <td>服务费</td>
-                                    <td colspan="6">第二年√  月 √ 日起付 ¥.00元（每年）</td>
+                                    <td colspan="6">第二年${(agreementInfo.serviceMonth)!''}月 ${(agreementInfo.serviceDay)!''}日起付 ¥${(agreementInfo.serviceYearAll?string("0.00"))!''}元（每年）</td>
                                 </tr>
                                 <tr>
                                     <td>合同应付款总额：</td>
-                                    <td colspan="6">√圆整  人民币小写：¥.00元</td>
+                                    <td colspan="6">${(agreementInfo.agreementAmountUpper)!''}  人民币小写：¥${(agreementInfo.agreementAmount)!''}元</td>
                                 </tr>
                                 <tr>
                                     <td colspan="7" align="left" style="padding:10px">
