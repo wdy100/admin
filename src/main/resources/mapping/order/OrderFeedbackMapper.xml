@@ -45,7 +45,7 @@
     values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER},  #{customerCode,jdbcType=VARCHAR},  #{customerName,jdbcType=VARCHAR},
       #{responsiblePerson,jdbcType=VARCHAR}, #{responsiblePersonId,jdbcType=INTEGER},  #{description,jdbcType=VARCHAR},
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
-      #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}
+      #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 0
       )
   </insert>
 
