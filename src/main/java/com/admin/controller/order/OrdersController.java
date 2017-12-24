@@ -1,6 +1,9 @@
 package com.admin.controller.order;
 
+import com.admin.entity.order.OrderFeedback;
 import com.admin.entity.order.Orders;
+import com.admin.service.order.OrderFeedbackService;
+import com.admin.service.order.OrderFeedbackService;
 import com.admin.service.order.OrdersService;
 import com.admin.service.system.ResourceInfoService;
 import com.admin.web.util.*;
@@ -45,7 +48,12 @@ public class OrdersController {
     private ResourceInfoService resourceInfoService;
     @Resource
     private OrdersService ordersService;
+    @Resource
+    private OrderFeedbackService orderFeedbackService;
 
+    /**
+     * 订单查询
+     * */
     @RequestMapping(value = "order.html", method = { RequestMethod.GET, RequestMethod.POST })
     public String index(HttpServletRequest request,Map<String, Object> dataMap) throws Exception {
         Long userId = (Long)(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_ID));
@@ -54,21 +62,36 @@ public class OrdersController {
             return "redirect:/login.html";
         }
         Map<String, String> buttonsMap = resourceInfoService.getButtonCodeByUserId(userId);
-//        String showDistributionOrdersButton = "NO";
-//        String showCreateOrdersButton = "NO";
-//        String showFeedbackOrdersButton = "NO";
-//        if(buttonsMap.containsKey(ButtonConstant.CUSTOMER_DISTRIBUTION_CODE)){
-//            showDistributionOrdersButton = "YES";
-//        }
-//        if(buttonsMap.containsKey(ButtonConstant.CUSTOMER_ADD_CODE)){
-//            showCreateOrdersButton = "YES";
-//        }
-//        if(buttonsMap.containsKey(ButtonConstant.CUSTOMER_FEEDBACK_CODE)){
-//            showFeedbackOrdersButton = "YES";
-//        }
-//        dataMap.put("showDistributionOrdersButton", showDistributionOrdersButton);
-//        dataMap.put("showCreateOrdersButton", showCreateOrdersButton);
-//        dataMap.put("showFeedbackOrdersButton", showFeedbackOrdersButton);
+        return "order/order_list";
+    }
+
+    /**
+     * 订单执行
+     * */
+    @RequestMapping(value = "orderExecute.html", method = { RequestMethod.GET, RequestMethod.POST })
+    public String orderExecute(HttpServletRequest request,Map<String, Object> dataMap) throws Exception {
+        Long userId = (Long)(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_ID));
+        if (null == userId) {
+            log.error("[OrdersController][orderExecute] userId不存在,userId={}", userId);
+            return "redirect:/login.html";
+        }
+        Map<String, String> buttonsMap = resourceInfoService.getButtonCodeByUserId(userId);
+
+        String showFeedbackOrdersButton = "NO";
+        String showPreInstallTimeOrdersButton = "NO";
+        String showAcceptanceOrdersButton = "NO";
+        if(buttonsMap.containsKey(ButtonConstant.ORDER_FEEDBACK_CODE)){
+            showFeedbackOrdersButton = "YES";
+        }
+        if(buttonsMap.containsKey(ButtonConstant.ORDER_PRE_INSTALL_TIME_CODE)){
+            showPreInstallTimeOrdersButton = "YES";
+        }
+        if(buttonsMap.containsKey(ButtonConstant.ORDER_ACCEPTANCE_CODE)){
+            showAcceptanceOrdersButton = "YES";
+        }
+        dataMap.put("showFeedbackOrdersButton", showFeedbackOrdersButton);
+        dataMap.put("showPreInstallTimeOrdersButton", showPreInstallTimeOrdersButton);
+        dataMap.put("showAcceptanceOrdersButton", showAcceptanceOrdersButton);
         return "order/order_list";
     }
 
@@ -135,6 +158,67 @@ public class OrdersController {
         if (!result.getSuccess()) {
             log.error("新增订单失败！");
             jsonResult.setMessage("新增订单失败！");
+            return jsonResult;
+        }
+        jsonResult.setData(result.getSuccess());
+        return jsonResult;
+    }
+
+    /**
+     * 新增订单跟进反馈
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/createOrderFeedback", method = RequestMethod.POST)
+    @ResponseBody
+    public Object createOrderFeedback(HttpServletRequest request) {
+        HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
+        String orderId = request.getParameter("orderId");
+        String customerCode = request.getParameter("customerCode");
+        String customerName = request.getParameter("customerName");
+        String responsiblePerson = request.getParameter("responsiblePerson");
+        String description = request.getParameter("description");
+
+        OrderFeedback orderFeedback = new OrderFeedback();
+        orderFeedback.setOrderId(Integer.parseInt(orderId));
+        orderFeedback.setCustomerId(0);
+        orderFeedback.setCustomerCode(customerCode);
+        orderFeedback.setCustomerName(customerName);
+        orderFeedback.setResponsiblePerson(responsiblePerson);
+        orderFeedback.setDescription(description);
+        orderFeedback.setCreatedBy(String.valueOf(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME)));
+        orderFeedback.setUpdatedBy(String.valueOf(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME)));
+        ServiceResult<OrderFeedback> result = orderFeedbackService.createOrderFeedback(orderFeedback);
+        if (!result.getSuccess()) {
+            log.error("新增订单跟进反馈失败！");
+            jsonResult.setMessage("新增订单跟进反馈失败！");
+            return jsonResult;
+        }
+        jsonResult.setData(result.getSuccess());
+        return jsonResult;
+    }
+
+    /**
+     * 预约安装时间
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/preInstallTime", method = RequestMethod.POST)
+    @ResponseBody
+    public Object preInstallTime(HttpServletRequest request) {
+        HttpJsonResult<Object> jsonResult = new HttpJsonResult<Object>();
+        String orderId = request.getParameter("orderId");
+        String installAt = request.getParameter("installAt");
+//        ServiceResult<Orders> ordersResult = ordersService.getById(Long.parseLong(orderId));
+//        Orders orders = ordersResult.getResult();
+        Orders updateOrder = new Orders();
+        updateOrder.setId(Long.parseLong(orderId));
+        updateOrder.setPreInstallAt(DateUtil.parse(DateUtil.format5, installAt));
+        updateOrder.setUpdatedBy(String.valueOf(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME)));
+        ServiceResult<Orders> result = ordersService.updateOrders(updateOrder);
+        if (!result.getSuccess()) {
+            log.error("预约安装时间失败！");
+            jsonResult.setMessage("预约安装时间失败！");
             return jsonResult;
         }
         jsonResult.setData(result.getSuccess());

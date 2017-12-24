@@ -35,4 +35,11 @@ public class ButtonConstant {
     public static final String CUSTOMER_DISTRIBUTION_CODE= "100102101102";
     //客户接入-反馈
     public static final String CUSTOMER_FEEDBACK_CODE= "100102101103";
+
+    //订单执行-跟进反馈
+    public static final String ORDER_FEEDBACK_CODE= "100103102102";
+    //订单执行-预约安装时间
+    public static final String ORDER_PRE_INSTALL_TIME_CODE= "100103102103";
+    //订单执行-验收
+    public static final String ORDER_ACCEPTANCE_CODE= "100103102104";
 }

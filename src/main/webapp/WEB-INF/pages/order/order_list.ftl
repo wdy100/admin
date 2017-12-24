@@ -26,13 +26,15 @@
         </form>
     </div>
     <div id="tb" >
-
-                <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-add" plain="false" >跟进反馈</a>
-
-                <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" >预约安装时间</a>
-
-                <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" >验收</a>
-
+            <#if showFeedbackOrdersButton?? && showFeedbackOrdersButton == "YES">
+                <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-add" plain="false" onclick="feedback();">跟进反馈</a>
+            </#if>
+            <#if showPreInstallTimeOrdersButton?? && showPreInstallTimeOrdersButton == "YES">
+                <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="preInstallTime();" >预约安装时间</a>
+            </#if>
+            <#if showAcceptanceOrdersButton?? && showAcceptanceOrdersButton == "YES">
+                <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false"  >验收</a>
+            </#if>
 
     </div>
     <div region="center" border="false">
@@ -49,6 +51,39 @@
             </thead>
         </table>
     </div>
+</div>
+
+<!-- 跟进反馈  -->
+<div class="easyui-dialog" id="addOrderFeedbackDiv" style="width:320px;height:380px;"
+     data-options="modal:true,closed:true,resizable:false" >
+    <table>
+        <tr>
+            <td style="text-align: right;">内勤人员:</td>
+            <td>
+                <input id="f_responsiblePerson" name="f_responsiblePerson" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">反馈详情:</td>
+            <td>
+                <input id="f_description" name="f_description" type="text" class="easyui-textbox" style="width:200px;"></input>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- 预约安装时间  -->
+<div class="easyui-dialog" id="preInstallTimeDiv" style="width:320px;height:380px;"
+     data-options="modal:true,closed:true,resizable:false" >
+    <table>
+        <tr>
+            <td style="text-align: right;">预约安装时间:</td>
+            <td>
+                <input id="p_installAt" name="p_installAt" size="54" type="text" class="easyui-datebox"  data-options="sharedCalendar:'#sc',editable:false" style="width:200px;" />
+                <div id="sc" class="easyui-calendar"></div>
+            </td>
+        </tr>
+    </table>
 </div>
 
 <script type="text/javascript">
@@ -88,6 +123,127 @@
 
     function agreeFormater(val,row){
         return '<a href="#" >查看详情</a>';
+    }
+
+    //跟进反馈
+    function feedback(){
+        var selectedRow = $('#dg').datagrid('getSelected');
+        if(!selectedRow || selectedRow == null){
+            $.messager.alert('操作提示','请选择要操作的数据！','info');
+            return;
+        }
+        $("#addOrderFeedbackDiv").dialog({
+            title: '跟进反馈',
+            width: 400,
+            height: 250,
+            top: 30,
+            closed: true,
+            cache: false,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                iconCls:'icon-ok',
+                handler:function(){
+                    submitFeedback();
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    $('#addOrderFeedbackDiv').dialog('close');
+                }
+            }]
+        });
+        $('#addOrderFeedbackDiv').dialog('open');
+    }
+
+    function submitFeedback(){
+        var row = $('#dg').datagrid('getSelected');
+        var orderId = row.id;
+        var customerCode = row.customerCode;
+        var customerName = row.customerName;
+        var responsiblePerson = $('#f_responsiblePerson').val();
+        var description = $('#f_description').val();
+        $.ajax({
+            type:'post',
+            url:'/order/createOrderFeedback',
+            dataType : "json",
+            data:{orderId:orderId, customerCode:customerCode, customerName:customerName, responsiblePerson:responsiblePerson, description:description},
+            cache:false,
+            async:false,
+            success:function(data){
+                $.messager.progress('close');
+                if(!data.success){
+                    $.messager.alert('提示',data.message);
+                }
+                //$('#dg').datagrid('reload');
+                $('#addOrderFeedbackDiv').dialog('close');
+                $.messager.alert('提示',"跟进反馈成功");
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
+            }
+        });
+
+    }
+
+    //预约安装时间
+    function preInstallTime(){
+        var selectedRow = $('#dg').datagrid('getSelected');
+        if(!selectedRow || selectedRow == null){
+            $.messager.alert('操作提示','请选择要操作的数据！','info');
+            return;
+        }
+        $("#preInstallTimeDiv").dialog({
+            title: '预约安装时间',
+            width: 400,
+            height: 250,
+            top: 30,
+            closed: true,
+            cache: false,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                iconCls:'icon-ok',
+                handler:function(){
+                    submitPreInstallTime();
+                }
+            },{
+                text:'取消',
+                iconCls:'icon-cancel',
+                handler:function(){
+                    $('#preInstallTimeDiv').dialog('close');
+                }
+            }]
+        });
+        $('#preInstallTimeDiv').dialog('open');
+    }
+
+    function submitPreInstallTime(){
+        var row = $('#dg').datagrid('getSelected');
+        var orderId = row.id;
+        var installAt = $('#p_installAt').datebox("getValue");
+        $.ajax({
+            type:'post',
+            url:'/order/preInstallTime',
+            dataType : "json",
+            data:{orderId:orderId, installAt:installAt},
+            cache:false,
+            async:false,
+            success:function(data){
+                $.messager.progress('close');
+                if(!data.success){
+                    $.messager.alert('提示',data.message);
+                }
+                $('#dg').datagrid('reload');
+                $('#preInstallTimeDiv').dialog('close');
+                $.messager.alert('提示',"预约安装时间成功");
+            },
+            error:function(d){
+                $.messager.alert('提示',"请刷新重试");
+            }
+        });
+
     }
 
 </script>

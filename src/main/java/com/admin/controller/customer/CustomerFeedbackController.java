@@ -5,6 +5,7 @@ import com.admin.entity.customer.CustomerFeedback;
 import com.admin.service.customer.CustomerFeedbackService;
 import com.admin.service.customer.CustomerService;
 import com.admin.web.util.HttpJsonResult;
+import com.admin.web.util.SessionSecurityConstants;
 import com.admin.web.util.WebUtil;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
@@ -89,8 +90,8 @@ public class CustomerFeedbackController {
         customerFeedback.setCustomerName(customerName);
         customerFeedback.setResponsiblePerson(responsiblePerson);
         customerFeedback.setDescription(description);
-        customerFeedback.setCreatedBy("system");
-        customerFeedback.setUpdatedBy("system");
+        customerFeedback.setCreatedBy(String.valueOf(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME)));
+        customerFeedback.setUpdatedBy(String.valueOf(request.getSession().getAttribute(SessionSecurityConstants.KEY_USER_NICK_NAME)));
         ServiceResult<CustomerFeedback> result = customerFeedbackService.createCustomerFeedback(customerFeedback);
         if (!result.getSuccess()) {
             log.error("新增客户反馈失败！");

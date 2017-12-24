@@ -1,6 +1,7 @@
 package com.admin.service.impl.order;
 
 import com.admin.dao.order.OrdersDao;
+import com.admin.entity.customer.Customer;
 import com.admin.entity.order.Orders;
 import com.admin.service.order.OrdersService;
 import com.haier.common.PagerInfo;
@@ -66,9 +67,17 @@ public class OrdersServiceImpl implements OrdersService {
             executeResult.setMessage("该订单不存在或已经被删除。");
             return executeResult;
         }
-        dbOrders.setUpdatedBy(orders.getUpdatedBy());
-        dbOrders.setUpdatedAt(new Date());
-        ordersDao.update(dbOrders);
+//        dbOrders.setUpdatedBy(orders.getUpdatedBy());
+//        dbOrders.setUpdatedAt(new Date());
+        ordersDao.update(orders);
+        return executeResult;
+    }
+
+    @Override
+    public ServiceResult<Orders> getById(Long id) {
+        ServiceResult<Orders> executeResult = new ServiceResult<Orders>();
+        Orders orders = ordersDao.getById(id);
+        executeResult.setResult(orders);
         return executeResult;
     }
 }

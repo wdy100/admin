@@ -28,7 +28,7 @@
   <sql id="table">orders</sql>
 
   <select id="getById" parameterType="java.lang.Integer" resultMap="ordersMap">
-    select
+    select id,
     <include refid="Base_Column_List" />
     from <include refid="table"/>
     where id = #{id,jdbcType=INTEGER}
@@ -124,7 +124,7 @@
   </sql>
 
   <select id="queryListBy" resultMap="ordersMap" parameterType="map">
-    SELECT <include refid="Base_Column_List"/>
+    SELECT  id, <include refid="Base_Column_List"/>
     FROM <include refid="table"/>
     <include refid="condition"/>
     ORDER BY id DESC

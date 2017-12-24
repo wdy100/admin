@@ -1,4 +1,5 @@
 package com.admin.service.order;
+import com.admin.entity.customer.Customer;
 import com.admin.entity.order.Orders;
 import com.haier.common.PagerInfo;
 import com.haier.common.ServiceResult;
@@ -30,4 +31,10 @@ public interface OrdersService {
      * @param orders
      */
     public ServiceResult<Orders> updateOrders(Orders orders);
+
+    /**
+     * 根据id获取
+     * @param id
+     */
+    public ServiceResult<Orders> getById(Long id);
 }

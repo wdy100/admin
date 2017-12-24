@@ -21,6 +21,7 @@
         <typeAlias alias="CustomerFeedback" type="com.admin.entity.customer.CustomerFeedback"/>
 
         <typeAlias alias="Orders" type="com.admin.entity.order.Orders"/>
+        <typeAlias alias="OrderFeedback" type="com.admin.entity.order.OrderFeedback"/>
 
     </typeAliases>
 </configuration>
