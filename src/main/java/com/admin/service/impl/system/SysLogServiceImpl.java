@@ -4,7 +4,7 @@ package com.admin.service.impl.system;
 import com.admin.entity.system.SysLog;
 import com.admin.service.system.RoleService;
 import com.admin.service.system.SysLogService;
-import com.haier.common.ServiceResult;
+import com.gao.common.ServiceResult;
 
 import lombok.extern.slf4j.Slf4j;
 

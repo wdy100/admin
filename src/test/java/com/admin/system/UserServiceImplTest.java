@@ -8,7 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;  
 import com.admin.entity.system.UserInfo;
 import com.admin.service.system.UserInfoService;
-import com.haier.common.ServiceResult;
+import com.gao.common.ServiceResult;
 
  /**
  * 

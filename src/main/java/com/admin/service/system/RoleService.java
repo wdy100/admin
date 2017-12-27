@@ -1,7 +1,7 @@
 package com.admin.service.system;
 import com.admin.entity.system.Role;
-import com.haier.common.PagerInfo;
-import com.haier.common.ServiceResult;
+import com.gao.common.PagerInfo;
+import com.gao.common.ServiceResult;
 
 import java.util.List;
 import java.util.Map;

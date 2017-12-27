@@ -1,6 +1,6 @@
 package com.admin.service.system;
 import com.admin.entity.system.Attachment;
-import com.haier.common.ServiceResult;
+import com.gao.common.ServiceResult;
 
 /**
  * Created by GaoJingFei on 2017/11/13.

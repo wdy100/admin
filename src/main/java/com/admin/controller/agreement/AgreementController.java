@@ -48,10 +48,10 @@ import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.Util;
 import com.admin.web.util.WebUtil;
 import com.google.common.collect.Maps;
-import com.haier.common.BusinessException;
-import com.haier.common.PagerInfo;
-import com.haier.common.ServiceResult;
-import com.haier.common.util.JsonUtil;
+import com.gao.common.BusinessException;
+import com.gao.common.PagerInfo;
+import com.gao.common.ServiceResult;
+import com.gao.common.util.JsonUtil;
 
 @Controller
 @RequestMapping("/agreementInfo") 

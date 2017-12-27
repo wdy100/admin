@@ -1,7 +1,7 @@
 package com.admin.service.system;
 
 import com.admin.entity.system.UserRole;
-import com.haier.common.ServiceResult;
+import com.gao.common.ServiceResult;
 
 import java.util.List;
 

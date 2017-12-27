@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.admin.entity.agreement.AgreementInfo;
 import com.admin.service.agreement.AgreementService;
-import com.haier.common.ServiceResult;
+import com.gao.common.ServiceResult;
 
  /**
  * @author wangss
@@ -27,8 +27,8 @@ public class AgreementServiceImplTest{
 		AgreementInfo agreementInfo = new AgreementInfo();
 		agreementInfo.setCustomerId(111L);
 		agreementInfo.setRemark("remark");
-		ServiceResult<Integer> result = agreementService.insertAgreementInfo(agreementInfo);
-		System.out.println(result.getSuccess());
+//		ServiceResult<Integer> result = agreementService.insertAgreementInfo(agreementInfo);
+//		System.out.println(result.getSuccess());
 	}
 
 	@Test

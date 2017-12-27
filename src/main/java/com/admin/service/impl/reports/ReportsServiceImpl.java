@@ -5,7 +5,7 @@ import com.admin.dao.reports.PerformanceReportsDao;
 import com.admin.entity.reports.ExpenseReports;
 import com.admin.entity.reports.PerformanceReports;
 import com.admin.service.reports.ReportsService;
-import com.haier.common.ServiceResult;
+import com.gao.common.ServiceResult;
 
 import lombok.extern.slf4j.Slf4j;
 

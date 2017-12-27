@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.admin.entity.reports.PerformanceReports;
 import com.admin.service.reports.ReportsService;
-import com.haier.common.BusinessException;
-import com.haier.common.ServiceResult;
-import com.haier.common.util.JsonUtil;
+import com.gao.common.BusinessException;
+import com.gao.common.ServiceResult;
+import com.gao.common.util.JsonUtil;
 
 /**
  * Created by lx on 17-12-24.

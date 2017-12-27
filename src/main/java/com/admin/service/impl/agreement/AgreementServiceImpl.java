@@ -14,8 +14,8 @@ import com.admin.entity.agreement.AgreementInfo;
 import com.admin.entity.agreement.AgreementPay;
 import com.admin.service.agreement.AgreementService;
 import com.google.common.base.Throwables;
-import com.haier.common.PagerInfo;
-import com.haier.common.ServiceResult;
+import com.gao.common.PagerInfo;
+import com.gao.common.ServiceResult;
 
 import lombok.extern.slf4j.Slf4j;
 

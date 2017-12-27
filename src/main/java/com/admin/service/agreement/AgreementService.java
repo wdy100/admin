@@ -6,8 +6,8 @@ import com.admin.entity.agreement.AgreementApproval;
 import com.admin.entity.agreement.AgreementGoods;
 import com.admin.entity.agreement.AgreementInfo;
 import com.admin.entity.agreement.AgreementPay;
-import com.haier.common.PagerInfo;
-import com.haier.common.ServiceResult;
+import com.gao.common.PagerInfo;
+import com.gao.common.ServiceResult;
 
 /**
  * Created by wangss

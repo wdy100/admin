@@ -1,8 +1,8 @@
 package com.admin.service.system;
 import com.admin.entity.system.Department;
 import com.admin.entity.util.ComboBox;
-import com.haier.common.ServiceResult;
-import com.haier.common.PagerInfo;
+import com.gao.common.ServiceResult;
+import com.gao.common.PagerInfo;
 
 import java.util.List;
 import java.util.Map;

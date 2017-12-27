@@ -209,12 +209,12 @@
 		  <artifactId>gson</artifactId>
 		  <version>2.2.2</version>
 		</dependency>
-		<!-- haier-common -->  
-		<dependency>
-			<groupId>com.haier</groupId>
-			<artifactId>haier-common</artifactId>
-			<version>4.1.4</version>
-		</dependency>
+      <!-- gao-common -->
+      <dependency>
+          <groupId>com.gao</groupId>
+          <artifactId>gao-common</artifactId>
+          <version>1.0</version>
+      </dependency>
 		
 		<dependency>
             <groupId>org.freemarker</groupId>
@@ -311,13 +311,13 @@
                 <pom.server.dynamic>http://localhost:8080</pom.server.dynamic>
                 <pom.app.url>http://localhost:8080</pom.app.url>
 
-                <pom.jdbc.url>jdbc:mysql://47.100.31.217:3306/crm</pom.jdbc.url>
-				<pom.jdbc.username>root</pom.jdbc.username>
-				<pom.jdbc.password>wdlinux.cn</pom.jdbc.password>
+                <pom.jdbc.url>1F0030AD817F268A2B79FBE744B326DE3DE285D1927DD570AA22BE737AB5C835FF9FA1B9D3AB5E1D</pom.jdbc.url>
+				<pom.jdbc.username>E4D52E4B608ED135</pom.jdbc.username>
+				<pom.jdbc.password>25CF511E281CF37839E6152E87A7BF40</pom.jdbc.password>
 
-                <!--<pom.jdbc.url>jdbc:mysql://localhost:3306/crm</pom.jdbc.url>-->
-                <!--<pom.jdbc.username>dev</pom.jdbc.username>-->
-                <!--<pom.jdbc.password>dev123</pom.jdbc.password>-->
+                <!--<pom.jdbc.url>1F0030AD817F268A3FED02C0C1C1774D9B6F58676E382D1407A761E3D7A1B4C8</pom.jdbc.url>-->
+                <!--<pom.jdbc.username>D2A2150E6097A828</pom.jdbc.username>-->
+                <!--<pom.jdbc.password>66041BAE67093447</pom.jdbc.password>-->
 			</properties>
 		</profile>
 
@@ -330,9 +330,9 @@
 				<pom.server.dynamic>http://47.100.31.217</pom.server.dynamic>
 				<pom.app.url>http://47.100.31.217</pom.app.url>
 
-                <pom.jdbc.url>jdbc:mysql://47.100.31.217:3306/crm</pom.jdbc.url>
-                <pom.jdbc.username>root</pom.jdbc.username>
-                <pom.jdbc.password>wdlinux.cn</pom.jdbc.password>
+                <pom.jdbc.url>1F0030AD817F268A2B79FBE744B326DE3DE285D1927DD570AA22BE737AB5C835FF9FA1B9D3AB5E1D</pom.jdbc.url>
+                <pom.jdbc.username>E4D52E4B608ED135</pom.jdbc.username>
+                <pom.jdbc.password>25CF511E281CF37839E6152E87A7BF40</pom.jdbc.password>
 			</properties>
 		</profile>
 	</profiles>

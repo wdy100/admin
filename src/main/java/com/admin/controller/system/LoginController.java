@@ -9,7 +9,7 @@ import com.admin.service.system.UserInfoService;
 import com.admin.service.system.UserRoleService;
 import com.admin.web.util.HttpJsonResult;
 import com.admin.web.util.SessionSecurityConstants;
-import com.haier.common.ServiceResult;
+import com.gao.common.ServiceResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

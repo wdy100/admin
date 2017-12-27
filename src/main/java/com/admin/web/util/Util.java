@@ -1,6 +1,6 @@
 package com.admin.web.util;
 
-import com.haier.common.util.StringUtil;
+import com.gao.common.util.StringUtil;
 
 import java.net.Inet6Address;
 import java.net.InetAddress;

@@ -1,6 +1,6 @@
 package com.admin.web.util;
 
-import com.haier.common.util.StringUtil;
+import com.gao.common.util.StringUtil;
 
 public class DomainUrlUtil {
     protected static org.apache.log4j.Logger log = org.apache.log4j.LogManager

@@ -4,7 +4,7 @@ import com.admin.entity.system.ResourceInfo;
 import com.admin.entity.util.ModuleResourceInfoTreeNodeFactory;
 import com.admin.entity.util.TreeNode;
 import com.admin.service.system.ResourceInfoService;
-import com.haier.common.util.JsonUtil;
+import com.gao.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

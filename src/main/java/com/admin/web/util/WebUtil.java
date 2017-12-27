@@ -2,8 +2,8 @@ package com.admin.web.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.haier.common.PagerInfo;
-import com.haier.common.util.StringUtil;
+import com.gao.common.PagerInfo;
+import com.gao.common.util.StringUtil;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;

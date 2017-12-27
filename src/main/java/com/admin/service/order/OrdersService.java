@@ -1,8 +1,8 @@
 package com.admin.service.order;
 import com.admin.entity.customer.Customer;
 import com.admin.entity.order.Orders;
-import com.haier.common.PagerInfo;
-import com.haier.common.ServiceResult;
+import com.gao.common.PagerInfo;
+import com.gao.common.ServiceResult;
 
 import java.util.Map;
 

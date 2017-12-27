@@ -2,7 +2,7 @@ package com.admin.service.impl.system;
 
 import com.admin.entity.system.Notice;
 import com.admin.service.system.NoticeService;
-import com.haier.common.ServiceResult;
+import com.gao.common.ServiceResult;
 
 import lombok.extern.slf4j.Slf4j;
 

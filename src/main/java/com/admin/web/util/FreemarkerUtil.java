@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.haier.common.PagerInfo;
-import com.haier.common.util.StringUtil;
+import com.gao.common.PagerInfo;
+import com.gao.common.util.StringUtil;
 
 public class FreemarkerUtil {
     private static org.apache.log4j.Logger log = org.apache.log4j.LogManager

@@ -3,7 +3,7 @@ package com.admin.service.impl.system;
 import com.admin.dao.system.ProspectDao;
 import com.admin.entity.system.Prospect;
 import com.admin.service.system.ProspectService;
-import com.haier.common.ServiceResult;
+import com.gao.common.ServiceResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
