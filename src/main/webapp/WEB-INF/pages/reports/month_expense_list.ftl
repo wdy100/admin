@@ -18,10 +18,11 @@
                 <tr>
                     <td class="cxlabel">年份:</td>
                     <td class="cxinput">
-                        <input name="year" type="text" class="easyui-textbox" style="width:100px;" placeholder="默认查询当年的数据"/>
+                        <input id="year" name="year" type="text" class="easyui-textbox" style="width:100px;" placeholder="默认查询当年的数据"/>
                     </td>
                     <td class="cxlabel">
                         <a id="search" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
+                        <a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="exportExpense()">导出</a>
                     </td>
                 </tr>
             </table>
@@ -47,13 +48,30 @@
 </div>
 
 <script type="text/javascript">
+    var datagrid;
+    var year;
 
     function loaddata(){
+        year = $("#year").val();
         $('#dg').datagrid('load',sy.serializeObject($("#searchForm").form()));
     }
 
+    //导出
+    function exportExpense(){
+        if(!datagrid){
+            $.messager.alert('提示','请先查询！','info');
+            return;
+        }
+        $.messager.confirm('确认','确定要导出吗？', function(r){
+            if (r){
+                window.location.href="/report/exportMonthExpenseList?year=" + year;
+            }
+        });
+    }
+
     $(function(){
-        $('#dg').datagrid({
+        year = $("#year").val();
+        datagrid = $('#dg').datagrid({
             title:'费用支出报表-按月汇总',
             toolbar:'#tb',
             singleSelect:true,
