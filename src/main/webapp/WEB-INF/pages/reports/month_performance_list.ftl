@@ -18,7 +18,12 @@
                 <tr>
                     <td class="cxlabel">年份:</td>
                     <td class="cxinput">
-                        <input id="year" name="year" type="text" class="easyui-textbox" style="width:100px;" placeholder="默认查询当年的数据"/>
+                        <input class="easyui-combobox" id="year" name="year" style="width:100px;" data-options="
+	       								valueField: 'value',textField: 'text',panelHeight:'auto',editable:false,value:'',
+										data: [{value: '2018',text: '2018年'},
+										       {value: '2017',text: '2017年'},
+										       {value: '2016',text: '2016年'}
+												]"/>
                     </td>
                     <td class="cxlabel">
                         <a id="search" href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loaddata()">查询</a>
