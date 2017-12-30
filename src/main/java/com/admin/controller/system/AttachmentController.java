@@ -39,9 +39,9 @@ import java.util.Map;
 @Slf4j
 public class AttachmentController {
     //附件保存路径
-    //public static final String ATTACHMENT_PATH= "\\usr\\attachment\\";
+    public static final String ATTACHMENT_PATH= "\\usr\\attachment\\";
 
-    public static final String ATTACHMENT_PATH= "D:\\usr\\attachment\\";//本地测试
+    //public static final String ATTACHMENT_PATH= "D:\\usr\\attachment\\";//本地测试
 
     @Resource
     private AttachmentService attachmentService;
