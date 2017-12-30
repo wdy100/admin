@@ -33,7 +33,7 @@
                 <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="preInstallTime();" >预约安装时间</a>
             </#if>
             <#if showAcceptanceOrdersButton?? && showAcceptanceOrdersButton == "YES">
-                <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false"  >验收</a>
+                <a href="javascript:void(0);"  class="easyui-linkbutton" iconCls="icon-edit" plain="false" onclick="openImportWin()">验收</a>
             </#if>
 
     </div>
@@ -84,6 +84,28 @@
             </td>
         </tr>
     </table>
+</div>
+
+<!-- 验收窗口 -->
+<div id="importDialog" class="easyui-window" title="验收"  style="width:460px;height:120px"
+     data-options="closed:true,iconCls:'icon-save',modal:true,collapsible:false,minimizable:false,maximizable:false">
+    <form onsubmit="return false;" id="importForm" enctype="multipart/form-data" method="post"
+          action="/system/uploadAttachment">
+        <table class="fixedTb">
+            <tr>
+                <td class="formlabletd">文件:</td>
+                <td width="200px;">
+                    <input id="importFile" type="file"  name="file"  style="width:200px">
+                    <input id="importFileName" type="hidden"  name="fileName" >
+                    <input id="relateId" type="hidden"  name="relateId" >
+                    <input id="fileType" type="hidden"  name="fileType" value="3">
+                </td>
+                <td style="width:100px;padding-left: 20px;padding-right: 20px;">
+                    <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-ok'" onclick="importRow();">提交</a>
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
 
 <script type="text/javascript">
@@ -244,6 +266,50 @@
             }
         });
 
+    }
+
+    //打开验收窗口
+    function openImportWin(){
+        var selectedRow = $('#dg').datagrid('getSelected');
+        if(!selectedRow || selectedRow == null){
+            $.messager.alert('操作提示','请选择要操作的数据！','info');
+            return;
+        }
+        $('#importForm').form("clear");
+        $('#relateId').val(selectedRow.id);
+        $('#fileType').val(3);
+        $("#importDialog").window("open");
+    }
+
+    //上传文件
+    function importRow(){
+        $('#importForm').form('submit',{
+            onSubmit : function(param) {
+                if($("#importFile").val()==""){
+                    $.messager.alert('提示','请选择要上传的文件！','warning');
+                    return false;
+                }
+                $.messager.progress({
+                    text : '正在上传，请稍后...',
+                    interval : 100
+                });
+                return true;
+            },
+            success : function(result) {
+                $.messager.progress('close');
+                var data = eval('(' + result + ')');
+                var messages = data.messages;
+                if(messages!=null && messages!=""){
+                    $.messager.alert('提示',messages,'warning');
+                }else{
+                    $.messager.show({
+                        title : '提示',
+                        msg : '操作成功！'
+                    });
+                    $("#importDialog").window("close");
+                }
+            }
+        });
     }
 
 </script>

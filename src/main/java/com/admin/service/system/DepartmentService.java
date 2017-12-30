@@ -43,9 +43,6 @@ public interface DepartmentService {
     public ServiceResult<Department> deleteDepartment(Long departmentId);
     /**
      * 根据code获取部门名称
-     *
-     * @author zhaobing
-     * @since 2014-10-23
      * @param code
      * @return
      */
@@ -108,9 +105,6 @@ public interface DepartmentService {
 
     /**
      * 根据用户获取所在的部门
-     *
-     * @author zhaobing
-     * @since 2014-10-29
      * @param name
      * @return
      */

@@ -59,7 +59,7 @@
       )
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{principalUserId,jdbcType=INTEGER}, #{principalNickName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
-      #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{isDelete,jdbcType=BIT}, #{parent.id}
+      #{updatedBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 0, #{parent.id}
       )
   </insert>
 
